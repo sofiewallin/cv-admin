@@ -1,7 +1,8 @@
-// Auth
+
+import Module from "./Module";
+
 import Auth from "../../auth/Auth";
 
-// Interfaces
 import ILoginDetails from "../../interfaces/ILoginDetails";
 import IError from "../../interfaces/IError";
 
@@ -10,23 +11,18 @@ import IError from "../../interfaces/IError";
  * 
  * @author: Sofie Wallin
  */
-export default class LoginForm {
-
-    // Properties
-    public apiUrl: string;
-    public module: HTMLFormElement;
-
+export default class LoginForm extends Module {
     /**
      * Constructor
      */
     constructor(apiUrl: string) {
-        this.apiUrl = apiUrl;
+        super(apiUrl);
     }
 
     /**
      * Create module.
      */
-    async create(): Promise<HTMLFormElement> {
+    async create(): Promise<HTMLElement> {
         // Create form
         const form = document.createElement('form') as HTMLFormElement;
         form.action = '/';

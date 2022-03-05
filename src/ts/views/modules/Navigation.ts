@@ -1,13 +1,11 @@
+import Module from "./Module";
+
 /**
  * Navigation module.
  * 
  * @author: Sofie Wallin
  */
-export default  class Navigation {
-
-    // Properties
-    public module: HTMLElement;
-
+export default  class Navigation extends Module {
     /**
      * Create module.
      */

@@ -1,4 +1,5 @@
-// Interfaces
+import Module from "../Module";
+
 import IUser from "../../../interfaces/IUser";
 
 /**
@@ -6,19 +7,12 @@ import IUser from "../../../interfaces/IUser";
  * 
  * @author: Sofie Wallin
  */
-export default class ProjectSection {
-
-    // Properties
-    public apiUrl: string;
-    public user: IUser;
-    public module: HTMLElement;
-
+export default class ProjectSection extends Module {
     /**
      * Constructor
      */
-     constructor(apiUrl: string, user: IUser) {
-        this.apiUrl = apiUrl;
-        this.user = user;
+    constructor(apiUrl: string, user: IUser) {
+        super(apiUrl, user);
     }
 
     /**

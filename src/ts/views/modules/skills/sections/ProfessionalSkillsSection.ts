@@ -1,17 +1,20 @@
-import Module from "../Module";
+import Module from "../../Module";
 
-import IUser from "../../../interfaces/IUser";
+import ISkill from "../../../../interfaces/ISkill";
+import IUser from "../../../../interfaces/IUser";
+
+import Skill from "../../../../models/Skill";
 
 /**
- * Experience section module.
+ * Professional skills section module.
  * 
  * @author: Sofie Wallin
  */
-export default class ExperienceSection extends Module {
+export default class ProfessionalSkillsSection extends Module {
     /**
      * Constructor
      */
-    constructor(apiUrl: string, user: IUser) {
+     constructor(apiUrl: string, user: IUser) {
         super(apiUrl, user);
     }
 
@@ -21,11 +24,11 @@ export default class ExperienceSection extends Module {
     async create(): Promise<HTMLElement> {
         // Create section
         const section = document.createElement('section') as HTMLElement;
-        section.id = 'experience';
+        section.id = 'professional-skills';
 
         // Create section heading and add it to section
-        const heading = document.createElement('h2') as HTMLHeadingElement;
-        heading.innerText = 'Experience';
+        const heading = document.createElement('h3') as HTMLHeadingElement;
+        heading.innerText = 'Professional';
         section.append(heading);
 
         // Set form as module

@@ -1,24 +1,20 @@
-// Interfaces
+import Module from "../Module";
+
 import IUser from "../../../interfaces/IUser";
 
+import ProfessionalSkillsSection from "./sections/ProfessionalSkillsSection";
+
 /**
- * Projects section module.
+ * Skills section module.
  * 
  * @author: Sofie Wallin
  */
-export default class SkillsSection {
-
-    // Properties
-    public apiUrl: string;
-    public user: IUser;
-    public module: HTMLElement;
-
+export default class SkillsSection extends Module {
     /**
      * Constructor
      */
      constructor(apiUrl: string, user: IUser) {
-        this.apiUrl = apiUrl;
-        this.user = user;
+        super(apiUrl, user);
     }
 
     /**
@@ -36,6 +32,8 @@ export default class SkillsSection {
 
         // Set form as module
         this.module = section;
+
+        await super.appendModule(new ProfessionalSkillsSection(this.apiUrl, this.user), this.module);
 
         // Return form
         return this.module;

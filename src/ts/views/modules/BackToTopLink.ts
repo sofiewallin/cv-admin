@@ -1,17 +1,15 @@
+import Module from "./Module";
+
 /**
  * Back to top link module.
  * 
  * @author: Sofie Wallin
  */
- export default  class BackToTopLink {
-    
-    // Properties
-    public module: HTMLAnchorElement;
-
+ export default  class BackToTopLink extends Module {
     /**
      * Create module.
      */
-    async create(): Promise<HTMLAnchorElement> {
+    async create(): Promise<HTMLElement> {
         // Create link
         const link = document.createElement('a') as HTMLAnchorElement;
         link.id = 'back-to-top';

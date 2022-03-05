@@ -13,12 +13,8 @@ import App from "../App";
  */
 
 export default class Auth {
-
     /**
-     * Logs in the user.
-     * 
-     * Renders one module in the login view, 
-     * a login form. 
+     * Log in user.
      */
     async loginUser(loginDetails: ILoginDetails, apiUrl: string): Promise<void|IError> {
         try {
@@ -49,6 +45,9 @@ export default class Auth {
         }
     }
 
+    /**
+     * Get user from storage and return it if it exists.
+     */
     async getUser(): Promise<IUser|null> {
         const user = JSON.parse(localStorage.getItem('user'));
 
@@ -59,6 +58,9 @@ export default class Auth {
         return user;
     }
 
+    /**
+     * Log out user.
+     */
     async logoutUser(apiUrl: string, user: IUser): Promise<void|IError> { 
         try {
             const response = await fetch(`${apiUrl}/logout`, {

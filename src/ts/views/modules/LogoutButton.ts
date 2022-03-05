@@ -1,10 +1,9 @@
-// App
+import Module from "./Module";
+
 import App from "../../App";
 
-// Auth
 import Auth from "../../auth/Auth";
 
-// Interfaces
 import IError from "../../interfaces/IError";
 import IUser from "../../interfaces/IUser";
 
@@ -13,28 +12,22 @@ import IUser from "../../interfaces/IUser";
  * 
  * @author: Sofie Wallin
  */
-export default class LogoutButton {
-
-    // Properties
-    public apiUrl: string;
-    public user: IUser;
-    public module: HTMLButtonElement;
+export default class LogoutButton extends Module {
 
     /**
      * Constructor
      */
     constructor(apiUrl: string, user: IUser) {
-        this.apiUrl = apiUrl;
-        this.user = user;
+        super(apiUrl, user);
     }
 
     /**
      * Create module.
      */
-    async create(): Promise<HTMLButtonElement> {
+    async create(): Promise<HTMLElement> {
         // Create button
         const button = document.createElement('button') as HTMLButtonElement;
-        button.classList.add('logout-button');
+        button.id = 'logout-button';
         button.innerText = 'Log out';
 
         // Set button as module

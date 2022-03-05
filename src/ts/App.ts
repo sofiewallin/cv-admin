@@ -1,20 +1,18 @@
-// Auth
 import Auth from "./auth/Auth";
 
-// Interfaces
 import IUser from "./interfaces/IUser";
 
-// Views
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
 
 /**
  * Main application file.
  * 
+ * Handles rendering of views and messages to the user.
+ * 
  * @author: Sofie Wallin
  */
 export default class App {
-
     // Properties
     public apiUrl: string;
     public user: IUser;
@@ -53,7 +51,7 @@ export default class App {
         this.user = user;
 
         // Render home view
-        const homeView = new HomeView(this.user, this.apiUrl, this.appRoot);
+        const homeView = new HomeView(this.apiUrl, this.user, this.appRoot);
         await homeView.render();
     }
 
@@ -69,8 +67,8 @@ export default class App {
         
         // Remove navigation, logout button and back to top link
         const navigation = document.querySelector('#main-navigation');
-        const logoutButton = document.querySelector('.logout-button');
-        const backToTopLink = document.querySelector('.back-to-top');
+        const logoutButton = document.querySelector('#logout-button');
+        const backToTopLink = document.querySelector('#back-to-top');
 
         if (navigation) navigation.remove();
         if (logoutButton) logoutButton.remove();

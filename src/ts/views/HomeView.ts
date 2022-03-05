@@ -1,8 +1,7 @@
-// Interfaces
-import IModule from "../interfaces/IModule";
+import View from "./View";
+
 import IUser from "../interfaces/IUser";
 
-// Modules
 import Navigation from "./modules/Navigation";
 import LogoutButton from "./modules/LogoutButton";
 import ProjectSection from "./modules/projects/ProjectsSection";
@@ -15,59 +14,50 @@ import BackToTopLink from "./modules/BackToTopLink";
  * 
  * @author: Sofie Wallin
  */
-export default class HomeView {
-
+export default class HomeView extends View {
     // Properties
-    public apiUrl: string;
     public user: IUser;
     public mainHeader: HTMLElement;
-    public appRoot: HTMLElement;
     public mainFooter: HTMLElement;
 
     /**
      * Constructor
      */
-    constructor(user: IUser, apiUrl: string, appRoot: HTMLElement) {
-        this.apiUrl = apiUrl;
+    constructor(apiUrl: string, user: IUser, appRoot: HTMLElement) {
+        super(apiUrl, appRoot);
+
         this.user = user;
         this.mainHeader = document.querySelector('#main-header') as HTMLElement;
-        this.appRoot = appRoot;
         this.mainFooter = document.querySelector('#main-footer') as HTMLElement;
     }
 
     /**
      * Render view.
+     * 
+     * Appends multiple modules to the view.
      */
     async render(): Promise<void> {
-        // Create logout button module and add it to header
+        // Navigation in header
         await this.appendModule(new Navigation(), this.mainHeader);
 
-        // Create log out button module and add it to header
+        // Log out button in header
         await this.appendModule(new LogoutButton(this.apiUrl, this.user), this.mainHeader);
 
-        // Create hidden h1 heading for home view
+        // Heading
         const heading = document.createElement('h1') as HTMLHeadingElement;
         heading.innerHTML = '<span class="hidden-visually">Administration</span>';
         this.appRoot.append(heading);
 
-        // Create projects section and add it to content
-        await this.appendModule(new ProjectSection(this.apiUrl, this.user), this.mainHeader);
+        // Projects section
+        await this.appendModule(new ProjectSection(this.apiUrl, this.user), this.appRoot);
 
-        // Create skills section and add it to content
-        await this.appendModule(new SkillsSection(this.apiUrl, this.user), this.mainHeader);
+        // Skills section
+        await this.appendModule(new SkillsSection(this.apiUrl, this.user), this.appRoot);
 
-        // Create experience section and add it to content
-        await this.appendModule(new ExperienceSection(this.apiUrl, this.user), this.mainHeader);
+        // Experience section
+        await this.appendModule(new ExperienceSection(this.apiUrl, this.user), this.appRoot);
 
-        // Create log out button module and add it to header
+        // Back to top link in footer
         await this.appendModule(new BackToTopLink(), this.mainFooter);
-    }
-
-    /**
-     * Append module to view.
-     */
-    async appendModule(module: IModule, element: HTMLElement): Promise<void> {
-        const createdModule = await module.create();
-        element.append(createdModule);
     }
 }
