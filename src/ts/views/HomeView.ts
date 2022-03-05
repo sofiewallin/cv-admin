@@ -2,6 +2,7 @@
 import IUser from "../interfaces/IUser";
 
 // Modules
+import Navigation from "./modules/Navigation";
 import LogoutButton from "./modules/LogoutButton";
 
 /**
@@ -32,6 +33,11 @@ export default class HomeView {
      */
     async render(): Promise<void> {
         // Create logout button module and add it to header
+        const navigation = new Navigation();
+        const createdNavigation = await navigation.create();
+        this.mainHeader.append(createdNavigation);
+
+        // Create log out button module and add it to header
         const logoutButton = new LogoutButton(this.apiUrl, this.user);
         const createdLogoutButton = await logoutButton.create();
         this.mainHeader.append(createdLogoutButton);
