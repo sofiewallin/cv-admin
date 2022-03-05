@@ -13,8 +13,8 @@ import IError from "../../interfaces/IError";
 export default class LoginForm {
 
     // Properties
-    private apiUrl: string;
-    private module: HTMLFormElement;
+    public apiUrl: string;
+    public module: HTMLFormElement;
 
     /**
      * Constructor
@@ -32,7 +32,7 @@ export default class LoginForm {
         form.action = '/';
         form.classList.add('login-form');
         form.innerHTML = `
-            <h1>Sign in</h1>
+            <h1>Log in</h1>
             <div class="form-message error" aria-live="polite"></div>
             <p class="form-field form-text-field">
                 <label for="username-input">Username <abbr title="obligatorisk" class="required">*</abbr></label>
@@ -43,7 +43,7 @@ export default class LoginForm {
                 <input type="password" name="password" id="password-input" placeholder="Enter your password">
             </p>
             <p class="form-field form-submit-field">
-                <button type="submit" class="button button-big">Sign in</button>
+                <button type="submit" class="button button-big">Log in</button>
             </p>
         `;
 

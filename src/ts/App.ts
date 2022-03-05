@@ -16,10 +16,10 @@ import LoginView from "./views/LoginView";
 export default class App {
 
     // Properties
-    private apiUrl: string;
-    private user: IUser;
-    private body: HTMLElement;
-    private appRoot: HTMLElement;
+    public apiUrl: string;
+    public user: IUser;
+    public body: HTMLElement;
+    public appRoot: HTMLElement;
 
     /**
      * Constructor

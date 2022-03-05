@@ -6,7 +6,7 @@
 export default  class Navigation {
 
     // Properties
-    private module: HTMLElement;
+    public module: HTMLElement;
 
     /**
      * Create module.

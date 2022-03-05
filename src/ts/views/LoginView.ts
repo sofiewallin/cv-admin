@@ -9,8 +9,8 @@ import LoginForm from "./modules/LoginForm";
 export default class LoginView {
 
     // Properties
-    private apiUrl: string;
-    private appRoot: HTMLElement;
+    public apiUrl: string;
+    public appRoot: HTMLElement;
 
     /**
      * Constructor

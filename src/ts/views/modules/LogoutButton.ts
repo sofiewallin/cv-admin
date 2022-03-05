@@ -16,9 +16,9 @@ import IUser from "../../interfaces/IUser";
 export default class LogoutButton {
 
     // Properties
-    private apiUrl: string;
-    private user: IUser;
-    private module: HTMLButtonElement;
+    public apiUrl: string;
+    public user: IUser;
+    public module: HTMLButtonElement;
 
     /**
      * Constructor
@@ -35,7 +35,7 @@ export default class LogoutButton {
         // Create button
         const button = document.createElement('button') as HTMLButtonElement;
         button.classList.add('logout-button');
-        button.innerText = 'Sign out';
+        button.innerText = 'Log out';
 
         // Set button as module
         this.module = button;
