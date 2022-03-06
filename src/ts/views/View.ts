@@ -24,8 +24,8 @@ import IUser from "../interfaces/IUser";
     /**
      * Append module to view.
      */
-     async appendModule(module: IModule, element: HTMLElement): Promise<void> {
+     async appendModule(module: IModule, containerElement: HTMLElement): Promise<void> {
         const createdModule = await module.return();
-        element.append(createdModule);
+        containerElement.append(createdModule);
     }
  }

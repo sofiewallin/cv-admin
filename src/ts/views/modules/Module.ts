@@ -35,10 +35,25 @@ import IUser from "../../interfaces/IUser";
      * 
      * Creates and returns a heading element.
      */
-    async returnHeading(hLevel: number, innerHTML: string): Promise<HTMLElement> {
+    async returnHeading(hLevel: number, innerHTML: string): Promise<HTMLHeadingElement> {
         const heading = document.createElement(`h${hLevel}`) as HTMLHeadingElement;
         heading.innerHTML = innerHTML;
 
         return heading;
+    }
+
+    /**
+     * Return object list.
+     * 
+     * Creates and returns a heading element.
+     */
+     async returnUlList(id: string, listItems: HTMLLIElement[]): Promise<HTMLUListElement> {
+        const ul = document.createElement('ul') as HTMLUListElement;
+        ul.id = id;
+        listItems.forEach(listItem => {
+            ul.append(listItem);
+        });
+
+        return ul;
     }
  }
