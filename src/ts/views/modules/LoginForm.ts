@@ -61,7 +61,7 @@ export default class LoginForm extends Module implements IModule {
         const password = this.module.querySelector('#password-input') as HTMLInputElement;
         
         // Add event listener
-        this.module.addEventListener('submit', e => {
+        this.module.addEventListener('submit', async e => {
             e.preventDefault();
 
             // Set login details with value from input fields
@@ -71,7 +71,7 @@ export default class LoginForm extends Module implements IModule {
             }
 
             // Log in user
-            this.loginUser(loginDetails);
+            await this.loginUser(loginDetails);
         });
     }
 

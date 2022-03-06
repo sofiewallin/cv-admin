@@ -3,7 +3,6 @@ import App from "../../App";
 import Module from "./Module";
 import IModule from "../../interfaces/IModule";
 import IError from "../../interfaces/IError";
-import IUser from "../../interfaces/IUser";
 
 /**
  * Logout button module.
@@ -16,11 +15,7 @@ export default class LogoutButton extends Module implements IModule {
      */
     async return(): Promise<HTMLElement> {
         // Create button
-        const button = document.createElement('button') as HTMLButtonElement;
-        button.id = 'logout-button';
-        button.innerText = 'Log out';
-
-        // Set button as module
+        const button = await this.returnButton('Log out', false, ['logout-button']);
         this.module = button;
 
         // Handle click event on button
@@ -35,27 +30,19 @@ export default class LogoutButton extends Module implements IModule {
      */
     async handleClick() {
         // Add event listener
-        this.module.addEventListener('click', e => {
+        this.module.addEventListener('click', async e => {
             e.preventDefault();
 
             // Log out user
-            this.logoutUser();
+            const auth = new Auth();
+            let logoutUser = await auth.logoutUser(this.apiUrl, this.user);
+
+            // Write error message if there is one
+            if (logoutUser !== undefined) {
+                logoutUser = logoutUser as IError;
+                const app = new App();
+                await app.writeMessage('error', logoutUser.error);           
+            }
         });
-    }
-
-    /**
-     * Log out user after clicking button.
-     */
-    async logoutUser(): Promise<void>  {
-        // Log out user
-        const auth = new Auth();
-        let logoutUser = await auth.logoutUser(this.apiUrl, this.user);
-
-        // Write error message if there is one
-        if (logoutUser !== undefined) {
-            logoutUser = logoutUser as IError;
-            const app = new App();
-            await app.writeMessage('error', logoutUser.error);           
-        }
     }
 }

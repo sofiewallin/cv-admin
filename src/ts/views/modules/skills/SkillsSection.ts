@@ -2,11 +2,10 @@ import App from "../../../App";
 import Skill from "../../../models/Skill";
 import Module from "../Module";
 import IModule from "../../../interfaces/IModule";
-import IUser from "../../../interfaces/IUser";
 import ISkill from "../../../interfaces/ISkill";
 import IError from "../../../interfaces/IError";
-import IModel from "../../../interfaces/IModel";
 import SkillArticle from "./SkillArticle";
+import SkillForm from "./SkillForm";
 
 /**
  * Skills section module.
@@ -24,6 +23,7 @@ export default class SkillsSection extends Module implements IModule {
         const skillModel = new Skill(this.apiUrl, this.user);
         let skills = await skillModel.readAll();
 
+        // Write error if there is one
         if (!Array.isArray(skills)) {
             skills = skills as IError;
             const app = new App();
@@ -38,14 +38,15 @@ export default class SkillsSection extends Module implements IModule {
      * Return module.
      */
     async return(): Promise<HTMLElement> {
-        // Create section
+        // Create section and set as module
         const section = await this.returnSection('skills');
         this.module = section;
 
+        // Create section heading and add it to section
         const heading = await this.returnHeading(2, 'Skills');
         this.module.append(heading);
 
-        // Get skills
+        // Get all skills
         this.skills = await this.getSkills();
         
         // List professional skills
@@ -84,26 +85,39 @@ export default class SkillsSection extends Module implements IModule {
         let listItems: HTMLLIElement[] = [];
 
         if (skills.length > 0) {
-            skills.map(async skill => {
+            const result = skills.map(async skill => {
                 const listItem = document.createElement('li') as HTMLLIElement;
                 listItem.id = `skill-${skill.id}`
-                const newSkill = new SkillArticle(
+                const skillArticle = new SkillArticle(
                     this.apiUrl,
                     this.user,
                     skill.id, 
                     skill.title, 
                     skill.order
                 );
-                listItem.append(await newSkill.return());
+                listItem.append(await skillArticle.return());
+
+                const editSkillForm = new SkillForm(
+                    this.apiUrl, 
+                    this.user, 
+                    true,
+                    skill.id, 
+                    skill.title, 
+                    skill.order
+                );
+                listItem.append(await editSkillForm.return());
+
                 listItems.push(listItem);
             });
+            await Promise.all(result);
         }
 
-        const newSkill = new SkillArticle(this.apiUrl, this.user);
-        const newSkillListItem = document.createElement('li') as HTMLLIElement;
-        newSkillListItem.classList.add('new-skill');
-        newSkillListItem.append(await newSkill.return());
-        listItems.push(newSkillListItem);
+        
+        const newSkillForm = new SkillForm(this.apiUrl, this.user, false);
+        const newSkillFormListItem = document.createElement('li') as HTMLLIElement;
+        newSkillFormListItem.classList.add('new-skill');
+        newSkillFormListItem.append(await newSkillForm.return());
+        listItems.push(newSkillFormListItem);
 
         return listItems;
     }

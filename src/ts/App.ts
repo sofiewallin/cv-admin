@@ -65,7 +65,7 @@ export default class App {
         
         // Remove navigation, logout button and back to top link
         const navigation = document.querySelector('#main-navigation');
-        const logoutButton = document.querySelector('#logout-button');
+        const logoutButton = document.querySelector('.logout-button');
         const backToTopLink = document.querySelector('#back-to-top');
 
         if (navigation) navigation.remove();
