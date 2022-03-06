@@ -6,5 +6,5 @@
  export default interface IModule {
     module: HTMLElement;
 
-    create(): Promise<HTMLElement>;
+    return(): Promise<HTMLElement>;
 }

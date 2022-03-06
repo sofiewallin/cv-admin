@@ -1,15 +1,16 @@
 import Module from "./Module";
+import IModule from "../../interfaces/IModule";
 
 /**
  * Navigation module.
  * 
  * @author: Sofie Wallin
  */
-export default  class Navigation extends Module {
+export default  class Navigation extends Module implements IModule {
     /**
-     * Create module.
+     * Return module.
      */
-     async create(): Promise<HTMLElement> {
+     async return(): Promise<HTMLElement> {
         // Create navigation
         const navigation = document.createElement('nav') as HTMLElement;
         navigation.id = 'main-navigation';

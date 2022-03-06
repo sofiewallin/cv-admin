@@ -1,37 +1,25 @@
 import Module from "../Module";
-
-import IUser from "../../../interfaces/IUser";
+import IModule from "../../../interfaces/IModule";
 
 /**
  * Projects section module.
  * 
  * @author: Sofie Wallin
  */
-export default class ProjectSection extends Module {
+export default class ProjectsSection extends Module implements IModule {
     /**
-     * Constructor
+     * Return module.
      */
-    constructor(apiUrl: string, user: IUser) {
-        super(apiUrl, user);
-    }
-
-    /**
-     * Create module.
-     */
-    async create(): Promise<HTMLElement> {
+    async return(): Promise<HTMLElement> {
         // Create section
-        const section = document.createElement('section') as HTMLElement;
-        section.id = 'projects';
-
-        // Create section heading and add it to section
-        const heading = document.createElement('h2') as HTMLHeadingElement;
-        heading.innerText = 'Projects';
+        const section = await this.returnSection('projects');
+        const heading = await this.returnHeading(2, 'Projects');
         section.append(heading);
 
-        // Set form as module
+        // Set module as section
         this.module = section;
 
-        // Return form
+        // Return module
         return this.module;
     }
 }

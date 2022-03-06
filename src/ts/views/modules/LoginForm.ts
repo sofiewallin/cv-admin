@@ -1,8 +1,7 @@
 
-import Module from "./Module";
-
 import Auth from "../../auth/Auth";
-
+import Module from "./Module";
+import IModule from "../../interfaces/IModule";
 import ILoginDetails from "../../interfaces/ILoginDetails";
 import IError from "../../interfaces/IError";
 
@@ -11,7 +10,7 @@ import IError from "../../interfaces/IError";
  * 
  * @author: Sofie Wallin
  */
-export default class LoginForm extends Module {
+export default class LoginForm extends Module implements IModule {
     /**
      * Constructor
      */
@@ -20,9 +19,9 @@ export default class LoginForm extends Module {
     }
 
     /**
-     * Create module.
+     * Return module.
      */
-    async create(): Promise<HTMLElement> {
+    async return(): Promise<HTMLElement> {
         // Create form
         const form = document.createElement('form') as HTMLFormElement;
         form.action = '/';

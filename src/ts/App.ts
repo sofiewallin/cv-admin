@@ -1,7 +1,5 @@
 import Auth from "./auth/Auth";
-
 import IUser from "./interfaces/IUser";
-
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
 
@@ -14,10 +12,10 @@ import LoginView from "./views/LoginView";
  */
 export default class App {
     // Properties
-    public apiUrl: string;
-    public user: IUser;
-    public body: HTMLElement;
-    public appRoot: HTMLElement;
+    readonly apiUrl: string;
+    readonly body: HTMLElement;
+    readonly appContent: HTMLElement;
+    private user: IUser;
 
     /**
      * Constructor
@@ -25,7 +23,7 @@ export default class App {
     constructor() {
         this.apiUrl = 'http://127.0.0.1:8000/api';
         this.body = document.querySelector('body') as HTMLElement;
-        this.appRoot =  document.querySelector('#app-root') as HTMLElement;
+        this.appContent =  document.querySelector('#app-root') as HTMLElement;
     }
 
     /**
@@ -42,7 +40,7 @@ export default class App {
         if (!user) {
             this.body.classList.add('login');
 
-            const loginView = new LoginView(this.apiUrl, this.appRoot);
+            const loginView = new LoginView(this.apiUrl, null, this.appContent);
             await loginView.render();
             return;
         }
@@ -51,7 +49,7 @@ export default class App {
         this.user = user;
 
         // Render home view
-        const homeView = new HomeView(this.apiUrl, this.user, this.appRoot);
+        const homeView = new HomeView(this.apiUrl, this.user, this.appContent);
         await homeView.render();
     }
 
@@ -59,8 +57,8 @@ export default class App {
      * Clear application.
      */
     async clear() {
-        // Clear the application root element
-        this.appRoot.innerHTML = '';
+        // Clear the application content
+        this.appContent.innerHTML = '';
         
         // Remove login class from body
         if (this.body.classList.contains('login')) this.body.classList.remove('login');
@@ -76,7 +74,7 @@ export default class App {
     }
 
     /**
-     * Write message for whole application.
+     * Write flash message.
      */
     async writeMessage(type: string, message: string) {
         // Get message element, activate it and write message

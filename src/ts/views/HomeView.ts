@@ -1,7 +1,6 @@
 import View from "./View";
-
+import IView from "../interfaces/IView";
 import IUser from "../interfaces/IUser";
-
 import Navigation from "./modules/Navigation";
 import LogoutButton from "./modules/LogoutButton";
 import ProjectSection from "./modules/projects/ProjectsSection";
@@ -14,19 +13,17 @@ import BackToTopLink from "./modules/BackToTopLink";
  * 
  * @author: Sofie Wallin
  */
-export default class HomeView extends View {
+export default class HomeView extends View implements IView {
     // Properties
-    public user: IUser;
-    public mainHeader: HTMLElement;
-    public mainFooter: HTMLElement;
+    readonly mainHeader: HTMLElement;
+    readonly mainFooter: HTMLElement;
 
     /**
      * Constructor
      */
-    constructor(apiUrl: string, user: IUser, appRoot: HTMLElement) {
-        super(apiUrl, appRoot);
+    constructor(apiUrl: string, user: IUser, appContent: HTMLElement) {
+        super(apiUrl, user, appContent);
 
-        this.user = user;
         this.mainHeader = document.querySelector('#main-header') as HTMLElement;
         this.mainFooter = document.querySelector('#main-footer') as HTMLElement;
     }
@@ -46,16 +43,16 @@ export default class HomeView extends View {
         // Heading
         const heading = document.createElement('h1') as HTMLHeadingElement;
         heading.innerHTML = '<span class="hidden-visually">Administration</span>';
-        this.appRoot.append(heading);
+        this.appContent.append(heading);
 
         // Projects section
-        await this.appendModule(new ProjectSection(this.apiUrl, this.user), this.appRoot);
+        await this.appendModule(new ProjectSection(this.apiUrl, this.user), this.appContent);
 
         // Skills section
-        await this.appendModule(new SkillsSection(this.apiUrl, this.user), this.appRoot);
+        await this.appendModule(new SkillsSection(this.apiUrl, this.user), this.appContent);
 
         // Experience section
-        await this.appendModule(new ExperienceSection(this.apiUrl, this.user), this.appRoot);
+        await this.appendModule(new ExperienceSection(this.apiUrl, this.user), this.appContent);
 
         // Back to top link in footer
         await this.appendModule(new BackToTopLink(), this.mainFooter);

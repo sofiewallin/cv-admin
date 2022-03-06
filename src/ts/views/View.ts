@@ -1,4 +1,5 @@
 import IModule from "../interfaces/IModule";
+import IUser from "../interfaces/IUser";
 
 /**
  * View.
@@ -7,22 +8,24 @@ import IModule from "../interfaces/IModule";
  */
  export default class View {
     // Properties
-    protected apiUrl: string;
-    protected appRoot: HTMLElement;
+    readonly apiUrl: string;
+    readonly appContent: HTMLElement;
+    readonly user?: IUser;
 
     /**
      * Constructor
      */
-     constructor(apiUrl: string, appRoot?: HTMLElement) {
+     constructor(apiUrl: string, user?: IUser, appContent?: HTMLElement) {
         this.apiUrl = apiUrl;
-        this.appRoot = appRoot;
+        this.appContent = appContent;
+        this.user = user;
     }
 
     /**
      * Append module to view.
      */
      async appendModule(module: IModule, element: HTMLElement): Promise<void> {
-        const createdModule = await module.create();
+        const createdModule = await module.return();
         element.append(createdModule);
     }
  }

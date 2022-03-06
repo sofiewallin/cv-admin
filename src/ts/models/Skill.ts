@@ -27,8 +27,28 @@ export default class Skill {
     /**
      * Read all skills.
      */
-     async readAll()/*: Promise<ISkill[]|IError>*/ {
+    async readAll(): Promise<ISkill[]|IError> {
+        try {
+            const response = await fetch(`${this.apiUrl}/skills`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${this.user.token}`
+                }
+            });
         
+            const skills = await response.json();
+        
+            if (!response.ok) {
+                throw new Error('Something went wrong when fetching skills. Reload page.');
+            }
+ 
+            return skills;
+
+        } catch (error) {
+            return { error: error.message };
+        }
     }
 
     /**

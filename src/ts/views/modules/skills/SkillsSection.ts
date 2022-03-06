@@ -1,41 +1,25 @@
 import Module from "../Module";
-
-import IUser from "../../../interfaces/IUser";
-
-import ProfessionalSkillsSection from "./sections/ProfessionalSkillsSection";
+import IModule from "../../../interfaces/IModule";
 
 /**
  * Skills section module.
  * 
  * @author: Sofie Wallin
  */
-export default class SkillsSection extends Module {
+export default class SkillsSection extends Module implements IModule {
     /**
-     * Constructor
+     * Return module.
      */
-     constructor(apiUrl: string, user: IUser) {
-        super(apiUrl, user);
-    }
-
-    /**
-     * Create module.
-     */
-    async create(): Promise<HTMLElement> {
+    async return(): Promise<HTMLElement> {
         // Create section
-        const section = document.createElement('section') as HTMLElement;
-        section.id = 'skills';
-
-        // Create section heading and add it to section
-        const heading = document.createElement('h2') as HTMLHeadingElement;
-        heading.innerText = 'Skills';
+        const section = await this.returnSection('skills');
+        const heading = await this.returnHeading(2, 'Skills');
         section.append(heading);
 
-        // Set form as module
+        // Set module as section
         this.module = section;
 
-        await super.appendModule(new ProfessionalSkillsSection(this.apiUrl, this.user), this.module);
-
-        // Return form
+        // Return module
         return this.module;
     }
 }

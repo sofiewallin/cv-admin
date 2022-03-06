@@ -1,9 +1,7 @@
-import Module from "./Module";
-
-import App from "../../App";
-
 import Auth from "../../auth/Auth";
-
+import App from "../../App";
+import Module from "./Module";
+import IModule from "../../interfaces/IModule";
 import IError from "../../interfaces/IError";
 import IUser from "../../interfaces/IUser";
 
@@ -12,19 +10,11 @@ import IUser from "../../interfaces/IUser";
  * 
  * @author: Sofie Wallin
  */
-export default class LogoutButton extends Module {
-
+export default class LogoutButton extends Module implements IModule {
     /**
-     * Constructor
+     * Return module.
      */
-    constructor(apiUrl: string, user: IUser) {
-        super(apiUrl, user);
-    }
-
-    /**
-     * Create module.
-     */
-    async create(): Promise<HTMLElement> {
+    async return(): Promise<HTMLElement> {
         // Create button
         const button = document.createElement('button') as HTMLButtonElement;
         button.id = 'logout-button';
