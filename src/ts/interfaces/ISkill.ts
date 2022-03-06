@@ -1,12 +1,20 @@
-import ISkillFillable from "./ISkillFillable";
+import IObject from "./IObject"
+
+// Skill types
+enum SkillType {
+    Professional = 'Professional',
+    Technical = 'Technical',
+    Personal = 'Personal',
+    Lingual = 'Lingual'
+}
 
 /**
  * Skill interface.
  * 
  * @author: Sofie Wallin
  */
- export default interface ISkill extends ISkillFillable {
-    id: number,
-    created_at: Date,
-    updated_at: Date
+ export default interface ISkill extends IObject {
+    title: string,
+    type: SkillType,
+    order: number
 }

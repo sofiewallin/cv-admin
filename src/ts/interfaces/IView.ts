@@ -14,5 +14,4 @@ import IUser from "./IUser";
     render(): Promise<void>
 
     appendModule(module: IModule, element: HTMLElement): Promise<void>
-
 }
