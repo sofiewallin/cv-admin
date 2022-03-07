@@ -39,9 +39,8 @@ export default class LogoutButton extends Module implements IModule {
 
             // Write error message if there is one
             if (logoutUser !== undefined) {
-                logoutUser = logoutUser as IError;
                 const app = new App();
-                await app.writeMessage('error', logoutUser.error);           
+                await app.writeMessage('error', (logoutUser as IError).error);           
             }
         });
     }

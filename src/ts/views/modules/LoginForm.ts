@@ -91,8 +91,7 @@ export default class LoginForm extends Module implements IModule {
 
         // Write error message if there is one
         if (loginUser !== undefined) {
-            loginUser = loginUser as IError;
-            await this.writeFormError(loginUser.error);
+            await this.writeFormError((loginUser as IError).error);
         }
     }
 

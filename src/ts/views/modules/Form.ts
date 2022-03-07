@@ -1,5 +1,12 @@
+import App from "../../App";
 import Module from "./Module";
+import Skill from "../../models/Skill";
+import Project from "../../models/Project";
+import WorkExperience from "../../models/WorkExperience";
+import Education from "../../models/Education";
 import IUser from "../../interfaces/IUser";
+import IModel from "../../interfaces/IModel";
+import IError from "../../interfaces/IError";
 
 export default class Form extends Module  {
     // Properties
@@ -123,7 +130,7 @@ export default class Form extends Module  {
     }
 
     /**
-     * Handle click event of cancel button.
+     * Handle click event on cancel button.
      */
     async handleCancelClick(button: HTMLButtonElement): Promise<void> {
         // Add event listener
@@ -143,19 +150,54 @@ export default class Form extends Module  {
     }
 
     /**
-     * Handle click event of delete button.
+     * Handle click event on delete button.
      */
     async handleDeleteClick(button: HTMLButtonElement): Promise<void> {
         // Add event listener
         button.addEventListener('click', e => {
             e.preventDefault();
 
-            console.log(`deleting ${this.module.previousElementSibling.classList.item(0)} with id ${this.id}`);
+            const objectType = this.module.previousElementSibling.classList.item(0);
+
+            if (confirm(`Are you sure you want to delete this ${objectType}?`)) {
+                switch (objectType) {
+                    case 'project': 
+                        this.deleteObject(new Project(this.apiUrl, this.user), objectType);
+                        break;
+                    case 'skill':
+                        this.deleteObject(new Skill(this.apiUrl, this.user), objectType);
+                        break;
+                    case 'work-experience':
+                        this.deleteObject(new WorkExperience(this.apiUrl, this.user), objectType);
+                        break;
+                    case 'education':
+                        this.deleteObject(new Education(this.apiUrl, this.user), objectType);
+                        break;
+                }
+            }
         });
     }
 
     /**
-     * Handle click event of delete button.
+     * Delete project.
+     */
+    async deleteObject(model: IModel, objectType: string): Promise<void> {
+        const app = new App();
+        let deletedObject = await model.delete(this.id);
+        
+
+        if (deletedObject.hasOwnProperty('error')) {
+            await app.writeMessage('error', (deletedObject as IError).error);
+            return;
+        }
+
+        this.module.parentElement.remove();
+        await app.writeMessage('success', `The ${objectType} was successfully deleted.`);
+        
+    }
+
+    /**
+     * Handle click event on save button.
      */
     async handleSaveClick(button: HTMLButtonElement): Promise<void> {
         // Add event listener
@@ -167,7 +209,7 @@ export default class Form extends Module  {
     }
 
     /**
-     * Handle click event of delete button.
+     * Handle click event on add button.
      */
     async handleAddClick(button: HTMLButtonElement): Promise<void> {
         // Add event listener

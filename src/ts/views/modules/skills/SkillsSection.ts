@@ -25,9 +25,8 @@ export default class SkillsSection extends Module implements IModule {
 
         // Write error if there is one
         if (!Array.isArray(skills)) {
-            skills = skills as IError;
             const app = new App();
-            await app.writeMessage('error', skills.error);  
+            await app.writeMessage('error', (skills as IError).error);  
             return;
         }
 
@@ -86,37 +85,41 @@ export default class SkillsSection extends Module implements IModule {
         if (skills.length > 0) {
             const result = skills.map(async skill => {
                 const listItem = document.createElement('li') as HTMLLIElement;
-                listItem.id = `skill-${skill.id}`
-                const skillArticle = new SkillArticle(
-                    this.apiUrl,
-                    this.user,
-                    skill.id, 
-                    skill.title, 
-                    skill.order
-                );
-                listItem.append(await skillArticle.return());
+                listItem.id = `skill-${skill.id}`;
 
-                const editSkillForm = new SkillForm(
-                    this.apiUrl, 
-                    this.user, 
-                    true,
-                    skillType,
-                    skill.id, 
-                    skill.title, 
-                    skill.order
+                await this.appendModule(
+                    new SkillArticle(
+                        this.apiUrl,
+                        this.user,
+                        skill.id, 
+                        skill.title, 
+                        skill.order
+                    ), listItem
                 );
-                listItem.append(await editSkillForm.return());
+
+                await this.appendModule(
+                    new SkillForm(
+                        this.apiUrl, 
+                        this.user, 
+                        true,
+                        skillType,
+                        skill.id, 
+                        skill.title, 
+                        skill.order
+                    ), listItem
+                );
 
                 listItems.push(listItem);
             });
             await Promise.all(result);
         }
 
-        
-        const newSkillForm = new SkillForm(this.apiUrl, this.user, false, skillType);
         const newSkillFormListItem = document.createElement('li') as HTMLLIElement;
         newSkillFormListItem.classList.add('new-skill');
-        newSkillFormListItem.append(await newSkillForm.return());
+        await this.appendModule(
+            new SkillForm(this.apiUrl, this.user, false, skillType), 
+            newSkillFormListItem
+        );
         listItems.push(newSkillFormListItem);
 
         return listItems;
