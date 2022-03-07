@@ -11,15 +11,17 @@ import IError from "../../interfaces/IError";
 export default class Form extends Module  {
     // Properties
     readonly isEditMode: boolean;
+    readonly objectType: string;
     readonly id: number;
 
     /**
      * Constructor
      */
-    constructor(apiUrl: string, user: IUser, isEditMode: boolean, id?: number) {
+    constructor(apiUrl: string, user: IUser, isEditMode: boolean, objectType: string, id?: number) {
         super(apiUrl, user);
 
         this.isEditMode = isEditMode;
+        this.objectType = objectType;
         this.id = id;
     }
 
@@ -33,8 +35,8 @@ export default class Form extends Module  {
         fieldLabel: string,
         fieldType: string, 
         fieldName: string, 
-        isRequired: boolean,
-        willBeValidated: true,
+        //isRequired: boolean,
+        willBeValidated: boolean,
         fieldValue: string,
         fieldPlaceholder?: string
     ): Promise<HTMLParagraphElement> {
@@ -43,12 +45,8 @@ export default class Form extends Module  {
 
         // Create label and add to paragraph
         const label = document.createElement('label') as HTMLLabelElement;
-        label.setAttribute('for', fieldName);     
-        if (isRequired) {
-            label.innerHTML = `${fieldLabel} <abbr title="required" class="required">*</abbr>`;
-        } else {
-            label.innerText = fieldLabel;
-        }
+        label.setAttribute('for', fieldName); 
+        label.innerText = fieldLabel;    
 
         pContainer.append(label);
 
@@ -59,7 +57,6 @@ export default class Form extends Module  {
         input.name = fieldName;
         input.placeholder = fieldPlaceholder;
         if (fieldValue) input.value = fieldValue;
-        if (isRequired) input.required = true;
         pContainer.append(input);
 
         // Create error message container if the field will have validation
@@ -157,21 +154,19 @@ export default class Form extends Module  {
         button.addEventListener('click', e => {
             e.preventDefault();
 
-            const objectType = this.module.previousElementSibling.classList.item(0);
-
-            if (confirm(`Are you sure you want to delete this ${objectType}?`)) {
-                switch (objectType) {
-                    case 'project': 
-                        this.deleteObject(new Project(this.apiUrl, this.user), objectType);
+            if (confirm(`Are you sure you want to delete this ${this.objectType.toLowerCase()}?`)) {
+                switch (this.objectType) {
+                    case 'Project': 
+                        this.deleteObject(new Project(this.apiUrl, this.user));
                         break;
-                    case 'skill':
-                        this.deleteObject(new Skill(this.apiUrl, this.user), objectType);
+                    case 'Skill':
+                        this.deleteObject(new Skill(this.apiUrl, this.user));
                         break;
-                    case 'work-experience':
-                        this.deleteObject(new WorkExperience(this.apiUrl, this.user), objectType);
+                    case 'Work experience':
+                        this.deleteObject(new WorkExperience(this.apiUrl, this.user));
                         break;
-                    case 'education':
-                        this.deleteObject(new Education(this.apiUrl, this.user), objectType);
+                    case 'Education':
+                        this.deleteObject(new Education(this.apiUrl, this.user));
                         break;
                 }
             }
@@ -179,9 +174,9 @@ export default class Form extends Module  {
     }
 
     /**
-     * Delete project.
+     * Delete object.
      */
-    async deleteObject(model: IModel, objectType: string): Promise<void> {
+    async deleteObject(model: IModel): Promise<void> {
         const app = new App();
         let deletedObject = await model.delete(this.id);
         
@@ -192,7 +187,7 @@ export default class Form extends Module  {
         }
 
         this.module.parentElement.remove();
-        await app.writeMessage('success', `The ${objectType} was successfully deleted.`);
+        await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully deleted.`);
         
     }
 

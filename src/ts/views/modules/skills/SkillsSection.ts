@@ -102,6 +102,7 @@ export default class SkillsSection extends Module implements IModule {
                         this.apiUrl, 
                         this.user, 
                         true,
+                        'Skill',
                         skillType,
                         skill.id, 
                         skill.title, 
@@ -117,7 +118,7 @@ export default class SkillsSection extends Module implements IModule {
         const newSkillFormListItem = document.createElement('li') as HTMLLIElement;
         newSkillFormListItem.classList.add('new-skill');
         await this.appendModule(
-            new SkillForm(this.apiUrl, this.user, false, skillType), 
+            new SkillForm(this.apiUrl, this.user, false, 'Skill', skillType), 
             newSkillFormListItem
         );
         listItems.push(newSkillFormListItem);
