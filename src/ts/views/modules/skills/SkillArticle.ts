@@ -1,7 +1,6 @@
 import Article from "../Article";
 import IModule from "../../../interfaces/IModule";
 import IUser from "../../../interfaces/IUser";
-import SkillForm from "./SkillForm";
 
 export default class SkillArticle extends Article implements IModule {
     // Properties
@@ -29,16 +28,16 @@ export default class SkillArticle extends Article implements IModule {
         this.module = article;
         
         // Create div for skill title and add to article
-        const skillGroup = await this.returnPropertyInfo('Skill', this.title.toString(), ['skill-title'])
+        const skillGroup = await this.returnPropertyInfo('Skill', this.title.toString(), ['skill-title']);
         this.module.append(skillGroup);
 
         // Create div for skill order and add to article
-        const orderGroup = await this.returnPropertyInfo('Order', this.order.toString(), ['skill-order'])
+        const orderGroup = await this.returnPropertyInfo('Order', this.order.toString(), ['skill-order']);
         this.module.append(orderGroup);
 
         // Create button
         const editButton = await this.returnButton(
-            'Edit<span class="hidden-visually"> skill</span>',
+            'Edit',
             false,
             ['edit-button']
         );

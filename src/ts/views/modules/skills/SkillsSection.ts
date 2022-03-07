@@ -70,18 +70,17 @@ export default class SkillsSection extends Module implements IModule {
     }
 
     async returnSkillList(skillType: string): Promise<HTMLUListElement> {
-        const type = skillType;
-        const heading = await this.returnHeading(3, type);
+        const heading = await this.returnHeading(3, skillType);
         this.module.append(heading);
 
-        const filteredSkills = this.skills.filter(skill => skill.type === type);
-        const skillListItems = await this.returnSkillListItems(filteredSkills);
-        const skillList = await this.returnUlList(`${type.toLowerCase()}-skills`, skillListItems);
+        const filteredSkills = this.skills.filter(skill => skill.type === skillType);
+        const skillListItems = await this.returnSkillListItems(filteredSkills, skillType.toLowerCase());
+        const skillList = await this.returnUlList(`${skillType.toLowerCase()}-skills`, skillListItems);
         
         return skillList;
     }
 
-    async returnSkillListItems(skills: ISkill[]): Promise<HTMLLIElement[]> {
+    async returnSkillListItems(skills: ISkill[], skillType: string): Promise<HTMLLIElement[]> {
         let listItems: HTMLLIElement[] = [];
 
         if (skills.length > 0) {
@@ -101,6 +100,7 @@ export default class SkillsSection extends Module implements IModule {
                     this.apiUrl, 
                     this.user, 
                     true,
+                    skillType,
                     skill.id, 
                     skill.title, 
                     skill.order
@@ -113,7 +113,7 @@ export default class SkillsSection extends Module implements IModule {
         }
 
         
-        const newSkillForm = new SkillForm(this.apiUrl, this.user, false);
+        const newSkillForm = new SkillForm(this.apiUrl, this.user, false, skillType);
         const newSkillFormListItem = document.createElement('li') as HTMLLIElement;
         newSkillFormListItem.classList.add('new-skill');
         newSkillFormListItem.append(await newSkillForm.return());

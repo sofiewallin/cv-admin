@@ -20,7 +20,7 @@ export default class Article extends Module {
     /**
      * Handle click event of button.
      */
-     async handleEditClick(button: HTMLButtonElement) {
+     async handleEditClick(button: HTMLButtonElement): Promise<void> {
         // Add event listener
         button.addEventListener('click', e => {
             e.preventDefault();
