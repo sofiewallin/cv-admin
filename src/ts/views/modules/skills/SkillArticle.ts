@@ -4,7 +4,6 @@ import IUser from "../../../interfaces/IUser";
 
 export default class SkillArticle extends Article implements IModule {
     // Properties
-    readonly id: number;
     readonly title: string;
     readonly order: number;
 
@@ -12,9 +11,8 @@ export default class SkillArticle extends Article implements IModule {
      * Constructor
      */
     constructor(apiUrl: string, user: IUser, id?: number, title?: string, order?: number) {
-        super(apiUrl, user);
+        super(apiUrl, user, id);
 
-        this.id = id;
         this.title = title;
         this.order = order;
     }
@@ -38,6 +36,7 @@ export default class SkillArticle extends Article implements IModule {
         // Create button
         const editButton = await this.returnButton(
             'Edit',
+            false,
             false,
             ['edit-button']
         );

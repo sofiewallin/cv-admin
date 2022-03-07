@@ -112,7 +112,7 @@ import IUser from "../../interfaces/IUser";
      * 
      * Creates and returns a button element.
      */
-     async returnButton(innerHTML: string, isSubmit: boolean, htmlClasses?: string[]): Promise<HTMLButtonElement> {
+     async returnButton(innerHTML: string, isSubmit: boolean, isDisabled: boolean, htmlClasses?: string[]): Promise<HTMLButtonElement> {
         const button = document.createElement('button') as HTMLButtonElement;
         button.innerHTML = innerHTML;
         if (htmlClasses) {
@@ -121,6 +121,7 @@ import IUser from "../../interfaces/IUser";
             });
         }
         if (isSubmit) button.type = 'submit';
+        if (isDisabled) button.disabled = true;
         return button;
     }
  }

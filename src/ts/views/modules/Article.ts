@@ -1,6 +1,18 @@
 import Module from "./Module";
+import IUser from "../../interfaces/IUser";
 
 export default class Article extends Module {
+    // Properties
+    readonly id: number;
+
+    /**
+     * Constructor
+     */
+    constructor(apiUrl: string, user: IUser, id?: number) {
+        super(apiUrl, user);
+
+        this.id = id;
+    }
     /**
      * Return a property group.
      * 
@@ -18,9 +30,9 @@ export default class Article extends Module {
     }
 
     /**
-     * Handle click event of button.
+     * Handle click event of edit button.
      */
-     async handleEditClick(button: HTMLButtonElement): Promise<void> {
+    async handleEditClick(button: HTMLButtonElement): Promise<void> {
         // Add event listener
         button.addEventListener('click', e => {
             e.preventDefault();
@@ -33,7 +45,7 @@ export default class Article extends Module {
                 }
             });
 
-            const editForm = this.module.nextElementSibling
+            const editForm = this.module.nextElementSibling;
             editForm.classList.remove('hidden');
 
             const allEditForms = document.querySelectorAll('.edit-form');
@@ -41,6 +53,16 @@ export default class Article extends Module {
                 if (form !== editForm) {
                     form.classList.add('hidden');
                 }
+
+                const buttons = form.querySelectorAll('button');
+                buttons.forEach(button => {
+                button.disabled = true;
+            });
+            });
+
+            const buttons = editForm.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.disabled = false;
             });
             
         });

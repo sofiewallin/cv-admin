@@ -4,7 +4,6 @@ import IUser from "../../../interfaces/IUser";
 
 export default class SkillForm extends Form implements IModule  {
     // Properties
-    readonly id: number;
     readonly title: string;
     readonly order: number;
     readonly type: string;
@@ -13,10 +12,9 @@ export default class SkillForm extends Form implements IModule  {
      * Constructor
      */
     constructor(apiUrl: string, user: IUser, isEditMode: boolean, type: string, id?: number, title?: string, order?: number) {
-        super(apiUrl, user, isEditMode);
+        super(apiUrl, user, isEditMode, id);
 
         this.type = type;
-        this.id = id;
         this.title = title;
         this.order = order;
     }

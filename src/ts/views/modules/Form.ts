@@ -4,14 +4,16 @@ import IUser from "../../interfaces/IUser";
 export default class Form extends Module  {
     // Properties
     readonly isEditMode: boolean;
+    readonly id: number;
 
     /**
      * Constructor
      */
-    constructor(apiUrl: string, user: IUser, isEditMode: boolean) {
+    constructor(apiUrl: string, user: IUser, isEditMode: boolean, id?: number) {
         super(apiUrl, user);
 
         this.isEditMode = isEditMode;
+        this.id = id;
     }
 
     /**
@@ -80,35 +82,101 @@ export default class Form extends Module  {
             const cancelButton = await this.returnButton(
                 'Cancel',
                 false,
+                true,
                 ['cancel-button']
             );
+            await this.handleCancelClick(cancelButton);
             pContainer.append(cancelButton);
             
             // Delete button
             const deleteButton = await this.returnButton(
                 'Delete',
                 true,
+                true,
                 ['delete-button']
             );
+            await this.handleDeleteClick(deleteButton);
             pContainer.append(deleteButton);
             
             // Save button
             const saveButton = await this.returnButton(
                 'Save',
                 true,
+                true,
                 ['save-button']
             );
+            await this.handleSaveClick(saveButton);
             pContainer.append(saveButton);
         } else {
             // Add button
             const addButton = await this.returnButton(
                 'Add', 
                 true, 
+                false,
                 ['add-button']
             );
+            await this.handleAddClick(addButton);
             pContainer.append(addButton);
         }
 
         return pContainer;
     }
+
+    /**
+     * Handle click event of cancel button.
+     */
+    async handleCancelClick(button: HTMLButtonElement): Promise<void> {
+        // Add event listener
+        button.addEventListener('click', e => {
+            e.preventDefault();
+
+            this.module.classList.add('hidden');
+
+            const skillArticle = this.module.previousElementSibling;
+            skillArticle.classList.remove('hidden');  
+            
+            const buttons = this.module.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.disabled = true;
+            });
+        });
+    }
+
+    /**
+     * Handle click event of delete button.
+     */
+    async handleDeleteClick(button: HTMLButtonElement): Promise<void> {
+        // Add event listener
+        button.addEventListener('click', e => {
+            e.preventDefault();
+
+            console.log(`deleting ${this.module.previousElementSibling.classList.item(0)} with id ${this.id}`);
+        });
+    }
+
+    /**
+     * Handle click event of delete button.
+     */
+    async handleSaveClick(button: HTMLButtonElement): Promise<void> {
+        // Add event listener
+        button.addEventListener('click', e => {
+            e.preventDefault();
+
+            console.log(`updating ${this.module.previousElementSibling.classList.item(0)} with id ${this.id}`);
+        });
+    }
+
+    /**
+     * Handle click event of delete button.
+     */
+    async handleAddClick(button: HTMLButtonElement): Promise<void> {
+        // Add event listener
+        button.addEventListener('click', e => {
+            e.preventDefault();
+
+            console.log(`adding ${this.module.parentElement.classList.item(0).replace('new-', '')}`);
+        });
+    }
+
+    
 }

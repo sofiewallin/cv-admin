@@ -15,7 +15,7 @@ export default class LogoutButton extends Module implements IModule {
      */
     async return(): Promise<HTMLElement> {
         // Create button
-        const button = await this.returnButton('Log out', false, ['logout-button']);
+        const button = await this.returnButton('Log out', false, false, ['logout-button']);
         this.module = button;
 
         // Handle click event on button
