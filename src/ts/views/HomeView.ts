@@ -11,16 +11,14 @@ import BackToTopLink from "./modules/BackToTopLink";
 /**
  * Home View.
  * 
+ * Renders home view.
+ * 
  * @author: Sofie Wallin
  */
 export default class HomeView extends View implements IView {
-    // Properties
     readonly mainHeader: HTMLElement;
     readonly mainFooter: HTMLElement;
 
-    /**
-     * Constructor
-     */
     constructor(apiUrl: string, user: IUser, appContent: HTMLElement) {
         super(apiUrl, user, appContent);
 
@@ -34,27 +32,27 @@ export default class HomeView extends View implements IView {
      * Appends multiple modules to the view.
      */
     async render(): Promise<void> {
-        // Navigation in header
+        // Add navigation module in header
         await this.appendModule(new Navigation(), this.mainHeader);
 
-        // Log out button in header
+        // Add log out button module in header
         await this.appendModule(new LogoutButton(this.apiUrl, this.user), this.mainHeader);
 
-        // Heading
+        // Add H1 heading that will be visually hidden
         const heading = document.createElement('h1') as HTMLHeadingElement;
         heading.innerHTML = '<span class="hidden-visually">Administration</span>';
         this.appContent.append(heading);
 
-        // Projects section
+        // Add projects section module in app content container
         await this.appendModule(new ProjectSection(this.apiUrl, this.user), this.appContent);
 
-        // Skills section
+        // Add skills section module in app content container
         await this.appendModule(new SkillsSection(this.apiUrl, this.user), this.appContent);
 
-        // Experience section
+        // Add experience section module in app content container
         await this.appendModule(new ExperienceSection(this.apiUrl, this.user), this.appContent);
 
-        // Back to top link in footer
+        // Add back to top link module in footer
         await this.appendModule(new BackToTopLink(), this.mainFooter);
     }
 }

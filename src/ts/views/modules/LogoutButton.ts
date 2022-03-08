@@ -1,4 +1,4 @@
-import Auth from "../../auth/Auth";
+import Auth from "../../Auth";
 import App from "../../App";
 import Module from "./Module";
 import IModule from "../../interfaces/IModule";
@@ -11,17 +11,18 @@ import IError from "../../interfaces/IError";
  */
 export default class LogoutButton extends Module implements IModule {
     /**
-     * Return module.
+     * Create module.
      */
-    async return(): Promise<HTMLElement> {
+    async create(): Promise<HTMLElement> {
         // Create button
-        const button = await this.returnButton('Log out', false, ['logout-button']);
+        const button = await this.createButton('Log out', false, ['logout-button']);
+
+        // Set button as module
         this.module = button;
 
         // Handle click event on button
         await this.handleClick();
 
-        // Return button
         return this.module;
     }
 
@@ -40,7 +41,7 @@ export default class LogoutButton extends Module implements IModule {
             // Write error message if there is one
             if (logoutUser !== undefined) {
                 const app = new App();
-                await app.writeMessage('error', (logoutUser as IError).error);           
+                await app.writeMessage('error', (logoutUser as IError).error);
             }
         });
     }

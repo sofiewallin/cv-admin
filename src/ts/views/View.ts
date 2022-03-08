@@ -2,20 +2,16 @@ import IModule from "../interfaces/IModule";
 import IUser from "../interfaces/IUser";
 
 /**
- * View.
+ * View base.
  * 
  * @author: Sofie Wallin
  */
- export default class View {
-    // Properties
+export default class View {
     readonly apiUrl: string;
     readonly appContent: HTMLElement;
-    readonly user?: IUser;
+    readonly user: IUser;
 
-    /**
-     * Constructor
-     */
-     constructor(apiUrl: string, user?: IUser, appContent?: HTMLElement) {
+    constructor(apiUrl: string, user?: IUser, appContent?: HTMLElement) {
         this.apiUrl = apiUrl;
         this.appContent = appContent;
         this.user = user;
@@ -24,8 +20,8 @@ import IUser from "../interfaces/IUser";
     /**
      * Append module to view.
      */
-     async appendModule(module: IModule, containerElement: HTMLElement): Promise<void> {
-        const createdModule = await module.return();
-        containerElement.append(createdModule);
+    async appendModule(module: IModule, element: HTMLElement): Promise<void> {
+        const createdModule = await module.create();
+        element.append(createdModule);
     }
- }
+}

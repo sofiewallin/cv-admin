@@ -1,4 +1,5 @@
 import App from "../../App";
+import Validator from "../../Validator";
 import Module from "./Module";
 import Skill from "../../models/Skill";
 import Project from "../../models/Project";
@@ -8,19 +9,19 @@ import IUser from "../../interfaces/IUser";
 import IModel from "../../interfaces/IModel";
 import IError from "../../interfaces/IError";
 import IValidator from "../../interfaces/IValidator";
-import Validator from "../../Validator";
 
+/**
+ * Form base.
+ * 
+ * @author: Sofie Wallin
+ */
 export default class Form extends Module  {
-    // Properties
     readonly isEditMode: boolean;
     readonly objectType: string;
     protected id: number;
     readonly validator: IValidator;
     readonly model: IModel;
 
-    /**
-     * Constructor
-     */
     constructor(apiUrl: string, user: IUser, isEditMode: boolean, objectType: string, id?: number) {
         super(apiUrl, user);
 
@@ -30,6 +31,7 @@ export default class Form extends Module  {
 
         this.validator = new Validator();
 
+        // Set model
         switch (this.objectType) {
             case 'Project':
                 this.model = new Project(this.apiUrl, this.user);
@@ -47,12 +49,12 @@ export default class Form extends Module  {
     }
 
     /**
-     * Return a input group.
+     * Create an input field.
      * 
      * Creates and returns a paragraph with a label
      * and an input field of given type.
      */
-    async returnInputGroup(
+    async createInputGroup(
         fieldLabel: string,
         fieldType: string, 
         fieldName: string, 
@@ -61,7 +63,7 @@ export default class Form extends Module  {
         fieldPlaceholder?: string
     ): Promise<HTMLParagraphElement> {
         // Create paragraph container
-        const pContainer = await this.returnParagraph('', ['form-field', `form-${fieldType}-field`]);
+        const pContainer = await this.createParagraph('', ['form-field', `form-${fieldType}-field`]);
 
         // Create label and add to paragraph
         const label = document.createElement('label') as HTMLLabelElement;
@@ -91,19 +93,19 @@ export default class Form extends Module  {
     }
 
     /**
-     * Return a buttons group.
+     * Create a group with form button/buttons.
      * 
      * Creates and returns a paragraph with one add button
-     * or a cancel button, delete button and save button if 
-     * the form is in edit mode.
+     * or a paragraph with a cancel button, a delete button 
+     * and a save button if the form is in edit mode.
      */
-    async returnButtonsGroup(isEditMode: boolean): Promise<HTMLParagraphElement> {
-        // Paragraph container
-        const pContainer = await this.returnParagraph('', ['form-field', `form-buttons-field`]);
+    async createButtonsGroup(isEditMode: boolean): Promise<HTMLParagraphElement> {
+        // Create paragraph container
+        const pContainer = await this.createParagraph('', ['form-field', `form-buttons-field`]);
 
         if (isEditMode) {
-            // Cancel button
-            const cancelButton = await this.returnButton(
+            // Create cancel button
+            const cancelButton = await this.createButton(
                 'Cancel',
                 false,
                 ['cancel-button']
@@ -111,8 +113,8 @@ export default class Form extends Module  {
             await this.handleCancelClick(cancelButton);
             pContainer.append(cancelButton);
             
-            // Delete button
-            const deleteButton = await this.returnButton(
+            // Create delete button
+            const deleteButton = await this.createButton(
                 'Delete',
                 true,
                 ['delete-button']
@@ -120,16 +122,16 @@ export default class Form extends Module  {
             await this.handleDeleteClick(deleteButton);
             pContainer.append(deleteButton);
             
-            // Save button
-            const saveButton = await this.returnButton(
+            // Create save button
+            const saveButton = await this.createButton(
                 'Save',
                 true,
                 ['save-button']
             );
             pContainer.append(saveButton);
         } else {
-            // Add button
-            const addButton = await this.returnButton(
+            // Create add button
+            const addButton = await this.createButton(
                 'Add', 
                 true, 
                 ['add-button']
@@ -148,11 +150,14 @@ export default class Form extends Module  {
         button.addEventListener('click', e => {
             e.preventDefault();
 
+            // Hide form
             this.module.classList.add('hidden');
 
+            // Show article
             const skillArticle = this.module.previousElementSibling;
             skillArticle.classList.remove('hidden');  
 
+            // Set aria expanded to false
             const editButton = skillArticle.querySelector('.edit-button');
             editButton.setAttribute('aria-expanded', 'false');
         });
@@ -166,6 +171,7 @@ export default class Form extends Module  {
         button.addEventListener('click', async e => {
             e.preventDefault();
 
+            // Ask if user is sure of delete before deleting
             if (confirm(`Are you sure you want to delete this ${this.objectType.toLowerCase()}?`)) {
                 await this.deleteObject();
             }
@@ -177,15 +183,20 @@ export default class Form extends Module  {
      */
     async deleteObject(): Promise<void> {
         const app = new App();
+
+        // Delete object in model
         let deletedObject = await this.model.delete(this.id);
         
-
+        // Write error if there is one
         if (deletedObject.hasOwnProperty('error')) {
             await app.writeMessage('error', (deletedObject as IError).error);
             return;
         }
 
+        // Remove list item
         this.module.parentElement.remove();
+
+        // Write success message
         await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully deleted.`);
     }
 }

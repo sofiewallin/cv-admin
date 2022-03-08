@@ -1,11 +1,8 @@
-// App
 import App from './ts/App';
-
-// Style
 import './sass/main.scss';
 
 /**
- * Entry point for webpack.
+ * Entry point.
  * 
  * Renders application through App.ts.
  * Imports style.

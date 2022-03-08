@@ -1,4 +1,4 @@
-import Auth from "./auth/Auth";
+import Auth from "./Auth";
 import IUser from "./interfaces/IUser";
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
@@ -11,15 +11,11 @@ import LoginView from "./views/LoginView";
  * @author: Sofie Wallin
  */
 export default class App {
-    // Properties
     readonly apiUrl: string;
     readonly body: HTMLElement;
     readonly appContent: HTMLElement;
     private user: IUser;
 
-    /**
-     * Constructor
-     */
     constructor() {
         this.apiUrl = 'http://127.0.0.1:8000/api';
         this.body = document.querySelector('body') as HTMLElement;
@@ -36,7 +32,7 @@ export default class App {
         const auth = new Auth();
         const user = await auth.getUser();
 
-        // Render login view if no user
+        // Render login view and return if no user
         if (!user) {
             this.body.classList.add('login');
 

@@ -1,5 +1,5 @@
 
-import Auth from "../../auth/Auth";
+import Auth from "../../Auth";
 import Module from "./Module";
 import IModule from "../../interfaces/IModule";
 import ILoginDetails from "../../interfaces/ILoginDetails";
@@ -19,9 +19,9 @@ export default class LoginForm extends Module implements IModule {
     }
 
     /**
-     * Return module.
+     * Create module.
      */
-    async return(): Promise<HTMLElement> {
+    async create(): Promise<HTMLElement> {
         // Create form
         const form = document.createElement('form') as HTMLFormElement;
         form.action = '/';
@@ -104,6 +104,4 @@ export default class LoginForm extends Module implements IModule {
         error.classList.add('is-active');
         error.innerText = message;
     }
-
-
 }

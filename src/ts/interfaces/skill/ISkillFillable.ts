@@ -3,7 +3,7 @@
  * 
  * @author: Sofie Wallin
  */
- export default interface ISkillFillable {
+export default interface ISkillFillable {
     title: string,
     type: string,
     order: number

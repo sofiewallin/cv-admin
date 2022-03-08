@@ -1,29 +1,24 @@
 import View from "../View";
-
 import IUser from "../../interfaces/IUser";
 
 /**
- * View.
+ * Module base.
  * 
  * @author: Sofie Wallin
  */
- export default class Module extends View {
-     // Properties
+export default class Module extends View {
      public module: HTMLElement;
 
-    /**
-     * Constructor
-     */
     constructor(apiUrl?: string, user?: IUser) {
         super(apiUrl, user);
     }
 
     /**
-     * Return section.
+     * Create section.
      * 
      * Creates and returns a section element.
      */
-    async returnSection(id: string): Promise<HTMLElement> {
+    async createSection(id: string): Promise<HTMLElement> {
         const section = document.createElement('section') as HTMLElement;
         section.id = id;
 
@@ -31,11 +26,11 @@ import IUser from "../../interfaces/IUser";
     }
 
     /**
-     * Return article.
+     * Create article.
      * 
      * Creates and returns an article element.
      */
-     async returnArticle(objectType: string): Promise<HTMLElement> {
+    async createArticle(objectType: string): Promise<HTMLElement> {
         const article = document.createElement('article') as HTMLElement;
         article.classList.add(objectType);
 
@@ -43,12 +38,13 @@ import IUser from "../../interfaces/IUser";
     }
 
     /**
-     * Return div.
+     * Create div.
      * 
      * Creates and returns a div element.
      */
-     async returnDiv(htmlClasses?: string[]): Promise<HTMLDivElement> {
+    async createDiv(htmlClasses?: string[], id?: string): Promise<HTMLDivElement> {
         const div = document.createElement('div') as HTMLDivElement;
+        if (id) div.id = id;
         if (htmlClasses.length > 0) {
             htmlClasses.forEach(htmlClass => {
                 div.classList.add(htmlClass);
@@ -59,11 +55,11 @@ import IUser from "../../interfaces/IUser";
     }
 
     /**
-     * Return heading.
+     * Create heading.
      * 
      * Creates and returns a heading element.
      */
-    async returnHeading(hLevel: number, innerHTML: string, htmlClasses?: string[]): Promise<HTMLHeadingElement> {
+    async createHeading(hLevel: number, innerHTML: string, htmlClasses?: string[]): Promise<HTMLHeadingElement> {
         const heading = document.createElement(`h${hLevel}`) as HTMLHeadingElement;
         heading.innerHTML = innerHTML;
         if (htmlClasses) {
@@ -76,11 +72,11 @@ import IUser from "../../interfaces/IUser";
     }
 
     /**
-     * Return paragraph.
+     * Create paragraph.
      * 
      * Creates and returns a paragraph element.
      */
-    async returnParagraph(innerHTML: string, htmlClasses?: string[]): Promise<HTMLParagraphElement> {
+    async createParagraph(innerHTML: string, htmlClasses?: string[]): Promise<HTMLParagraphElement> {
         const paragraph = document.createElement('p') as HTMLParagraphElement;
         paragraph.innerHTML = innerHTML;
         if (htmlClasses) {
@@ -93,11 +89,11 @@ import IUser from "../../interfaces/IUser";
     }
 
     /**
-     * Return unordered list.
+     * Create unordered list.
      * 
      * Creates and returns a ul element.
      */
-     async returnUlList(id: string, listItems: HTMLLIElement[]): Promise<HTMLUListElement> {
+    async createUlList(id: string, listItems: HTMLLIElement[]): Promise<HTMLUListElement> {
         const ul = document.createElement('ul') as HTMLUListElement;
         ul.id = id;
         listItems.forEach(listItem => {
@@ -108,19 +104,19 @@ import IUser from "../../interfaces/IUser";
     }
 
     /**
-     * Return button.
+     * Create button.
      * 
      * Creates and returns a button element.
      */
-     async returnButton(innerHTML: string, isSubmit: boolean, htmlClasses?: string[]): Promise<HTMLButtonElement> {
+    async createButton(innerHTML: string, isSubmit: boolean, htmlClasses?: string[]): Promise<HTMLButtonElement> {
         const button = document.createElement('button') as HTMLButtonElement;
         button.innerHTML = innerHTML;
+        if (isSubmit) button.type = 'submit';
         if (htmlClasses) {
             htmlClasses.forEach(htmlClass => {
                 button.classList.add(htmlClass);
             });
         }
-        if (isSubmit) button.type = 'submit';
         return button;
     }
- }
+}

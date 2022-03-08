@@ -1,8 +1,8 @@
 import Model from "./Model";
-import ISkillFillable from "../interfaces/ISkillFillable";
-import ISkill from "../interfaces/ISkill";
-import IError from "../interfaces/IError";
 import IModel from "../interfaces/IModel";
+import ISkill from "../interfaces/skill/ISkill";
+import ISkillFillable from "../interfaces/skill/ISkillFillable";
+import IError from "../interfaces/IError";
 
 export default class Skill extends Model implements IModel {
     /**
@@ -63,7 +63,7 @@ export default class Skill extends Model implements IModel {
     /**
      * Update one skill by id in API.
      */
-    async update(id: number, skill: ISkill): Promise<ISkill|IError> {
+    async update(id: number, skill: ISkillFillable): Promise<ISkill|IError> {
         try {
             const response = await fetch(`${this.apiUrl}/skills/${id}`, {
                 method: 'PUT',

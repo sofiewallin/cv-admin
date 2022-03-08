@@ -4,7 +4,7 @@ import ISkillFillable from "./ISkillFillable"
  * 
  * @author: Sofie Wallin
  */
- export default interface ISkill extends ISkillFillable {
+export default interface ISkill extends ISkillFillable {
     id: number,
     created_at: Date,
     updated_at: Date

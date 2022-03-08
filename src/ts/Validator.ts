@@ -1,38 +1,51 @@
 import IValidator from "./interfaces/IValidator";
 
+/**
+ * Validator.
+ * 
+ * Handles validation of form fields. Adds validation
+ * on fields, validates fields and also handles error 
+ * messages.
+ * 
+ * @author: Sofie Wallin
+ */
 export default class Validator implements IValidator {
-    // Properties
     validations: {
-        field: HTMLInputElement, 
+        field: HTMLInputElement|HTMLTextAreaElement, 
         type: string, 
         message: string
     }[] = [];
 
     /**
-     * Add validation to input field.
+     * Add validation to input or textarea field.
      * 
-     * Sets html input validation of specific type.
+     * Sets HTML validation of specific type and value.
      */    
-    async addValidationToInputField(
-        field: HTMLInputElement, 
+    async addValidationToField(
+        field: HTMLInputElement|HTMLTextAreaElement, 
         attribute: string, 
-        value: string|boolean, 
+        value: string, 
         message: string,
         fieldLabel?: string
     ): Promise<void> {
         if (attribute === 'required') {
+            // Set attribute
             field.required = true;
 
+            // Set label with asterisk
             const label = field.previousElementSibling;
             label.innerHTML = `${fieldLabel} <abbr title="required" class="required">*</abbr>`;
         } else {
+            // Set attribute
             field.setAttribute(attribute, (value as string));
         }
 
+        // Add event listener on input
         field.addEventListener('input', async () => {
-            await this.validateInputField(field);
+            await this.validateField(field);
         });
 
+        // Add validation to list
         this.validations.push({
             field: field,
             type: attribute,
@@ -41,39 +54,53 @@ export default class Validator implements IValidator {
     }
 
     /**
-     * Validate input field on input.
+     * Validate field on input.
+     * 
+     * Handles the validation of the field.
      */
-    async validateInputField(field: HTMLInputElement): Promise<boolean> {
+    async validateField(field: HTMLInputElement|HTMLTextAreaElement): Promise<boolean> {
+        // Get error container
         const fieldError = field.nextElementSibling as HTMLSpanElement;
+
         if (field.validity.valid) {
+            // Set field to valid and deactivated error container
             field.classList.add('valid');
             if (field.classList.contains('invalid')) field.classList.remove('invalid');
             fieldError.innerText = '';
-            fieldError.classList.add('error');
+            fieldError.classList.remove('is-active');
+
             return true;
         } else {
+            // Set error message according to type of validation
             let errorMessage: string;
             if (field.validity.valueMissing) {
-                errorMessage = await this.returnErrorMessage(field, 'required');
+                errorMessage = await this.setErrorMessage(field, 'required');
             } else if (field.validity.tooShort) {
-                errorMessage = await this.returnErrorMessage(field, 'minLength');
+                errorMessage = await this.setErrorMessage(field, 'minLength');
             } else if (field.validity.tooLong) {
-                errorMessage = await this.returnErrorMessage(field, 'maxLength');
+                errorMessage = await this.setErrorMessage(field, 'maxLength');
             } else if (field.validity.rangeUnderflow) {
-                errorMessage = await this.returnErrorMessage(field, 'min');
+                errorMessage = await this.setErrorMessage(field, 'min');
             } else if (field.validity.typeMismatch) {
                 if (field.type === 'url') {
                     errorMessage = 'Enter a valid url';
                 }
             }
 
+            // Write error message
             await this.writeErrorMessage(field, errorMessage);
 
             return false;
         }
     }
 
-    async returnErrorMessage(field: HTMLInputElement, type: string): Promise<string> {
+    /**
+     * Set error message.
+     * 
+     * Gets error message from validation list 
+     * based on field and type.
+     */
+    async setErrorMessage(field: HTMLInputElement|HTMLTextAreaElement, type: string): Promise<string> {
         let errorMessage: string;
 
         this.validations.forEach(validation => {
@@ -87,8 +114,11 @@ export default class Validator implements IValidator {
 
     /**
      * Write error message.
+     * 
+     * Sets field to invalid, activates error 
+     * container and displays message.
      */
-    async writeErrorMessage(field: HTMLInputElement, errorMessage: string): Promise<void> {
+    async writeErrorMessage(field: HTMLInputElement|HTMLTextAreaElement, errorMessage: string): Promise<void> {
         const fieldError = field.nextElementSibling as HTMLSpanElement;
 
         if (field.classList.contains('valid')) {

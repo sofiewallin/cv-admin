@@ -8,15 +8,15 @@ import IModule from "../../../interfaces/IModule";
  */
 export default class ExperienceSection extends Module implements IModule {
     /**
-     * Return module.
+     * Create module.
      */
-    async return(): Promise<HTMLElement> {
+    async create(): Promise<HTMLElement> {
         // Create section
-        const section = await this.returnSection('experience');
-        const heading = await this.returnHeading(2, 'Experience');
+        const section = await this.createSection('experience');
+        const heading = await this.createHeading(2, 'Experience');
         section.append(heading);
 
-        // Set module as section
+        // Set section as module
         this.module = section;
 
         // Return module

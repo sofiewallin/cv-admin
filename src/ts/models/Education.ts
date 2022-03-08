@@ -1,13 +1,14 @@
 import Model from "./Model";
-import IEducation from "../interfaces/IEducation";
-import IError from "../interfaces/IError";
 import IModel from "../interfaces/IModel";
+import IEducation from "../interfaces/education/IEducation";
+import IEducationFillable from "../interfaces/education/IEducationFillable";
+import IError from "../interfaces/IError";
 
 export default class Education extends Model implements IModel {
     /**
      * Create education in API.
      */
-    async create(education: IEducation): Promise<IEducation|IError> {
+    async create(education: IEducationFillable): Promise<IEducation|IError> {
         try {
             const response = await fetch(`${this.apiUrl}/education`, {
                 method: 'POST',
@@ -62,7 +63,7 @@ export default class Education extends Model implements IModel {
     /**
      * Update one education by id in API.
      */
-    async update(id: number, education: IEducation): Promise<IEducation|IError> {
+    async update(id: number, education: IEducationFillable): Promise<IEducation|IError> {
         try {
             const response = await fetch(`${this.apiUrl}/education/${id}`, {
                 method: 'PUT',

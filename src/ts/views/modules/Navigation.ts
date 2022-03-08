@@ -8,9 +8,9 @@ import IModule from "../../interfaces/IModule";
  */
 export default  class Navigation extends Module implements IModule {
     /**
-     * Return module.
+     * Create module.
      */
-     async return(): Promise<HTMLElement> {
+    async create(): Promise<HTMLElement> {
         // Create navigation
         const navigation = document.createElement('nav') as HTMLElement;
         navigation.id = 'main-navigation';
@@ -19,7 +19,7 @@ export default  class Navigation extends Module implements IModule {
             <button id="toggle-menu" aria-controls="main-menu" aria-expanded="false">
                 <span class="hidden-visually">Show menu</span>
             </button>
-            <ul id="main-menu" class="menu closed">
+            <ul id="main-menu" class="menu hidden">
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#experience">Experience</a></li>
@@ -32,7 +32,6 @@ export default  class Navigation extends Module implements IModule {
         // Handle click event on toggle button
         await this.handleToggleClick();
 
-        // Return navigation
         return this.module;
     }
 
@@ -43,7 +42,7 @@ export default  class Navigation extends Module implements IModule {
 
         // Add event listener
         button.addEventListener('click', e => {
-            menu.classList.toggle('closed');
+            menu.classList.toggle('hidden');
             button.classList.toggle('close');
         
             // Toggle ARIA expanded attribute
@@ -55,7 +54,6 @@ export default  class Navigation extends Module implements IModule {
         
             // Toggle button text
             let hiddenText = button.querySelector('.hidden-visually') as HTMLElement;
-
             if (hiddenText.innerText === 'Show menu') {
                 hiddenText.innerText = 'Hide menu';
             } else {

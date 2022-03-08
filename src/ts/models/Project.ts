@@ -1,13 +1,14 @@
 import Model from "./Model";
-import IProject from "../interfaces/IProject";
-import IError from "../interfaces/IError";
 import IModel from "../interfaces/IModel";
+import IProject from "../interfaces/project/IProject";
+import IProjectFillable from "../interfaces/project/IProjectFillable";
+import IError from "../interfaces/IError";
 
 export default class Project extends Model implements IModel {
     /**
      * Create project in API.
      */
-    async create(project: IProject): Promise<IProject|IError> {
+    async create(project: IProjectFillable): Promise<IProject|IError> {
         try {
             const response = await fetch(`${this.apiUrl}/projects`, {
                 method: 'POST',
@@ -62,7 +63,7 @@ export default class Project extends Model implements IModel {
     /**
      * Update one project by id in API.
      */
-    async update(id: number, project: IProject): Promise<IProject|IError> {
+    async update(id: number, project: IProjectFillable): Promise<IProject|IError> {
         try {
             const response = await fetch(`${this.apiUrl}/projects/${id}`, {
                 method: 'PUT',

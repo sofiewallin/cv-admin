@@ -1,13 +1,14 @@
 import Model from "./Model";
-import IWorkExperience from "../interfaces/IWorkExperience";
-import IError from "../interfaces/IError";
 import IModel from "../interfaces/IModel";
+import IWorkExperience from "../interfaces/work-experience/IWorkExperience";
+import IWorkExperienceFillable from "../interfaces/work-experience/IWorkExperienceFillable";
+import IError from "../interfaces/IError";
 
 export default class WorkExperience extends Model implements IModel {
     /**
      * Create work experience in API.
      */
-    async create(workExperience: IWorkExperience): Promise<IWorkExperience|IError> {
+    async create(workExperience: IWorkExperienceFillable): Promise<IWorkExperience|IError> {
         try {
             const response = await fetch(`${this.apiUrl}/work-experiences`, {
                 method: 'POST',
@@ -62,7 +63,7 @@ export default class WorkExperience extends Model implements IModel {
     /**
      * Update one work experience by id in API.
      */
-    async update(id: number, workExperience: IWorkExperience): Promise<IWorkExperience|IError> {
+    async update(id: number, workExperience: IWorkExperienceFillable): Promise<IWorkExperience|IError> {
         try {
             const response = await fetch(`${this.apiUrl}/work-experiences/${id}`, {
                 method: 'PUT',

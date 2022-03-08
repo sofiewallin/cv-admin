@@ -1,8 +1,8 @@
-import IUser from "../interfaces/IUser";
-import ILoginDetails from "../interfaces/ILoginDetails";
-import IError from "../interfaces/IError";
+import App from "./App";
+import ILoginDetails from "./interfaces/ILoginDetails";
+import IUser from "./interfaces/IUser";
+import IError from "./interfaces/IError";
 
-import App from "../App";
 
 /**
  * Auth controller.
@@ -11,10 +11,9 @@ import App from "../App";
  * 
  * @author: Sofie Wallin
  */
-
 export default class Auth {
     /**
-     * Log in user.
+     * Log in user in API and in application.
      */
     async loginUser(loginDetails: ILoginDetails, apiUrl: string): Promise<void|IError> {
         try {
@@ -59,7 +58,7 @@ export default class Auth {
     }
 
     /**
-     * Log out user.
+     * Log out user in API and in application.
      */
     async logoutUser(apiUrl: string, user: IUser): Promise<void|IError> { 
         try {

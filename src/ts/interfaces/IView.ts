@@ -9,7 +9,7 @@ import IUser from "./IUser";
  export default interface IView {
     readonly apiUrl: string;
     readonly appContent: HTMLElement;
-    readonly user?: IUser;
+    readonly user: IUser;
 
     render(): Promise<void>
 

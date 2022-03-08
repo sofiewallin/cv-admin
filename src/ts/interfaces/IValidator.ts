@@ -3,24 +3,24 @@
  * 
  * @author: Sofie Wallin
  */
- export default interface IValidator {
+export default interface IValidator {
     validations: {
-        field: HTMLInputElement, 
+        field: HTMLInputElement|HTMLTextAreaElement, 
         type: string, 
         message: string
     }[]
 
-    addValidationToInputField(
-        field: HTMLInputElement, 
+    addValidationToField(
+        field: HTMLInputElement|HTMLTextAreaElement, 
         attribute: string, 
         value: string|boolean, 
         message: string,
         fieldLabel?: string
     ): Promise<void>
 
-    validateInputField(field: HTMLInputElement): Promise<boolean>
+    validateField(field: HTMLInputElement|HTMLTextAreaElement): Promise<boolean>
 
-    returnErrorMessage(field: HTMLInputElement, type: string): Promise<string>
+    setErrorMessage(field: HTMLInputElement|HTMLTextAreaElement, type: string): Promise<string>
 
-    writeErrorMessage(field: HTMLInputElement, errorMessage: string): Promise<void>
+    writeErrorMessage(field: HTMLInputElement|HTMLTextAreaElement, errorMessage: string): Promise<void>
 }

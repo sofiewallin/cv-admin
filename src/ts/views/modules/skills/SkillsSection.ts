@@ -1,8 +1,8 @@
 import App from "../../../App";
-import Skill from "../../../models/Skill";
 import Module from "../Module";
+import Skill from "../../../models/Skill";
 import IModule from "../../../interfaces/IModule";
-import ISkill from "../../../interfaces/ISkill";
+import ISkill from "../../../interfaces/skill/ISkill";
 import IError from "../../../interfaces/IError";
 import SkillArticle from "./SkillArticle";
 import SkillForm from "./SkillForm";
@@ -13,13 +13,13 @@ import SkillForm from "./SkillForm";
  * @author: Sofie Wallin
  */
 export default class SkillsSection extends Module implements IModule {
-    // Properties
     private skills: ISkill[];
 
     /**
      * Get all skills from API.
      */
     async getSkills(): Promise<ISkill[]> {
+        // Get all skills in model
         const skillModel = new Skill(this.apiUrl, this.user);
         let skills = await skillModel.readAll();
 
@@ -34,59 +34,90 @@ export default class SkillsSection extends Module implements IModule {
     }
 
     /**
-     * Return module.
+     * Create module.
      */
-    async return(): Promise<HTMLElement> {
+    async create(): Promise<HTMLElement> {
         // Create section and set as module
-        const section = await this.returnSection('skills');
+        const section = await this.createSection('skills');
         this.module = section;
 
-        // Create section heading and add it to section
-        const heading = await this.returnHeading(2, 'Skills');
+        // Create section heading and add to section
+        const heading = await this.createHeading(2, 'Skills');
         this.module.append(heading);
+
+        // Create skills container and add to section
+        const skillDiv = await this.createDiv(['hidden'], 'skills-container');
+        this.module.append(skillDiv);
 
         // Get all skills
         this.skills = await this.getSkills();
         
-        // List professional skills
-        const professionalSkills = await this.returnSkillList('Professional');
-        this.module.append(professionalSkills);
+        // Create professional skills list and add to skills container
+        const professionalSkills = await this.createSkillList('Professional', skillDiv);
+        skillDiv.append(professionalSkills);
 
-        // List technical skills
-        const technicalSkills = await this.returnSkillList('Technical');
-        this.module.append(technicalSkills);
+        // Create technical skills list and add to skills container
+        const technicalSkills = await this.createSkillList('Technical', skillDiv);
+        skillDiv.append(technicalSkills);
 
-        // List personal skills
-        const personalSkills = await this.returnSkillList('Personal');
-        this.module.append(personalSkills);
+        // Create personal skills list and add to skills container
+        const personalSkills = await this.createSkillList('Personal', skillDiv);
+        skillDiv.append(personalSkills);
 
-        // List lingual skills
-        const lingualSkills = await this.returnSkillList('Lingual');
-        this.module.append(lingualSkills);
+        // Create lingual skills list and add to skills container
+        const lingualSkills = await this.createSkillList('Lingual', skillDiv);
+        skillDiv.append(lingualSkills);
 
-        // Return module
+        // WILL I FIX THIS
+        heading.addEventListener('click', e => {
+            skillDiv.classList.toggle('hidden');
+            if (heading.getAttribute('aria-expanded') === 'false') {
+                heading.setAttribute('aria-expanded', 'true');
+            } else {
+                heading.setAttribute( 'aria-expanded', 'false');
+            }
+        });
+
         return this.module;
     }
 
-    async returnSkillList(skillType: string): Promise<HTMLUListElement> {
-        const heading = await this.returnHeading(3, skillType);
-        this.module.append(heading);
+    /**
+     * Create list of skills.
+     * 
+     * Creates a list of skills based on type.
+     */
+    async createSkillList(skillType: string, container: HTMLDivElement): Promise<HTMLUListElement> {
+        // Create heading
+        const heading = await this.createHeading(3, skillType);
+        container.append(heading);
 
+        // Filter skills and create ul list
         const filteredSkills = this.skills.filter(skill => skill.type === skillType);
-        const skillListItems = await this.returnSkillListItems(filteredSkills, skillType);
-        const skillList = await this.returnUlList(`${skillType.toLowerCase()}-skills`, skillListItems);
+        const skillListItems = await this.createSkillListItems(filteredSkills, skillType);
+        const skillList = await this.createUlList(`${skillType.toLowerCase()}-skills`, skillListItems);
         
         return skillList;
     }
 
-    async returnSkillListItems(skills: ISkill[], skillType: string): Promise<HTMLLIElement[]> {
+    /**
+     * Create skill list items.
+     * 
+     * Creates an article and a form for each skill and adds it
+     * to a list item. Also creates a form for adding new skills
+     * in a list item and adds it at the bottom of the list.
+     */
+    async createSkillListItems(skills: ISkill[], skillType: string): Promise<HTMLLIElement[]> {
         let listItems: HTMLLIElement[] = [];
 
+        /* Maps list of skills and adds a skill 
+        article module and a skill form module */
         if (skills.length > 0) {
             const result = skills.map(async skill => {
+                // Create list item
                 const listItem = document.createElement('li') as HTMLLIElement;
                 listItem.id = `skill-${skill.id}`;
 
+                // Add skill article module
                 await this.appendModule(
                     new SkillArticle(
                         this.apiUrl,
@@ -96,7 +127,8 @@ export default class SkillsSection extends Module implements IModule {
                         skill.order
                     ), listItem
                 );
-
+                
+                // Add skill form module
                 await this.appendModule(
                     new SkillForm(
                         this.apiUrl, 
@@ -109,18 +141,22 @@ export default class SkillsSection extends Module implements IModule {
                         skill.order
                     ), listItem
                 );
-
+                
+                // Add list item to list
                 listItems.push(listItem);
             });
             await Promise.all(result);
         }
 
+        // Create a list item with a skill form for adding new skills
         const newSkillFormListItem = document.createElement('li') as HTMLLIElement;
         newSkillFormListItem.classList.add('new-skill');
         await this.appendModule(
             new SkillForm(this.apiUrl, this.user, false, 'Skill', skillType), 
             newSkillFormListItem
         );
+
+        // Add list item to list
         listItems.push(newSkillFormListItem);
 
         return listItems;
