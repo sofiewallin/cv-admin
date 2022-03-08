@@ -32,6 +32,7 @@ export default class SkillForm extends Form implements IModule  {
         form.action = '/';
         if (this.isEditMode) {
             form.classList.add('edit-form', 'hidden');
+            form.id = `skill-edit-form-${this.id}`;
         } else {
             form.classList.add('add-form');
         }
@@ -180,12 +181,37 @@ export default class SkillForm extends Form implements IModule  {
         const fields = this.module.querySelectorAll('input');
         fields.forEach(field => {
             field.value = '';
-        })
+        });
 
         await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully added.`);
     }
 
     async updateSkill(skill: ISkillFillable): Promise<void> {
-        console.log('we are gonna update');
+        const app = new App();
+        let updatedSkill = await this.model.update(this.id, skill);
+
+        if (updatedSkill.hasOwnProperty('error')) {
+            await app.writeMessage('error', (updatedSkill as IError).error);
+            return;
+        }
+
+        this.title = (updatedSkill as ISkill).title;
+        this.order = (updatedSkill as ISkill).order;
+
+        const skillArticle = this.module.previousElementSibling;
+
+        const skillTitle = skillArticle.querySelector('.skill-title > p') as HTMLParagraphElement;
+        skillTitle.innerText = this.title;
+
+        const skillOrder = skillArticle.querySelector('.skill-order > p') as HTMLParagraphElement;
+        skillOrder.innerText = this.order.toString();
+
+        this.module.classList.add('hidden');
+        skillArticle.classList.remove('hidden');
+
+        const editButton = skillArticle.querySelector('.edit-button');
+        editButton.setAttribute('aria-expanded', 'false');
+
+        await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully updated.`);
     }
 }

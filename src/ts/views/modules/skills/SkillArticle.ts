@@ -26,7 +26,7 @@ export default class SkillArticle extends Article implements IModule {
         this.module = article;
         
         // Create div for skill title and add to article
-        const skillGroup = await this.returnPropertyInfo('Skill', this.title.toString(), ['skill-title']);
+        const skillGroup = await this.returnPropertyInfo('Skill', this.title, ['skill-title']);
         this.module.append(skillGroup);
 
         // Create div for skill order and add to article
@@ -37,9 +37,11 @@ export default class SkillArticle extends Article implements IModule {
         const editButton = await this.returnButton(
             'Edit',
             false,
-            false,
             ['edit-button']
         );
+        editButton.setAttribute('aria-controls', `skill-edit-form-${this.id}`);
+        editButton.setAttribute('aria-expanded', 'false');
+        
         await this.handleEditClick(editButton);
         this.module.append(editButton);
 

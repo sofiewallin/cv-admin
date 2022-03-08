@@ -106,7 +106,6 @@ export default class Form extends Module  {
             const cancelButton = await this.returnButton(
                 'Cancel',
                 false,
-                true,
                 ['cancel-button']
             );
             await this.handleCancelClick(cancelButton);
@@ -115,7 +114,6 @@ export default class Form extends Module  {
             // Delete button
             const deleteButton = await this.returnButton(
                 'Delete',
-                true,
                 true,
                 ['delete-button']
             );
@@ -126,7 +124,6 @@ export default class Form extends Module  {
             const saveButton = await this.returnButton(
                 'Save',
                 true,
-                true,
                 ['save-button']
             );
             pContainer.append(saveButton);
@@ -135,7 +132,6 @@ export default class Form extends Module  {
             const addButton = await this.returnButton(
                 'Add', 
                 true, 
-                false,
                 ['add-button']
             );
             pContainer.append(addButton);
@@ -156,11 +152,9 @@ export default class Form extends Module  {
 
             const skillArticle = this.module.previousElementSibling;
             skillArticle.classList.remove('hidden');  
-            
-            const buttons = this.module.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.disabled = true;
-            });
+
+            const editButton = skillArticle.querySelector('.edit-button');
+            editButton.setAttribute('aria-expanded', 'false');
         });
     }
 

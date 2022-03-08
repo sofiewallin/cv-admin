@@ -42,8 +42,13 @@ export default class Article extends Module {
             allArticles.forEach(article => {
                 if (article !== this.module && article.classList.contains('hidden')) {
                     article.classList.remove('hidden');
+
+                    const editButton = article.querySelector('.edit-button');
+                    editButton.setAttribute('aria-expanded', 'false');
                 }
             });
+
+            button.setAttribute('aria-expanded', 'true');
 
             const editForm = this.module.nextElementSibling;
             editForm.classList.remove('hidden');
@@ -53,18 +58,7 @@ export default class Article extends Module {
                 if (form !== editForm) {
                     form.classList.add('hidden');
                 }
-
-                const buttons = form.querySelectorAll('button');
-                buttons.forEach(button => {
-                button.disabled = true;
-            });
-            });
-
-            const buttons = editForm.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.disabled = false;
-            });
-            
+            });   
         });
     }
 }
