@@ -1,11 +1,9 @@
-import IObject from "./IObject"
-
 /**
  * Work experience interface.
  * 
  * @author: Sofie Wallin
  */
- export default interface IWorkExperience extends IObject {
+ export default interface IWorkExperience {
     role: string,
     workplace?: string,
     workplace_website?: string,

@@ -1,4 +1,5 @@
 import Model from "./Model";
+import ISkillFillable from "../interfaces/ISkillFillable";
 import ISkill from "../interfaces/ISkill";
 import IError from "../interfaces/IError";
 import IModel from "../interfaces/IModel";
@@ -7,7 +8,7 @@ export default class Skill extends Model implements IModel {
     /**
      * Create skill in API.
      */
-    async create(skill: ISkill): Promise<ISkill|IError> {
+    async create(skill: ISkillFillable): Promise<ISkill|IError> {
         try {
             const response = await fetch(`${this.apiUrl}/skills`, {
                 method: 'POST',

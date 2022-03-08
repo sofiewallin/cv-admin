@@ -1,10 +1,13 @@
-export default class Validator {
+import IValidator from "./interfaces/IValidator";
+
+export default class Validator implements IValidator {
     // Properties
     validations: {
         field: HTMLInputElement, 
         type: string, 
         message: string
     }[] = [];
+
     /**
      * Add validation to input field.
      * 
@@ -15,8 +18,8 @@ export default class Validator {
         attribute: string, 
         value: string|boolean, 
         message: string,
-        fieldLabel?: string): Promise<void>
-    {
+        fieldLabel?: string
+    ): Promise<void> {
         if (attribute === 'required') {
             field.required = true;
 

@@ -7,12 +7,16 @@ import Education from "../../models/Education";
 import IUser from "../../interfaces/IUser";
 import IModel from "../../interfaces/IModel";
 import IError from "../../interfaces/IError";
+import IValidator from "../../interfaces/IValidator";
+import Validator from "../../Validator";
 
 export default class Form extends Module  {
     // Properties
     readonly isEditMode: boolean;
     readonly objectType: string;
-    readonly id: number;
+    protected id: number;
+    readonly validator: IValidator;
+    readonly model: IModel;
 
     /**
      * Constructor
@@ -23,6 +27,23 @@ export default class Form extends Module  {
         this.isEditMode = isEditMode;
         this.objectType = objectType;
         this.id = id;
+
+        this.validator = new Validator();
+
+        switch (this.objectType) {
+            case 'Project':
+                this.model = new Project(this.apiUrl, this.user);
+                break;
+            case 'Skill':
+                this.model = new Skill(this.apiUrl, this.user);
+                break;
+            case 'Work experience':
+                this.model = new WorkExperience(this.apiUrl, this.user);
+                break;
+            case 'Education':
+                this.model = new Education(this.apiUrl, this.user);
+                break;
+        }
     }
 
     /**
@@ -35,7 +56,6 @@ export default class Form extends Module  {
         fieldLabel: string,
         fieldType: string, 
         fieldName: string, 
-        //isRequired: boolean,
         willBeValidated: boolean,
         fieldValue: string,
         fieldPlaceholder?: string
@@ -109,7 +129,6 @@ export default class Form extends Module  {
                 true,
                 ['save-button']
             );
-            await this.handleSaveClick(saveButton);
             pContainer.append(saveButton);
         } else {
             // Add button
@@ -119,7 +138,6 @@ export default class Form extends Module  {
                 false,
                 ['add-button']
             );
-            await this.handleAddClick(addButton);
             pContainer.append(addButton);
         }
 
@@ -151,24 +169,11 @@ export default class Form extends Module  {
      */
     async handleDeleteClick(button: HTMLButtonElement): Promise<void> {
         // Add event listener
-        button.addEventListener('click', e => {
+        button.addEventListener('click', async e => {
             e.preventDefault();
 
             if (confirm(`Are you sure you want to delete this ${this.objectType.toLowerCase()}?`)) {
-                switch (this.objectType) {
-                    case 'Project': 
-                        this.deleteObject(new Project(this.apiUrl, this.user));
-                        break;
-                    case 'Skill':
-                        this.deleteObject(new Skill(this.apiUrl, this.user));
-                        break;
-                    case 'Work experience':
-                        this.deleteObject(new WorkExperience(this.apiUrl, this.user));
-                        break;
-                    case 'Education':
-                        this.deleteObject(new Education(this.apiUrl, this.user));
-                        break;
-                }
+                await this.deleteObject();
             }
         });
     }
@@ -176,9 +181,9 @@ export default class Form extends Module  {
     /**
      * Delete object.
      */
-    async deleteObject(model: IModel): Promise<void> {
+    async deleteObject(): Promise<void> {
         const app = new App();
-        let deletedObject = await model.delete(this.id);
+        let deletedObject = await this.model.delete(this.id);
         
 
         if (deletedObject.hasOwnProperty('error')) {
@@ -188,32 +193,5 @@ export default class Form extends Module  {
 
         this.module.parentElement.remove();
         await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully deleted.`);
-        
     }
-
-    /**
-     * Handle click event on save button.
-     */
-    async handleSaveClick(button: HTMLButtonElement): Promise<void> {
-        // Add event listener
-        button.addEventListener('click', e => {
-            e.preventDefault();
-
-            console.log(`updating ${this.module.previousElementSibling.classList.item(0)} with id ${this.id}`);
-        });
-    }
-
-    /**
-     * Handle click event on add button.
-     */
-    async handleAddClick(button: HTMLButtonElement): Promise<void> {
-        // Add event listener
-        button.addEventListener('click', e => {
-            e.preventDefault();
-
-            console.log(`adding ${this.module.parentElement.classList.item(0).replace('new-', '')}`);
-        });
-    }
-
-    
 }

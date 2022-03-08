@@ -10,11 +10,11 @@ import IUser from "./IUser";
     apiUrl: string;
     user: IUser;
 
-    create(object: Object): Promise<Object|IError>
+    create(inputData: Object): Promise<Object|IError>
 
     readAll(): Promise<Object[]|IError>
 
-    update(id: number, object: Object): Promise<Object|IError>
+    update(id: number, inputData: Object): Promise<Object|IError>
 
     delete(id: number): Promise<Object|IError>
 

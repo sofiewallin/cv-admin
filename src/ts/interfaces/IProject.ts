@@ -1,5 +1,3 @@
-import IObject from "./IObject"
-
 // Project types
 enum ProjectType {
     Professional = 'Professional',
@@ -12,7 +10,7 @@ enum ProjectType {
  * 
  * @author: Sofie Wallin
  */
- export default interface IProject extends IObject {
+ export default interface IProject {
     title: string,
     website?: string,
     description?: string,

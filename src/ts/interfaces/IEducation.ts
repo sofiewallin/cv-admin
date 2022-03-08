@@ -1,5 +1,3 @@
-import IObject from "./IObject"
-
 // Ecucation types
 enum EducationType {
     Program = 'Program',
@@ -11,7 +9,7 @@ enum EducationType {
  * 
  * @author: Sofie Wallin
  */
- export default interface IEducation extends IObject {
+ export default interface IEducation {
     name: string,
     degree?: string,
     institution: string,

@@ -73,7 +73,7 @@ export default class SkillsSection extends Module implements IModule {
         this.module.append(heading);
 
         const filteredSkills = this.skills.filter(skill => skill.type === skillType);
-        const skillListItems = await this.returnSkillListItems(filteredSkills, skillType.toLowerCase());
+        const skillListItems = await this.returnSkillListItems(filteredSkills, skillType);
         const skillList = await this.returnUlList(`${skillType.toLowerCase()}-skills`, skillListItems);
         
         return skillList;
