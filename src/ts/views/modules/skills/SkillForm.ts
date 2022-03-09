@@ -14,15 +14,22 @@ import SkillArticle from "./SkillArticle";
  */
 export default class SkillForm extends Form implements IModule  {
     protected title: string;
-    protected order: number;
     readonly skillType: string;
 
-    constructor(apiUrl: string, user: IUser, isEditMode: boolean, objectType: string, skillType: string, id?: number, title?: string, order?: number) {
-        super(apiUrl, user, isEditMode, objectType, id);
+    constructor(
+        apiUrl: string, 
+        user: IUser, 
+        isEditMode: boolean, 
+        objectType: string, 
+        skillType: string, 
+        id?: number, 
+        title?: string, 
+        order?: number
+    ) {
+        super(apiUrl, user, isEditMode, objectType, id, order);
 
         this.skillType = skillType;
         this.title = title;
-        this.order = order;
     }
 
     /**

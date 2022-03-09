@@ -30,9 +30,11 @@ export default class Module extends View {
      * 
      * Creates and returns an article element.
      */
-    async createArticle(objectType: string): Promise<HTMLElement> {
+    async createArticle(htmlClasses: string[]): Promise<HTMLElement> {
         const article = document.createElement('article') as HTMLElement;
-        article.classList.add(objectType);
+        htmlClasses.forEach(htmlClass => {
+            article.classList.add(htmlClass);
+        });
 
         return article;
     }

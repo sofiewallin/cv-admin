@@ -141,7 +141,7 @@ export default class SkillsSection extends Module implements IModule {
             await Promise.all(result);
         }
 
-        // Create a list item with a skill form for adding new skills
+        // Create a list item with a form for adding new skills
         const newSkillFormListItem = document.createElement('li') as HTMLLIElement;
         newSkillFormListItem.classList.add('new-skill');
         await this.appendModule(

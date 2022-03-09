@@ -22,15 +22,17 @@ export default class Form extends Module  {
     readonly isEditMode: boolean;
     readonly objectType: string;
     protected id: number;
+    protected order: number;
     readonly validator: IValidator;
     readonly model: IModel;
 
-    constructor(apiUrl: string, user: IUser, isEditMode: boolean, objectType: string, id?: number) {
+    constructor(apiUrl: string, user: IUser, isEditMode: boolean, objectType: string, id?: number, order?: number) {
         super(apiUrl, user);
 
         this.isEditMode = isEditMode;
         this.objectType = objectType;
         this.id = id;
+        this.order = order;
 
         this.validator = new Validator();
 

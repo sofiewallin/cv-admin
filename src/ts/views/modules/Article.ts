@@ -8,19 +8,22 @@ import IUser from "../../interfaces/IUser";
  */
 export default class Article extends Module {
     readonly id: number;
+    readonly order: number;
 
-    constructor(apiUrl: string, user: IUser, id?: number) {
+    constructor(apiUrl: string, user: IUser, id: number, order: number) {
         super(apiUrl, user);
 
         this.id = id;
+        this.order = order;
     }
+
     /**
      * Create a property group.
      * 
      * Creates and returns a label title and paragraph with information
      * about a property on an object
      */
-     async createPropertyInfo(title: string, value: string, htmlClasses: string[]): Promise<HTMLElement> {
+     async createPropertyInfo(title: string, value: string, htmlClasses: string[]): Promise<HTMLDivElement> {
         // Create container
         const div = await this.createDiv(htmlClasses);
 
@@ -33,6 +36,23 @@ export default class Article extends Module {
         div.append(p);
 
         return div;
+    }
+
+    /**
+     * Create edit button.
+     * 
+     * Creates and returns an edit button.
+     */
+    async createEditButton(): Promise<HTMLButtonElement> {
+        const editButton = await this.createButton(
+            'Edit',
+            false,
+            ['edit-button']
+        );
+        editButton.setAttribute('aria-controls', `skill-edit-form-${this.id}`);
+        editButton.setAttribute('aria-expanded', 'false');
+
+        return editButton;
     }
 
     /**
