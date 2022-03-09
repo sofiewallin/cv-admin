@@ -30,15 +30,13 @@ export default class SkillForm extends Form implements IModule  {
      */
     async create(): Promise<HTMLElement> {
         // Create form and set as module
-        const form = document.createElement('form') as HTMLFormElement;
-        form.action = '/';
+        let form: HTMLFormElement;
         if (this.isEditMode) {
-            form.classList.add('edit-form', 'hidden');
-            form.id = `skill-edit-form-${this.id}`;
+            form = await this.createForm(['edit-form', 'hidden'], `skill-edit-form-${this.id}`);
         } else {
+            form = await this.createForm(['add-form']);
             form.classList.add('add-form');
         }
-        form.noValidate = true;
         this.module = form;
 
         // Create input group for skill title and add to form

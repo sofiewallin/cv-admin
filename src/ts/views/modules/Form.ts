@@ -13,6 +13,9 @@ import IValidator from "../../interfaces/IValidator";
 /**
  * Form base.
  * 
+ * Serves as base for all forms that handles object,
+ * does not serve as base for login form.
+ * 
  * @author: Sofie Wallin
  */
 export default class Form extends Module  {

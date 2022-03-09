@@ -42,41 +42,34 @@ export default class SkillsSection extends Module implements IModule {
         this.module = section;
 
         // Create section heading and add to section
-        const heading = await this.createHeading(2, 'Skills');
+        const heading = await this.createHeading(2, 'Skills <span class="hidden-visually">Show skills</span>');
         this.module.append(heading);
 
         // Create skills container and add to section
-        const skillDiv = await this.createDiv(['hidden'], 'skills-container');
-        this.module.append(skillDiv);
+        const skillsDiv = await this.createDiv(['hidden'], 'skills-container');
+        this.module.append(skillsDiv);
 
         // Get all skills
         this.skills = await this.getSkills();
         
         // Create professional skills list and add to skills container
-        const professionalSkills = await this.createSkillList('Professional', skillDiv);
-        skillDiv.append(professionalSkills);
+        const professionalSkills = await this.createSkillList('Professional', skillsDiv);
+        skillsDiv.append(professionalSkills);
 
         // Create technical skills list and add to skills container
-        const technicalSkills = await this.createSkillList('Technical', skillDiv);
-        skillDiv.append(technicalSkills);
+        const technicalSkills = await this.createSkillList('Technical', skillsDiv);
+        skillsDiv.append(technicalSkills);
 
         // Create personal skills list and add to skills container
-        const personalSkills = await this.createSkillList('Personal', skillDiv);
-        skillDiv.append(personalSkills);
+        const personalSkills = await this.createSkillList('Personal', skillsDiv);
+        skillsDiv.append(personalSkills);
 
         // Create lingual skills list and add to skills container
-        const lingualSkills = await this.createSkillList('Lingual', skillDiv);
-        skillDiv.append(lingualSkills);
+        const lingualSkills = await this.createSkillList('Lingual', skillsDiv);
+        skillsDiv.append(lingualSkills);
 
-        // WILL I FIX THIS
-        heading.addEventListener('click', e => {
-            skillDiv.classList.toggle('hidden');
-            if (heading.getAttribute('aria-expanded') === 'false') {
-                heading.setAttribute('aria-expanded', 'true');
-            } else {
-                heading.setAttribute( 'aria-expanded', 'false');
-            }
-        });
+        // Set heading to toggle skills list
+        await this.setVisibilityToggle(heading, skillsDiv, 'skills');
 
         return this.module;
     }

@@ -11,15 +11,21 @@ export default class ExperienceSection extends Module implements IModule {
      * Create module.
      */
     async create(): Promise<HTMLElement> {
-        // Create section
+        // Create section and set as module
         const section = await this.createSection('experience');
-        const heading = await this.createHeading(2, 'Experience');
-        section.append(heading);
-
-        // Set section as module
         this.module = section;
 
-        // Return module
+        // Create section heading and add to section
+        const heading = await this.createHeading(2, 'Experience <span class="hidden-visually">Show experiences</span>');
+        this.module.append(heading);
+
+        // Create experiences container and add to section
+        const experiencesDiv = await this.createDiv(['hidden'], 'skills-container');
+        this.module.append(experiencesDiv);
+
+        // Set heading to toggle experiences list
+        await this.setVisibilityToggle(heading, experiencesDiv, 'experiences');
+
         return this.module;
     }
 }

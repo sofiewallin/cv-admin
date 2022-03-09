@@ -104,6 +104,25 @@ export default class Module extends View {
     }
 
     /**
+     * Create form.
+     * 
+     * Creates and returns a form element.
+     */
+     async createForm(htmlClasses?: string[], id?: string): Promise<HTMLFormElement> {
+        const form = document.createElement('form') as HTMLFormElement;
+        form.action = '/';
+        if (id) form.id = id;
+        if (htmlClasses) {
+            htmlClasses.forEach(htmlClass => {
+                form.classList.add(htmlClass);
+            });
+        }
+        form.noValidate = true;
+
+        return form;
+    }
+
+    /**
      * Create button.
      * 
      * Creates and returns a button element.
@@ -118,5 +137,42 @@ export default class Module extends View {
             });
         }
         return button;
+    }
+
+    /**
+     * Set toggle function on element.
+     * 
+     * Sets a toggle function on a clickable element
+     * that controls a specific container.
+     */
+    async setVisibilityToggle(
+         elementToClick: HTMLButtonElement|HTMLHeadingElement, 
+         elementToBeToggled: HTMLElement, 
+         hiddenText: string
+    ): Promise<void> {
+        // Set neccesary attributes
+        elementToClick.setAttribute('aria-controls', elementToBeToggled.id);
+        elementToClick.setAttribute('aria-expanded', 'false');
+        
+        // Add event listener
+        elementToClick.addEventListener('click', e => {
+            elementToBeToggled.classList.toggle('hidden');
+            elementToClick.classList.toggle('hide');
+        
+            // Toggle ARIA expanded attribute
+            if (elementToClick.getAttribute('aria-expanded') === 'false') {
+                elementToClick.setAttribute('aria-expanded', 'true');
+            } else {
+                elementToClick.setAttribute( 'aria-expanded', 'false');
+            }
+        
+            // Toggle button text
+            let hiddenTextElement = elementToClick.querySelector('.hidden-visually') as HTMLElement;
+            if (hiddenTextElement.innerText === `Show ${hiddenText}`) {
+                hiddenTextElement.innerText = `Hide ${hiddenText}`;
+            } else {
+                hiddenTextElement.innerText = `Show ${hiddenText}`;
+            }
+        });
     }
 }

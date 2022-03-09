@@ -22,28 +22,33 @@ export default class LoginForm extends Module implements IModule {
      * Create module.
      */
     async create(): Promise<HTMLElement> {
-        // Create form
-        const form = document.createElement('form') as HTMLFormElement;
-        form.action = '/';
-        form.classList.add('login-form');
-        form.innerHTML = `
-            <h1>Log in</h1>
-            <div class="form-message error" aria-live="polite"></div>
-            <p class="form-field form-text-field">
-                <label for="username-input">Username <abbr title="obligatorisk" class="required">*</abbr></label>
-                <input type="text" name="username" id="username-input" placeholder="Enter your username">
-            </p>
-            <p class="form-field form-text-field">
-                <label for="password-input">Password <abbr title="obligatorisk" class="required">*</abbr></label>
-                <input type="password" name="password" id="password-input" placeholder="Enter your password">
-            </p>
-            <p class="form-field form-submit-field">
-                <button type="submit" class="button button-big">Log in</button>
-            </p>
-        `;
-
-        // Set form as module
+        // Create form and set as module
+        const form = await this.createForm(['login-form']);
         this.module = form;
+
+        // Create form heading and add to form
+        const heading = await this.createHeading(1, 'Log in');
+        this.module.append(heading);
+
+        // Create form message container and add to form
+        const formMessage = await this.createDiv(['form-message', 'error']);
+        formMessage.setAttribute('aria-live', 'polite');
+        this.module.append(formMessage);
+
+        // Create input group for username and add to form
+        const usernameInputGroup = await this.createInputGroup('Username', 'text', 'Enter your username');
+        this.module.append(usernameInputGroup);
+
+        // Create input group for password and add to form
+        const passwordInputGroup = await this.createInputGroup('Password', 'password', 'Enter your password');
+        this.module.append(passwordInputGroup);
+
+        // Create button group and add to form
+        const pSubmit = await this.createParagraph('', ['form-field', 'form-submit-field']);
+        const button = await this.createButton('Log in', true, ['button']);
+        pSubmit.append(button);
+
+        this.module.append(pSubmit);
 
         // Handle submit event on form
         await this.handleSubmit();
@@ -53,12 +58,41 @@ export default class LoginForm extends Module implements IModule {
     }
 
     /**
+     * Create an input field.
+     * 
+     * Creates and returns a paragraph with a label
+     * and an input field of given type.
+     */
+     async createInputGroup(fieldLabel: string, fieldType: string, fieldPlaceholder: string): Promise<HTMLParagraphElement> {
+        // Create paragraph container
+        const pContainer = await this.createParagraph('', ['form-field', `form-text-field`]);
+
+        // Create label and add to paragraph
+        const label = document.createElement('label') as HTMLLabelElement;
+        label.setAttribute('for', fieldLabel.toLowerCase()); 
+        label.innerText = fieldLabel;    
+
+        pContainer.append(label);
+
+        // Create input element and add to paragraph
+        const input = document.createElement('input') as HTMLInputElement;
+        input.type = fieldType;
+        input.name = fieldLabel.toLowerCase();
+        input.id = fieldLabel.toLowerCase();
+        input.placeholder = fieldPlaceholder;
+
+        pContainer.append(input);
+
+        return pContainer;
+    }
+
+    /**
      * Handle submit event on form.
      */
     async handleSubmit() {
         // Get input fields of form
-        const username = this.module.querySelector('#username-input') as HTMLInputElement;
-        const password = this.module.querySelector('#password-input') as HTMLInputElement;
+        const username = this.module.querySelector('#username') as HTMLInputElement;
+        const password = this.module.querySelector('#password') as HTMLInputElement;
         
         // Add event listener
         this.module.addEventListener('submit', async e => {

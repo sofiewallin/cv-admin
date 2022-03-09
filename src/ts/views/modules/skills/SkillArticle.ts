@@ -40,7 +40,6 @@ export default class SkillArticle extends Article implements IModule {
             false,
             ['edit-button']
         );
-        // WILL I FIX THIS
         editButton.setAttribute('aria-controls', `skill-edit-form-${this.id}`);
         editButton.setAttribute('aria-expanded', 'false');
         this.module.append(editButton);
