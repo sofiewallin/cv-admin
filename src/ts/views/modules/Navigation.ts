@@ -11,54 +11,31 @@ export default  class Navigation extends Module implements IModule {
      * Create module.
      */
     async create(): Promise<HTMLElement> {
-        // Create navigation
+        // Create navigation and set as module
         const navigation = document.createElement('nav') as HTMLElement;
         navigation.id = 'main-navigation';
         navigation.setAttribute('aria-label', 'Main menu');
-        navigation.innerHTML = `
-            <button id="toggle-menu" aria-controls="main-menu" aria-expanded="false">
-                <span class="hidden-visually">Show menu</span>
-            </button>
-            <ul id="main-menu" class="menu hidden">
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#experience">Experience</a></li>
-            </ul>
-        `;
-
-        // Set navigation as module
         this.module = navigation;
 
-        // Handle click event on toggle button
-        await this.handleToggleClick();
+        // Create toggle menu button and add to navigation
+        const toggleMenuButton = await this.createButton(
+            '<span class="hidden-visually">Show menu</span>', 
+            false, ['toggle-menu-button']
+        );
+        this.module.append(toggleMenuButton);
+
+        const menu = document.createElement('ul');
+        menu.classList.add('menu', 'hidden');
+        menu.innerHTML = `
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+        `;
+        this.module.append(menu);
+
+        // Set button to toggle menu
+        await this.setVisibilityToggle(toggleMenuButton, menu, 'menu');
 
         return this.module;
-    }
-
-    async handleToggleClick() {
-        // Get button and menu
-        const button = this.module.querySelector('#toggle-menu') as HTMLElement;
-        const menu = this.module.querySelector('#main-menu') as HTMLElement;
-
-        // Add event listener
-        button.addEventListener('click', e => {
-            menu.classList.toggle('hidden');
-            button.classList.toggle('close');
-        
-            // Toggle ARIA expanded attribute
-            if (button.getAttribute('aria-expanded') === 'false') {
-                button.setAttribute('aria-expanded', 'true');
-            } else {
-                button.setAttribute( 'aria-expanded', 'false');
-            }
-        
-            // Toggle button text
-            let hiddenText = button.querySelector('.hidden-visually') as HTMLElement;
-            if (hiddenText.innerText === 'Show menu') {
-                hiddenText.innerText = 'Hide menu';
-            } else {
-                hiddenText.innerText = 'Show menu';
-            }
-        });
     }
 }
