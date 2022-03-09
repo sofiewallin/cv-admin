@@ -7,7 +7,7 @@
     role: string,
     workplace: string,
     workplace_website: string,
-    start_date: Date,
-    end_date: Date,
+    start_date: string,
+    end_date: string,
     order: number
 }

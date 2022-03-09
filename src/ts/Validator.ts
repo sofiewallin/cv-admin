@@ -40,16 +40,26 @@ export default class Validator implements IValidator {
             field.setAttribute(attribute, (value as string));
         }
 
-        // Add event listener on input
-        field.addEventListener('input', async () => {
-            await this.validateField(field);
-        });
-
         // Add validation to list
         this.validations.push({
             field: field,
             type: attribute,
             message: message
+        });
+    }
+
+    /**
+     * Add input event listener for validation.
+     * 
+     * Adds input event listener for validation
+     * to given input or textarea fields.
+     */
+    async addInputValidationEventListener(fields: HTMLElement[]): Promise<void> {
+        // Add event listener on input
+        fields.forEach(field => {
+            field.addEventListener('input', async () => {
+                await this.validateField(field as HTMLInputElement|HTMLTextAreaElement);
+            });
         });
     }
 

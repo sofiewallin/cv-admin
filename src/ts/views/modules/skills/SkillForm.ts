@@ -14,21 +14,21 @@ import SkillArticle from "./SkillArticle";
  */
 export default class SkillForm extends Form implements IModule  {
     protected title: string;
-    readonly skillType: string;
+    readonly type: string;
 
     constructor(
         apiUrl: string, 
         user: IUser, 
         isEditMode: boolean, 
         objectType: string, 
-        skillType: string, 
+        type: string, 
         id?: number, 
         title?: string, 
         order?: number
     ) {
         super(apiUrl, user, isEditMode, objectType, id, order);
 
-        this.skillType = skillType;
+        this.type = type;
         this.title = title;
     }
 
@@ -46,72 +46,47 @@ export default class SkillForm extends Form implements IModule  {
         }
         this.module = form;
 
-        // Create input group for skill title and add to form
-        let skillInputGroup: HTMLParagraphElement;
+        // Create input group for title and add to form
+        let titleInputId: string;
+        let titleInputValue: string;
+        
         if (this.isEditMode) {
-            // Create form with valus if edit mode
-            skillInputGroup = await this.createInputGroup(
-                'Skill', // Label
-                'text', // Type
-                `skill-title-${this.id}`, // Id
-                true, // Will be validated
-                this.title, // Value
-                'Enter a skill' // Placeholder
-            );
+            titleInputId = `skill-title-${this.id}`;
+            titleInputValue = this.title;
         } else {
-            // Create form with empty values if not edit mode
-            skillInputGroup = await this.createInputGroup(
-                'Skill', // Label
-                'text', // Type
-                `new-${this.skillType}-skill-title`, // Id
-                true, // Will be validated
-                '', // Value
-                'Enter a skill' // Placeholder
-            );
+            titleInputId = `new-${this.type}-skill-title`;
+            titleInputValue = '';
         }
-        this.module.append(skillInputGroup);
+        
+        const titleInputGroup = await this.createInputGroup(
+            'Skill', // Label
+            'text', // Type
+            titleInputId, // Id
+            true, // Will be validated
+            titleInputValue, // Value
+            'Enter a skill' // Placeholder
+        );
+        this.module.append(titleInputGroup);
 
-        // Add validation to skill title input
-        const skillInput = skillInputGroup.querySelector('input');
+        // Add validation to title input
+        const titleInput = titleInputGroup.querySelector('input');
         await this.validator.addValidationToField(
-            skillInput, 'minLength', '2', 'Enter a skill with at least 2 characters'
+            titleInput, 'minLength', '2', 'Enter a skill with at least 2 characters'
         );
         await this.validator.addValidationToField(
-            skillInput, 'maxLength', '64', 'The skill can be a maximum of 64 characters'
+            titleInput, 'maxLength', '64', 'The skill can be a maximum of 64 characters'
         );
         await this.validator.addValidationToField(
-            skillInput, 'required', 'true', 'A skill is required', 'Skill'
+            titleInput, 'required', 'true', 'A skill is required', 'Skill'
         );
         
-        // // Create input group for skill order and add to form
-        let orderInputGroup: HTMLParagraphElement;
-        if (this.isEditMode) {
-            orderInputGroup = await this.createInputGroup(
-                'Order', // Label
-                'number', // Type
-                `skill-order-${this.id}`, // Id
-                true, // Will be validated
-                this.order.toString() // Value
-            );
-        } else {
-            orderInputGroup = await this.createInputGroup(
-                'Order', // Label
-                'number', // Type
-                `new-${this.skillType}-skill-order`, // Id
-                true, // Will be validated
-                '0' // Value
-            );
-        }
-
-        // Add validation to skill order input
+        // Create input group for order and add to form
+        const orderInputGroup = await this.createOrderGroup('skill', this.type);
         const orderInput = orderInputGroup.querySelector('input');
-        await this.validator.addValidationToField(
-            orderInput, 'min', '0', 'Order needs to be at least 0'
-        );
-        await this.validator.addValidationToField(
-            orderInput, 'required', 'true', 'Order is required', 'Order'
-        );
         this.module.append(orderInputGroup);
+        
+        // Add event listener for validation on input for all fields
+        await this.validator.addInputValidationEventListener([titleInput, orderInput]);
 
         // Create buttons group and add to form
         let buttonsGroup: HTMLParagraphElement;
@@ -123,7 +98,7 @@ export default class SkillForm extends Form implements IModule  {
         this.module.append(buttonsGroup);
 
         // Add event listener to form submit event
-        await this.handleSubmit(skillInput, orderInput);
+        await this.handleSubmit(titleInput, orderInput);
 
         return this.module;
     }
@@ -150,7 +125,7 @@ export default class SkillForm extends Form implements IModule  {
 
             const skill = {
                 title: this.title,
-                type: this.skillType,
+                type: this.type,
                 order: this.order
             }
 
@@ -202,7 +177,7 @@ export default class SkillForm extends Form implements IModule  {
                 this.user, 
                 true,
                 'Skill',
-                (createdSkill as ISkill).type,
+                this.type,
                 this.id, 
                 this.title, 
                 this.order
@@ -213,11 +188,11 @@ export default class SkillForm extends Form implements IModule  {
         // Empty fields in form
         const fields = this.module.querySelectorAll('input');
         fields.forEach(field => {
-            field.value = '';
+            field.value = (field.type === 'number') ? '0' : '';
         });
 
         // Write success message
-        await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully added.`);
+        await app.writeMessage('success', `The skill was successfully added.`);
     }
 
     /**
@@ -242,11 +217,11 @@ export default class SkillForm extends Form implements IModule  {
         // Set new values to paragraphs in article
         const skillArticle = this.module.previousElementSibling;
 
-        const skillTitle = skillArticle.querySelector('.skill-title > p') as HTMLParagraphElement;
-        skillTitle.innerText = this.title;
+        const titleParagraph = skillArticle.querySelector('.skill-title > p') as HTMLParagraphElement;
+        titleParagraph.innerText = this.title;
 
-        const skillOrder = skillArticle.querySelector('.skill-order > p') as HTMLParagraphElement;
-        skillOrder.innerText = this.order.toString();
+        const orderParagraph = skillArticle.querySelector('.skill-order > p') as HTMLParagraphElement;
+        orderParagraph.innerText = this.order.toString();
 
         // Hide form an show article
         this.module.classList.add('hidden');
@@ -257,6 +232,6 @@ export default class SkillForm extends Form implements IModule  {
         editButton.setAttribute('aria-expanded', 'false');
 
         // Write success message
-        await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully updated.`);
+        await app.writeMessage('success', `The skill was successfully updated.`);
     }
 }

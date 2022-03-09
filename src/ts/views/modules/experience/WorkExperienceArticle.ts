@@ -11,8 +11,8 @@ export default class WorkExperienceArticle extends Article implements IModule {
     readonly role: string;
     readonly workplace: string;
     readonly workplaceWebsite: string;
-    readonly startDate: Date;
-    readonly endDate: Date;
+    readonly startDate: string;
+    readonly endDate: string;
 
     constructor(
         apiUrl: string, 
@@ -21,8 +21,8 @@ export default class WorkExperienceArticle extends Article implements IModule {
         role: string, 
         workplace: string, 
         workplaceWebsite: string,
-        startDate: Date,
-        endDate: Date,
+        startDate: string,
+        endDate: string,
         order: number
     ) {
         super(apiUrl, user, id, order);
@@ -63,7 +63,7 @@ export default class WorkExperienceArticle extends Article implements IModule {
         } else {
             workplaceWebsite = '<em>Add a website</em>';
         }
-        const workplaceWebsiteGroup = await this.createPropertyInfo('Workplace website', workplaceWebsite, ['work-experience-workplace']);
+        const workplaceWebsiteGroup = await this.createPropertyInfo('Workplace website', workplaceWebsite, ['work-experience-workplace-website']);
         this.module.append(workplaceWebsiteGroup);
 
         // Create group for start date and add to article
@@ -77,7 +77,7 @@ export default class WorkExperienceArticle extends Article implements IModule {
         } else {
             endDate = 'Present';
         }
-        const endDateGroup = await this.createPropertyInfo('End date', endDate, ['work-experience-workplace']);
+        const endDateGroup = await this.createPropertyInfo('End date', endDate, ['work-experience-end-date']);
         this.module.append(endDateGroup);
 
         // Create group for order and add to article

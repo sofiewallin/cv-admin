@@ -82,7 +82,7 @@ export default class Form extends Module  {
         input.type = fieldType;
         input.id = fieldName;
         input.name = fieldName;
-        input.placeholder = fieldPlaceholder;
+        if (fieldPlaceholder) input.placeholder = fieldPlaceholder;
         if (fieldValue) input.value = fieldValue;
         pContainer.append(input);
 
@@ -95,6 +95,45 @@ export default class Form extends Module  {
         }
 
         return pContainer;
+    }
+
+    /**
+     * Create an input field.
+     * 
+     * Creates and returns a paragraph with a label
+     * and an input field of given type.
+     */
+    async createOrderGroup(objectType: string, subType?: string): Promise<HTMLParagraphElement> {
+        let id: string;
+        let value: string;
+        
+        if (this.isEditMode) {
+            id = `${objectType}-order-${this.id}`;
+            value = this.order.toString();
+        } else {
+            id = (subType) ? `new-${subType}-${objectType}-order` : `new-${objectType}-order`;
+            value = '0';
+        }
+        
+        const orderInputGroup = await this.createInputGroup(
+            'Order', // Label
+            'number', // Type
+            id, // Id
+            true, // Will be validated
+            value, // Value
+        );
+        
+
+        // Add validation to order input
+        const orderInput = orderInputGroup.querySelector('input');
+        await this.validator.addValidationToField(
+            orderInput, 'min', '0', 'Order needs to be at least 0'
+        );
+        await this.validator.addValidationToField(
+            orderInput, 'required', 'true', 'Order is required', 'Order'
+        );
+
+        return orderInputGroup;
     }
 
     /**

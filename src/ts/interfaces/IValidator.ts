@@ -18,6 +18,8 @@ export default interface IValidator {
         fieldLabel?: string
     ): Promise<void>
 
+    addInputValidationEventListener(fields: HTMLElement[]): Promise<void>
+
     validateField(field: HTMLInputElement|HTMLTextAreaElement): Promise<boolean>
 
     setErrorMessage(field: HTMLInputElement|HTMLTextAreaElement, type: string): Promise<string>
