@@ -67,13 +67,13 @@ export default class WorkExperienceArticle extends Article implements IModule {
         this.module.append(workplaceWebsiteGroup);
 
         // Create group for start date and add to article
-        const startDateGroup = await this.createPropertyInfo('Start date', this.startDate.toString(), ['work-experience-start-date']);
+        const startDateGroup = await this.createPropertyInfo('Start date', this.startDate, ['work-experience-start-date']);
         this.module.append(startDateGroup);
 
         // Create group for end date and add to article
         let endDate: string;
         if (this.endDate) {
-            endDate = this.endDate.toString();
+            endDate = this.endDate;
         } else {
             endDate = 'Present';
         }

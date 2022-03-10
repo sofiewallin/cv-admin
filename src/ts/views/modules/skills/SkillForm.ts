@@ -54,7 +54,7 @@ export default class SkillForm extends Form implements IModule  {
             titleInputId = `skill-title-${this.id}`;
             titleInputValue = this.title;
         } else {
-            titleInputId = `new-${this.type}-skill-title`;
+            titleInputId = `new-${this.type.toLowerCase()}-skill-title`;
             titleInputValue = '';
         }
         
@@ -81,7 +81,7 @@ export default class SkillForm extends Form implements IModule  {
         );
         
         // Create input group for order and add to form
-        const orderInputGroup = await this.createOrderGroup('skill', this.type);
+        const orderInputGroup = await this.createOrderGroup('skill', this.type.toLowerCase());
         const orderInput = orderInputGroup.querySelector('input');
         this.module.append(orderInputGroup);
         

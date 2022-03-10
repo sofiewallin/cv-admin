@@ -2,13 +2,13 @@ import App from "../../../App";
 import Form from "../Form";
 import IModule from "../../../interfaces/IModule";
 import IUser from "../../../interfaces/IUser";
+import IWorkExperience from "../../../interfaces/work-experience/IWorkExperience";
 import IWorkExperienceFillable from "../../../interfaces/work-experience/IWorkExperienceFillable";
 import IError from "../../../interfaces/IError";
-import IWorkExperience from "../../../interfaces/work-experience/IWorkExperience";
 import WorkExperienceArticle from "./WorkExperienceArticle";
 
 /**
- * Skills form module.
+ * Work experience form module.
  * 
  * @author: Sofie Wallin
  */
@@ -142,7 +142,7 @@ export default class WorkExperienceForm extends Form implements IModule  {
         // Add validation to workplace website input
         const workplaceWebsiteInput = workplaceWebsiteInputGroup.querySelector('input');
         await this.validator.addValidationToField(
-            workplaceInput, 'maxLength', '255', 'The workplace website can be a maximum of 255 characters'
+            workplaceWebsiteInput, 'maxLength', '255', 'The workplace website can be a maximum of 255 characters'
         );
 
         // Create input group for start date and add to form
@@ -151,7 +151,7 @@ export default class WorkExperienceForm extends Form implements IModule  {
         
         if (this.isEditMode) {
             startDateInputId = `work-experience-start-date-${this.id}`;
-            startDateInputValue = this.startDate.toString();
+            startDateInputValue = this.startDate;
         } else {
             startDateInputId = `new-work-experience-start-date`;
             startDateInputValue = '';
@@ -178,7 +178,7 @@ export default class WorkExperienceForm extends Form implements IModule  {
         
         if (this.isEditMode) {
             endDateInputId = `work-experience-end-date-${this.id}`;
-            endDateInputValue = (this.endDate) ? this.endDate.toString() : '';
+            endDateInputValue = (this.endDate) ? this.endDate : '';
         } else {
             endDateInputId = `new-work-experience-end-date`;
             endDateInputValue = '';
@@ -257,7 +257,7 @@ export default class WorkExperienceForm extends Form implements IModule  {
             if (!await this.validator.validateField(startDateInput)) return;
             if (!await this.validator.validateField(orderInput)) return;
 
-            // Construct skill object
+            // Construct work experience object
             this.role = roleInput.value;
             this.workplace = workplaceInput.value;
             this.workplaceWebsite = workplaceWebsiteInput.value;
@@ -348,7 +348,7 @@ export default class WorkExperienceForm extends Form implements IModule  {
         });
 
         // Write success message
-        await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully added.`);
+        await app.writeMessage('success', `The work experience was successfully added.`);
     }
 
     /**

@@ -8,8 +8,8 @@ export default interface IEducationFillable {
     degree: string,
     institution: string,
     institution_website: string,
-    start_date: Date,
-    end_date: Date,
+    start_date: string,
+    end_date: string,
     type: string,
     order: number
 }
