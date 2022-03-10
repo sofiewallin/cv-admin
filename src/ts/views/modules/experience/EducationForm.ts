@@ -315,23 +315,17 @@ export default class EducationForm extends Form implements IModule  {
             if (!await this.validator.validateField(orderInput)) return;
 
             // Construct education object
-            this.name = nameInput.value;
-            this.degree = (degreeInput) ? degreeInput.value : null;
-            this.institution = institutionInput.value;
-            this.institutionWebsite = institutionWebsiteInput.value;
-            this.startDate = startDateInput.value;
-            this.endDate = endDateInput.value;
-            this.order = parseInt(orderInput.value);
+            let degreeValue = (degreeInput) ? degreeInput.value : null;
 
             const education = {
-                name: this.name,
-                degree: this.degree,
-                institution: this.institution,
-                institution_website: this.institutionWebsite,
-                start_date: this.startDate,
-                end_date: this.endDate,
+                name: nameInput.value,
+                degree: degreeValue,
+                institution: institutionInput.value,
+                institution_website: institutionWebsiteInput.value,
+                start_date: startDateInput.value,
+                end_date: endDateInput.value,
                 type: this.type,
-                order: this.order
+                order: parseInt(orderInput.value)
             }
 
             // // Calls update function or create function

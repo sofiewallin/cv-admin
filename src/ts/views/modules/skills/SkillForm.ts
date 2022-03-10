@@ -120,13 +120,10 @@ export default class SkillForm extends Form implements IModule  {
             if (!await this.validator.validateField(orderInput)) return;
 
             // Construct skill object
-            this.title = skillInput.value;
-            this.order = parseInt(orderInput.value);
-
             const skill = {
-                title: this.title,
+                title: skillInput.value,
                 type: this.type,
-                order: this.order
+                order: parseInt(orderInput.value)
             }
 
             // Calls update function or create function

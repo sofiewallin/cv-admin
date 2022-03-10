@@ -258,20 +258,13 @@ export default class WorkExperienceForm extends Form implements IModule  {
             if (!await this.validator.validateField(orderInput)) return;
 
             // Construct work experience object
-            this.role = roleInput.value;
-            this.workplace = workplaceInput.value;
-            this.workplaceWebsite = workplaceWebsiteInput.value;
-            this.startDate = startDateInput.value;
-            this.endDate = endDateInput.value;
-            this.order = parseInt(orderInput.value);
-
             const workExperience = {
-                role: this.role,
-                workplace: this.workplace,
-                workplace_website: this.workplaceWebsite,
-                start_date: this.startDate,
-                end_date: this.endDate,
-                order: this.order
+                role: roleInput.value,
+                workplace: workplaceInput.value,
+                workplace_website: workplaceWebsiteInput.value,
+                start_date: startDateInput.value,
+                end_date: endDateInput.value,
+                order: parseInt(orderInput.value)
             }
 
             // // Calls update function or create function

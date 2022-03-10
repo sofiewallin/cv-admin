@@ -64,7 +64,7 @@ export default class Form extends Module  {
         fieldType: string, 
         fieldName: string, 
         willBeValidated: boolean,
-        fieldValue: string,
+        fieldValue?: string,
         fieldPlaceholder?: string
     ): Promise<HTMLParagraphElement> {
         // Create paragraph container

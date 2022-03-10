@@ -65,8 +65,16 @@ export default class ExperienceSection extends Module implements IModule {
         this.module = section;
 
         // Create section heading and add to section
-        const heading = await this.createHeading(2, 'Experience <span class="hidden-visually">Show experiences</span>');
+        const heading = await this.createHeading(2, 'Skills');
         this.module.append(heading);
+
+        // Create show experience button and add to heading
+        const showExperienceButton = await this.createButton(
+            '<span class="hidden-visually">Show experience</span>', 
+            false, 
+            ['show-objects']
+        );
+        heading.append(showExperienceButton);
 
         // Create experiences container and add to section
         const experiencesDiv = await this.createDiv(['hidden'], 'experience-container');
@@ -90,8 +98,8 @@ export default class ExperienceSection extends Module implements IModule {
 
         // Here goes listing of education...
 
-        // Set heading to toggle experiences list
-        await this.setVisibilityToggle(heading, experiencesDiv, 'experiences');
+        // Set show experience button to toggle experiences list
+        await this.setVisibilityToggle(showExperienceButton, experiencesDiv, 'experiences');
 
         return this.module;
     }

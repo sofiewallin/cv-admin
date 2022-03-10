@@ -42,8 +42,16 @@ export default class SkillsSection extends Module implements IModule {
         this.module = section;
 
         // Create section heading and add to section
-        const heading = await this.createHeading(2, 'Skills <span class="hidden-visually">Show skills</span>');
+        const heading = await this.createHeading(2, 'Skills');
         this.module.append(heading);
+
+        // Create show skills button and add to heading
+        const showSkillsButton = await this.createButton(
+            '<span class="hidden-visually">Show skills</span>', 
+            false, 
+            ['show-objects']
+        );
+        heading.append(showSkillsButton);
 
         // Create skills container and add to section
         const skillsDiv = await this.createDiv(['hidden'], 'skills-container');
@@ -68,8 +76,8 @@ export default class SkillsSection extends Module implements IModule {
         const lingualSkills = await this.createSkillList('Lingual', skillsDiv);
         skillsDiv.append(lingualSkills);
 
-        // Set heading to toggle skills list
-        await this.setVisibilityToggle(heading, skillsDiv, 'skills');
+        // Set show skills button to toggle skills list
+        await this.setVisibilityToggle(showSkillsButton, skillsDiv, 'skills');
 
         return this.module;
     }

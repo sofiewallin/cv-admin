@@ -3,7 +3,7 @@ import IModule from "../../../interfaces/IModule";
 import IUser from "../../../interfaces/IUser";
 
 /**
- * Wrok experience article module.
+ * Work experience article module.
  * 
  * @author: Sofie Wallin
  */
@@ -56,7 +56,7 @@ export default class WorkExperienceArticle extends Article implements IModule {
         const workplaceGroup = await this.createPropertyInfo('Workplace', workplace, ['work-experience-workplace']);
         this.module.append(workplaceGroup);
         
-        // Create group for workplace and add to article
+        // Create group for workplace website and add to article
         let workplaceWebsite: string;
         if (this.workplaceWebsite) {
             workplaceWebsite = this.workplaceWebsite;
