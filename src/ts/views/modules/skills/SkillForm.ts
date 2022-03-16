@@ -158,6 +158,7 @@ export default class SkillForm extends Form implements IModule  {
         // Add a new skill to list right before add form
         const list = this.module.parentElement.parentElement;
         const listItem = document.createElement('li') as HTMLLIElement;
+        listItem.classList.add('skill', 'object', 'white');
         listItem.id = `skill-${this.id}`;
         await this.appendModule(
             new SkillArticle(
@@ -214,10 +215,10 @@ export default class SkillForm extends Form implements IModule  {
         // Set new values to paragraphs in article
         const skillArticle = this.module.previousElementSibling;
 
-        const titleParagraph = skillArticle.querySelector('.skill-title > p') as HTMLParagraphElement;
+        const titleParagraph = skillArticle.querySelector('.skill-field > p') as HTMLParagraphElement;
         titleParagraph.innerText = this.title;
 
-        const orderParagraph = skillArticle.querySelector('.skill-order > p') as HTMLParagraphElement;
+        const orderParagraph = skillArticle.querySelector('.order-field > p') as HTMLParagraphElement;
         orderParagraph.innerText = this.order.toString();
 
         // Hide form an show article

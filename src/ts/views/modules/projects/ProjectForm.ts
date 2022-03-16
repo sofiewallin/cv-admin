@@ -69,7 +69,7 @@ export default class ProjectForm extends Form implements IModule  {
             logo.src = `${baseUrl}/storage/uploads/${this.logo}`;
             logoFigure.append(logo);
         } else {
-            let logoParagraph = await this.createParagraph('Choose a logo');
+            let logoParagraph = await this.createParagraph('Choose a logo (.svg)');
             logoFigure.append(logoParagraph);
         }
         logoDiv.append(logoFigure);
@@ -137,37 +137,9 @@ export default class ProjectForm extends Form implements IModule  {
             titleInput, 'required', 'true', 'A title is required', 'Title'
         );
 
-        // Create input group for website and add to form
-        let websiteInputId: string;
-        let websiteInputValue: string;
-        
-        if (this.isEditMode) {
-            websiteInputId = `project-website-${this.id}`;
-            websiteInputValue = (this.website) ? this.website : '';
-        } else {
-            websiteInputId = `new-project-website`;
-            websiteInputValue = '';
-        }
-        
-        const websiteInputGroup = await this.createInputGroup(
-            'Website', // Label
-            'url', // Type
-            websiteInputId, // Id
-            true, // Will be validated
-            websiteInputValue, // Value
-            'Enter a url' // Placeholder
-        );
-        this.module.append(websiteInputGroup);
-
-        // Add validation to workplace website input
-        const websiteInput = websiteInputGroup.querySelector('input');
-        await this.validator.addValidationToField(
-            websiteInput, 'maxLength', '255', 'The website can be a maximum of 255 characters'
-        );
-
         // Create select group for type and add to form
         const typeSelectGroup = document.createElement('p') as HTMLParagraphElement;
-        typeSelectGroup.classList.add('form-field', 'form-select-field');
+        typeSelectGroup.classList.add('field', 'select-field', 'type-field');
 
         let typeId: string;
         let typeValue: string;
@@ -210,9 +182,37 @@ export default class ProjectForm extends Form implements IModule  {
         typeSelectGroup.append(typeSelect);
         this.module.append(typeSelectGroup);
 
+        // Create input group for website and add to form
+        let websiteInputId: string;
+        let websiteInputValue: string;
+        
+        if (this.isEditMode) {
+            websiteInputId = `project-website-${this.id}`;
+            websiteInputValue = (this.website) ? this.website : '';
+        } else {
+            websiteInputId = `new-project-website`;
+            websiteInputValue = '';
+        }
+        
+        const websiteInputGroup = await this.createInputGroup(
+            'Website', // Label
+            'url', // Type
+            websiteInputId, // Id
+            true, // Will be validated
+            websiteInputValue, // Value
+            'Enter a url' // Placeholder
+        );
+        this.module.append(websiteInputGroup);
+
+        // Add validation to workplace website input
+        const websiteInput = websiteInputGroup.querySelector('input');
+        await this.validator.addValidationToField(
+            websiteInput, 'maxLength', '255', 'The website can be a maximum of 255 characters'
+        );
+
         // Create textarea group for description and add to form
         const descriptionTextareaGroup = document.createElement('p') as HTMLParagraphElement;
-        descriptionTextareaGroup.classList.add('form-field', 'form-textarea-field');
+        descriptionTextareaGroup.classList.add('field', 'textarea-field', 'description-field');
 
         let descriptionId: string;
         let descriptionValue: string;
@@ -302,7 +302,9 @@ export default class ProjectForm extends Form implements IModule  {
             project.append('title', titleInput.value);
             project.append('website', websiteInput.value);
             project.append('description', descriptionTextarea.value);
-            project.append('logo', logoInput.files[0]);
+            if (logoInput.files.length > 0) {
+                project.append('logo', logoInput.files[0]);
+            }
             project.append('type', typeSelect.value);
             project.append('order', orderInput.value);
 
@@ -342,6 +344,7 @@ export default class ProjectForm extends Form implements IModule  {
         // Add a new work experience to list right before add form
         const list = this.module.parentElement.parentElement;
         const listItem = document.createElement('li') as HTMLLIElement;
+        listItem.classList.add('project', 'object', 'white');
         listItem.id = `project-${this.id}`;
         await this.appendModule(
             new ProjectArticle(
@@ -421,27 +424,27 @@ export default class ProjectForm extends Form implements IModule  {
         const logo = projectArticle.querySelector('img') as HTMLImageElement;
         logo.src = `${baseUrl}/storage/uploads/${this.logo}`;
 
-        const titleParagraph = projectArticle.querySelector('.project-title > p') as HTMLParagraphElement;
+        const titleParagraph = projectArticle.querySelector('.title-field > p') as HTMLParagraphElement;
         titleParagraph.innerText = this.title;
 
-        const websiteParagraph = projectArticle.querySelector('.project-website > p') as HTMLParagraphElement;
+        const typeParagraph = projectArticle.querySelector('.type-field > p') as HTMLParagraphElement;
+        typeParagraph.innerText = this.type;
+
+        const websiteParagraph = projectArticle.querySelector('.website-field > p') as HTMLParagraphElement;
         if (this.website) {
             websiteParagraph.innerHTML = this.website;
         } else {
             websiteParagraph.innerHTML = '<em>Add a website</em>';
         }
 
-        const descriptionParagraph = projectArticle.querySelector('.project-description > p') as HTMLParagraphElement;
+        const descriptionParagraph = projectArticle.querySelector('.description-field > p') as HTMLParagraphElement;
         if (this.description) {
             descriptionParagraph.innerHTML = this.description;
         } else {
             descriptionParagraph.innerHTML = '<em>Add a description</em>';
         }
 
-        const typeParagraph = projectArticle.querySelector('.project-type > p') as HTMLParagraphElement;
-        typeParagraph.innerText = this.type;
-
-        const orderParagraph = projectArticle.querySelector('.project-order > p') as HTMLParagraphElement;
+        const orderParagraph = projectArticle.querySelector('.order-field > p') as HTMLParagraphElement;
         orderParagraph.innerText = this.order.toString();
 
         // Hide form an show article

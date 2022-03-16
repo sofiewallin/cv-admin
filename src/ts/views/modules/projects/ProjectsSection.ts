@@ -13,7 +13,7 @@ import ProjectForm from "./ProjectForm";
  * @author: Sofie Wallin
  */
 export default class ProjectsSection extends Module implements IModule {
-    private projects: IProject[];
+    private projects: IProject[] = [];
 
     /**
      * Get all projects from API.
@@ -42,7 +42,7 @@ export default class ProjectsSection extends Module implements IModule {
         this.module = section;
 
         // Create section heading and add to section
-        const heading = await this.createHeading(2, 'Projects');
+        const heading = await this.createHeading(2, 'Projects', ['heading', 'big-heading']);
         this.module.append(heading);
 
         // Create show projects button and add to heading
@@ -61,7 +61,7 @@ export default class ProjectsSection extends Module implements IModule {
         this.projects = await this.getProjects();
 
         // Create project list and add to projects container
-        const projects = await this.createProjectList(projectsDiv);
+        const projects = await this.createProjectList();
         projectsDiv.append(projects);
 
         // Set show projects button to toggle projects list
@@ -75,77 +75,57 @@ export default class ProjectsSection extends Module implements IModule {
      * 
      * Creates a list of projects based on type.
      */
-    async createProjectList(container: HTMLDivElement): Promise<HTMLUListElement> {
-        // Create heading
-        const heading = await this.createHeading(3, 'Projects');
-        container.append(heading);
-
-        // Create ul list
-        const projectListItems = await this.createProjectListItems();
-        const projectList = await this.createUlList('projects', projectListItems);
-        
-        return projectList;
-    }
-
-    /**
-     * Create project list items.
-     * 
-     * Creates an article and a form for each project and adds it
-     * to a list item. Also creates a form for adding new projects
-     * in a list item and adds it at the bottom of the list.
-     */
-    async createProjectListItems(): Promise<HTMLLIElement[]> {
+    async createProjectList(): Promise<HTMLUListElement> {
         let listItems: HTMLLIElement[] = [];
 
         /* Maps list of projects and adds a project 
         article module and a project form module */
-        if (this.projects.length > 0) {
-            const result = this.projects.map(async project => {
-                // Create list item
-                const listItem = document.createElement('li') as HTMLLIElement;
-                listItem.id = `project-${project.id}`;
+        const result = this.projects.map(async project => {
+            // Create list item
+            const listItem = document.createElement('li') as HTMLLIElement;
+            listItem.classList.add('project', 'object', 'white');
+            listItem.id = `project-${project.id}`;
 
-                // Add project article module
-                await this.appendModule(
-                    new ProjectArticle(
-                        this.apiUrl,
-                        this.user,
-                        project.id, 
-                        project.title, 
-                        project.website,
-                        project.description,
-                        project.logo,
-                        project.type,
-                        project.order
-                    ), listItem
-                );
-                
-                // Add project form module
-                await this.appendModule(
-                    new ProjectForm(
-                        this.apiUrl, 
-                        this.user, 
-                        true,
-                        'Project',
-                        project.id, 
-                        project.title, 
-                        project.website,
-                        project.description,
-                        project.logo,
-                        project.type,
-                        project.order
-                    ), listItem
-                );
-                
-                // Add list item to list
-                listItems.push(listItem);
-            });
-            await Promise.all(result);
-        }
+            // Add project article module
+            await this.appendModule(
+                new ProjectArticle(
+                    this.apiUrl,
+                    this.user,
+                    project.id, 
+                    project.title, 
+                    project.website,
+                    project.description,
+                    project.logo,
+                    project.type,
+                    project.order
+                ), listItem
+            );
+            
+            // Add project form module
+            await this.appendModule(
+                new ProjectForm(
+                    this.apiUrl, 
+                    this.user, 
+                    true,
+                    'Project',
+                    project.id, 
+                    project.title, 
+                    project.website,
+                    project.description,
+                    project.logo,
+                    project.type,
+                    project.order
+                ), listItem
+            );
+            
+            // Add list item to list
+            listItems.push(listItem);
+        });
+        await Promise.all(result);
 
         // Create a list item with a form for adding new projects
         const newProjectFormListItem = document.createElement('li') as HTMLLIElement;
-        newProjectFormListItem.classList.add('new-project');
+        newProjectFormListItem.classList.add('new-project', 'object', 'white');
         await this.appendModule(
             new ProjectForm(this.apiUrl, this.user, false, 'Project'), 
             newProjectFormListItem
@@ -154,6 +134,9 @@ export default class ProjectsSection extends Module implements IModule {
         // Add list item to list
         listItems.push(newProjectFormListItem);
 
-        return listItems;
+        // Create ul list
+        const projectList = await this.createUlList('projects', listItems, ['object-list']);
+        
+        return projectList;
     }
 }

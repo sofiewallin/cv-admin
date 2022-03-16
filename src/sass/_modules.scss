@@ -1,0 +1,768 @@
+/**
+ * Modules.
+ * 
+ * 1. Main header
+ * 2. Message
+ * 3. Sections
+ * 4. Objects
+ * 5. Buttons
+ * 6. Main footer
+ * 7. Login form
+ * 
+ * Author: Sofie Wallin
+ */
+
+/*------------------------------------*\
+    1. MAIN HEADER
+\*------------------------------------*/
+
+/*------ Logo ------*/
+
+#main-header .logo {
+    float: left;
+    overflow: hidden;
+    position: relative;
+    z-index: 3;
+
+    @include block;
+    height: 56px;
+    width: 56px;
+
+    @include breakpoint(tablet) {
+        height: 64px;
+        width: 64px;
+    }
+
+    @include breakpoint(tablet) {
+        height: 72px;
+        width: 72px;
+    }
+}
+
+/*------ Navigation ------*/
+
+#main-navigation {
+    float: right;
+    width: calc(100% - 56px);
+
+    @include breakpoint(tablet) {
+        width: calc(100% - 64px);
+    }
+
+    @include breakpoint(tablet) {
+        width: calc(100% - 72px);
+    }
+}
+
+// Toggle menu button
+.toggle-menu-button {
+    float: right;
+    height: 24px;
+    margin: 16px 0;
+    position: relative;
+    width: 24px;
+    z-index: 3;
+
+    &::before,
+    &::after {
+        @include pseudo-block;
+        background-color: $dark-gray-green;
+        border-radius: 1px;
+        content: '';
+        height: 2px;
+        left: 0;
+        transition: all 0.2s ease-in;
+        width: 24px;
+    }
+
+    &::before {
+        top: 6px;
+    }
+
+    &::after {
+        bottom: 6px;
+    }
+
+    &:hover {
+        &::before {
+            top: 5px;
+        }
+    
+        &::after {
+            bottom: 5px;
+        }
+    }
+
+    &.hide {
+        &::before {
+            top: 11px;
+            transform: rotate(-45deg);
+        }
+    
+        &::after {
+            bottom: 11px;
+            transform: rotate(45deg);
+        }
+    }
+
+    @include breakpoint(tablet) {
+        display: none;
+    }
+}
+
+// Menu
+.menu {
+    background-color: rgba($light-yellow, 0.9);
+    left: 0;
+    list-style: none;
+    padding: 104px 20px 16px;
+    position: absolute;
+    text-align: right;
+    top: 0;
+    width: 100%;
+
+    a {
+        display: inline-block;
+    }
+
+    .logout-button {
+        margin-top: 24px;
+    }
+
+    @include breakpoint(tablet) {
+        height: 64px;
+        max-height: 64px;
+        padding: 0;
+        position: relative;
+
+        &.hidden {
+            overflow: visible;
+            visibility: visible;
+    
+            * {
+                opacity: 1;
+            }
+        }
+
+        li {
+            @include inline-block;
+            height: 64px;
+            line-height: 64px;
+            margin-left: 40px;
+
+            @include breakpoint(tablet) {
+                height: 72px;
+                line-height: 72px;
+            }
+        }
+
+        a {
+            margin-bottom: 0;
+        }
+
+        .logout-button {
+            margin-top: 0;
+            margin-left: 80px;
+        }
+    }
+
+    @include breakpoint(desktop) {
+        height: 72px;
+        max-height: 72px;
+    }
+}
+
+/*------------------------------------*\
+    2. MESSAGE
+\*------------------------------------*/
+
+#message {
+    @include block;
+    height: 48px;
+    left: 0;
+    line-height: 28px;
+    padding: 10px;
+    position: fixed;
+    top: -48px;
+    transform: translateY(0);
+    transition: transform 0.4s ease-in;
+    width: 100%;
+    z-index: 4;
+
+    &.is-active {
+        transform: translateY(48px);
+
+        @include breakpoint(tablet) {
+            transform: translateY(64px);
+        }
+    }
+
+    &.error {
+        background-color: rgba($error-color, 0.9);
+    }
+
+    &.success {
+        background-color: rgba($gray-green, 0.9);
+    }
+
+    @include breakpoint(tablet) {
+        height: 64px;
+        line-height: 44px;
+        top: -64px;
+    }
+}
+
+
+/*------------------------------------*\
+    3. SECTIONS
+\*------------------------------------*/
+
+section {
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+}
+
+// Show objects button
+.show-objects {
+    background-color: transparent;
+    height: 88px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    &::after {
+        @include pseudo-block;
+        content: '';
+        background: url('../images/arrow_down.svg') no-repeat center center;
+        background-size: 20px 12px;
+        height: 12px;
+        margin-top: -6px;
+        right: 0;
+        top: 50%;
+        width: 20px;
+    }
+
+    &.hide {
+        &::after {
+            transform: rotate(180deg);
+        }
+    }
+
+    @include breakpoint(tablet) {
+        height: 152px;
+
+        &::after {
+            @include pseudo-block;
+            background-size: 24px 14px;
+            height: 14px;
+            margin-top: -7px;
+            width: 24px;
+        }
+    }
+}
+
+/*------------------------------------*\
+    4. OBJECTS
+\*------------------------------------*/
+
+.object {
+    box-shadow: 0px 6px 6px 0px rgba($dark-gray-green, 0.1);
+    list-style-type: none;
+    padding: 16px;
+    position: relative;
+}
+
+.object article,
+.object form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 16px;
+    row-gap: 16px;
+
+    @include breakpoint(tablet) {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    @include breakpoint(desktop-small) {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+
+/*------ Fields ------*/
+
+.logo-container,
+.field {
+    grid-column: 1/5;
+}
+
+.url-field {
+    word-break: break-all;
+}
+
+.number-field {
+    grid-column: 1/2;
+}
+
+input,
+textarea,
+select,
+.label + p,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    @include block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-width: 1px;
+    border-style: solid;
+}
+
+input,
+textarea,
+select,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    border-color: $border-color;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.label + p,
+.file-field input {
+    border-color: $white;
+}
+
+.file-field input {
+    padding: 0;
+}
+
+textarea {
+    height: 160px;
+    min-height: 160px;
+    max-width: 100%;
+
+    @include breakpoint(mobile-big) {
+        height: 136px;
+        min-height: 136px;
+    }
+
+    @include breakpoint(tablet) {
+        height: 208px;
+        min-height: 208px;
+    }
+
+    @include breakpoint(desktop-small) {
+        height: 128px;
+        min-height: 128px;
+    }
+}
+
+// Logo
+.logo-container {
+    padding-top: 28px;
+    position: relative;
+
+    .logo {
+        background-color: $light-gray;
+        display: flex;
+        height: 144px;
+        justify-content: center;
+        line-height: 80px;
+        padding: 32px 56px;
+        text-align: center;
+
+        img {
+            margin: 0 auto;
+            max-width: 288px;
+        }
+
+        @include breakpoint(mobile-big) {
+            height: 184px;
+            line-height: 88px;
+            padding: 48px 104px;
+        }
+
+        @include breakpoint(desktop-small) {
+            height: 254px;
+            line-height: 126px;
+            padding: 64px;
+        }
+
+        @include breakpoint(desktop) {
+            height: 216px;
+            line-height: 120px;
+            padding: 48px;
+        }
+    }
+
+    label {
+        left: 0;
+        position: absolute;
+        top: 0;
+    }
+
+    .logo-field {
+        margin-top: 16px;
+    }
+
+    @include breakpoint(tablet) {
+        grid-column: 1/9;
+    }
+
+    @include breakpoint(desktop-small) {
+        grid-column: 1/5;
+        grid-row: 1/4;
+    }
+
+    @include breakpoint(desktop) {
+        grid-column: 1/4;
+    }
+}
+
+article .logo-container {
+    padding-top: 0;
+}
+
+@include breakpoint(mobile-big) {
+    
+    .project .title-field,
+    .new-project .title-field,
+    .role-field,
+    .institution-field,
+    .start-date-field {
+        grid-column: 1/3;
+    }
+    
+    .type-field,
+    .workplace-field,
+    .institution-website-field,
+    .end-date-field {
+        grid-column: 3/5;
+    }
+}
+
+@include breakpoint(tablet) {
+    .project .title-field,
+    .new-project .title-field,
+    .type-field {
+        grid-column: 1/5;
+    }
+
+    .role-field,
+    .workplace-field,
+    .name-field,
+    .degree-field,
+    .institution-field {
+        grid-column: 1/6;
+    }
+
+    .workplace-website-field,
+    .institution-website-field {
+        grid-column: 1/9;
+    }
+    
+    .description-field {
+        grid-column: 5/9;
+        grid-row: 2/5;
+    }
+
+    .skill-field {
+        grid-column: 1/4;
+    }
+
+    .new-skill .number-field,
+    .skill .number-field {
+        grid-column: 4/5;
+    }
+
+    .start-date-field,
+    .end-date-field {
+        grid-column: 6/9;
+    }
+
+    .start-date-field {
+        grid-row: 1/2;
+    }
+
+    .end-date-field {
+        grid-row: 2/3;
+    }
+}
+
+@include breakpoint(desktop-small) {
+    .project .title-field,
+    .new-project .title-field {
+        grid-column: 5/10;
+    }
+
+    .type-field {
+        grid-column: 10/13;
+    }
+
+    .project .title-field,
+    .new-project .title-field,
+    .type-field {
+        grid-row: 1/2;
+    }
+
+    .website-field,
+    .description-field {
+        grid-column: 5/13;
+    }
+
+    .website-field {
+        grid-row: 2/3;
+    }
+
+    .description-field {
+        grid-row: 3/4;
+    }
+
+    .skill-field {
+        grid-column: 1/6;
+    }
+
+    .new-skill .number-field,
+    .skill .number-field {
+        grid-column: 6/7;
+    }
+
+    .role-field,
+    .workplace-field,
+    .workplace-website-field,
+    .name-field,
+    .degree-field {
+        grid-column: 1/6;
+    }
+
+    .work-experience .start-date-field,
+    .new-work-experience .start-date-field,
+    .work-experience .end-date-field,
+    .new-work-experience .end-date-field {
+        grid-column: 6/10;
+    }
+
+    .work-experience .order-field,
+    .new-work-experience .order-field {
+        grid-row: 1/2;
+        grid-column: 12/13;
+    }
+
+    .institution-field,
+    .institution-website-field {
+        grid-column: 6/10;
+    }
+
+    .institution-field {
+        grid-row: 1/2;
+    }
+
+    .institution-website-field {
+        grid-row: 2/3;
+    }
+
+    .education .start-date-field,
+    .new-education .start-date-field,
+    .education .end-date-field,
+    .new-education .end-date-field {
+        grid-column: 10/13;
+    }
+
+    .education .order-field,
+    .new-education .order-field {
+        grid-row: 3/4;
+    }
+}
+
+@include breakpoint(desktop) {
+    .role-field,
+    .name-field,
+    .degree-field {
+        grid-column: 1/5;
+    }
+
+    .workplace-field,
+    .workplace-website-field,
+    .institution-field,
+    .institution-website-field {
+        grid-column: 5/8;
+    }
+
+    .work-experience .start-date-field,
+    .new-work-experience .start-date-field,
+    .work-experience .end-date-field,
+    .new-work-experience .end-date-field,
+    .education .start-date-field,
+    .new-education .start-date-field,
+    .education .end-date-field,
+    .new-education .end-date-field {
+        grid-column: 8/10;
+    }
+
+    .work-experience .order-field,
+    .new-work-experience .order-field,
+    .education .order-field,
+    .new-education .order-field {
+        grid-column: 12/13;
+        grid-row: 1/2;
+    }
+
+    .project .title-field,
+    .new-project .title-field,
+    .website-field,
+    .type-field {
+        grid-column: 4/7;
+    }
+
+    .project .title-field,
+    .new-project .title-field {
+        grid-row: 1/2;
+    }
+
+    .type-field {
+        grid-row: 2/3;
+    }
+
+    .website-field {
+        grid-row: 3/4;
+    }
+
+    .description-field {
+        grid-column: 7/12;
+        grid-row: 1/4;
+    }
+
+    .project .order-field,
+    .new-project .order-field {
+        grid-column: 12/13;
+        grid-row: 1/2;
+    }
+}
+
+// Errors
+input.invalid,
+input.invalid:focus-visible {
+    border-color: $error-color;
+}
+
+/*------------------------------------*\
+    5. BUTTONS
+\*------------------------------------*/
+
+.buttons-container {
+    bottom: 16px;
+    position: absolute;
+    right: 16px;
+}
+
+.button,
+.cancel-button,
+.delete-button {
+    height: 32px;
+    line-height: 32px;
+}
+
+.button {
+    background-color: $dark-orange;
+    border-radius: 16px;
+    padding: 0 16px;
+
+    &:hover {
+        background-color: darken($dark-orange, 10);
+    }
+
+    &.button-big {
+        border-radius: 24px;
+        height: 48px;
+        line-height: 48px;
+        padding: 0 32px;
+    }
+}
+
+.cancel-button,
+.delete-button { 
+    margin-right: 24px;
+
+    @include breakpoint(tablet) {
+        margin-right: 32px;
+    }
+}
+
+/*------------------------------------*\
+    6. MAIN FOOTER
+\*------------------------------------*/
+
+/*------ Copyright ------*/
+
+.copyright {
+    @include breakpoint(tablet) {
+        float: left;
+        height:64px;
+        width: calc(100% - 104px);
+    }
+}
+
+/*------ Back to top link ------*/
+
+.back-to-top {
+    @include block;
+    background: $gray-green url('../images/arrow_up.svg') no-repeat center center;
+    background-size: 12px 18px;
+    border-radius: 24px;
+    height: 48px;
+    margin: 32px auto 0;
+    width: 48px;
+    
+    &:hover {
+        background-color: lighten($gray-green, 10);
+    }
+    
+    @include breakpoint(tablet) {
+        background-size: 16px 24px;
+        border-radius: 32px;
+        float: right;
+        height: 64px;
+        margin: 0;
+        width: 64px;
+    }
+}
+
+/*------------------------------------*\
+    7. LOGIN FORM
+\*------------------------------------*/
+
+.login-form {
+    margin: 0 auto 32px;
+    max-width: 564px;
+
+    .form-field,
+    .form-message.is-active {
+        margin-bottom: 16px;
+
+        @include breakpoint(tablet) {
+            margin-bottom: 24px;
+        }
+    }
+
+    .form-submit-field {
+        margin-top: 24px;
+
+        @include breakpoint(tablet) {
+            margin-top: 32px;
+        }
+    }
+
+    input {
+        border-color: $dark-gray-green;
+    }
+
+    @include breakpoint(tablet) {
+        margin-bottom: 64px;
+    }
+
+}

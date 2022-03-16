@@ -52,7 +52,7 @@ export default class App {
     /**
      * Clear application.
      */
-    async clear() {
+    async clear(): Promise<void> {
         // Clear the application content
         this.appContent.innerHTML = '';
         
@@ -61,18 +61,16 @@ export default class App {
         
         // Remove navigation, logout button and back to top link
         const navigation = document.querySelector('#main-navigation');
-        const logoutButton = document.querySelector('.logout-button');
-        const backToTopLink = document.querySelector('#back-to-top');
+        const backToTopLink = document.querySelector('.back-to-top');
 
         if (navigation) navigation.remove();
-        if (logoutButton) logoutButton.remove();
         if (backToTopLink) backToTopLink.remove();
     }
 
     /**
      * Write flash message.
      */
-    async writeMessage(type: string, message: string) {
+    async writeMessage(type: string, message: string): Promise<void> {
         // Get message element, activate it and write message
         const messageElement = document.querySelector('#message') as HTMLElement;
         messageElement.classList.add(type, 'is-active');

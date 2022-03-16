@@ -2,7 +2,6 @@ import View from "./View";
 import IView from "../interfaces/IView";
 import IUser from "../interfaces/IUser";
 import Navigation from "./modules/Navigation";
-import LogoutButton from "./modules/LogoutButton";
 import ProjectSection from "./modules/projects/ProjectsSection";
 import SkillsSection from "./modules/skills/SkillsSection";
 import ExperienceSection from "./modules/experience/ExperienceSection";
@@ -16,13 +15,13 @@ import BackToTopLink from "./modules/BackToTopLink";
  * @author: Sofie Wallin
  */
 export default class HomeView extends View implements IView {
-    readonly mainHeader: HTMLElement;
+    readonly topBar: HTMLElement;
     readonly mainFooter: HTMLElement;
 
     constructor(apiUrl: string, user: IUser, appContent: HTMLElement) {
         super(apiUrl, user, appContent);
 
-        this.mainHeader = document.querySelector('#main-header') as HTMLElement;
+        this.topBar = document.querySelector('.top-bar') as HTMLElement;
         this.mainFooter = document.querySelector('#main-footer') as HTMLElement;
     }
 
@@ -33,15 +32,7 @@ export default class HomeView extends View implements IView {
      */
     async render(): Promise<void> {
         // Add navigation module in header
-        await this.appendModule(new Navigation(), this.mainHeader);
-
-        // Add log out button module in header
-        await this.appendModule(new LogoutButton(this.apiUrl, this.user), this.mainHeader);
-
-        // Add H1 heading that will be visually hidden
-        const heading = document.createElement('h1') as HTMLHeadingElement;
-        heading.innerHTML = '<span class="hidden-visually">Administration</span>';
-        this.appContent.append(heading);
+        await this.appendModule(new Navigation(this.apiUrl, this.user), this.topBar);
 
         // Add projects section module in app content container
         await this.appendModule(new ProjectSection(this.apiUrl, this.user), this.appContent);

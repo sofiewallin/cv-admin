@@ -15,7 +15,7 @@ export default class Auth {
     /**
      * Log in user in API and in application.
      */
-    async loginUser(loginDetails: ILoginDetails, apiUrl: string): Promise<void|IError> {
+    async logInUser(loginDetails: ILoginDetails, apiUrl: string): Promise<void|IError> {
         try {
             const response = await fetch(`${apiUrl}/login`, {
                 method: 'POST',
@@ -60,7 +60,7 @@ export default class Auth {
     /**
      * Log out user in API and in application.
      */
-    async logoutUser(apiUrl: string, user: IUser): Promise<void|IError> { 
+    async logOutUser(apiUrl: string, user: IUser): Promise<void|IError> { 
         try {
             const response = await fetch(`${apiUrl}/logout`, {
                 method: 'POST',
@@ -81,7 +81,7 @@ export default class Auth {
             localStorage.removeItem('user');
 
             // Rerender the application
-            const app = new App()
+            const app = new App();
             await app.render();
             await app.writeMessage('success', result.message);
 

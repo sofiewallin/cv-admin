@@ -365,6 +365,7 @@ export default class EducationForm extends Form implements IModule  {
         // Add a new education to list right before add form
         const list = this.module.parentElement.parentElement;
         const listItem = document.createElement('li') as HTMLLIElement;
+        listItem.classList.add('education', 'object', 'white');
         listItem.id = `education-${this.id}`;
         await this.appendModule(
             new EducationArticle(
@@ -438,11 +439,11 @@ export default class EducationForm extends Form implements IModule  {
         // Set new values to paragraphs in article
         const educationArticle = this.module.previousElementSibling;
 
-        const nameParagraph = educationArticle.querySelector('.education-name > p') as HTMLParagraphElement;
+        const nameParagraph = educationArticle.querySelector('.name-field > p') as HTMLParagraphElement;
         nameParagraph.innerText = this.name;
 
         if (this.type === 'Program') {
-            const degreeParagraph = educationArticle.querySelector('.education-degree > p') as HTMLParagraphElement;
+            const degreeParagraph = educationArticle.querySelector('.degree-field > p') as HTMLParagraphElement;
             if (this.degree) {
                 degreeParagraph.innerHTML = this.degree;
             } else {
@@ -450,27 +451,27 @@ export default class EducationForm extends Form implements IModule  {
             }
         }
 
-        const institutionParagraph = educationArticle.querySelector('.education-institution > p') as HTMLParagraphElement;
+        const institutionParagraph = educationArticle.querySelector('.institution-field > p') as HTMLParagraphElement;
         institutionParagraph.innerText = this.institution;
 
-        const institutionWebsiteParagraph = educationArticle.querySelector('.education-institution-website > p') as HTMLParagraphElement;
+        const institutionWebsiteParagraph = educationArticle.querySelector('.institution-website-field > p') as HTMLParagraphElement;
         if (this.institutionWebsite) {
             institutionWebsiteParagraph.innerHTML = this.institutionWebsite;
         } else {
             institutionWebsiteParagraph.innerHTML = '<em>Add a website</em>';
         }
 
-        const startDateParagraph = educationArticle.querySelector('.education-start-date > p') as HTMLParagraphElement;
+        const startDateParagraph = educationArticle.querySelector('.start-date-field > p') as HTMLParagraphElement;
         startDateParagraph.innerText = this.startDate;
 
-        const endDateParagraph = educationArticle.querySelector('.education-end-date > p') as HTMLParagraphElement;
+        const endDateParagraph = educationArticle.querySelector('.end-date-field > p') as HTMLParagraphElement;
         if (this.endDate) {
             endDateParagraph.innerHTML = this.endDate;
         } else {
             endDateParagraph.innerHTML = 'Present';
         }
 
-        const orderParagraph = educationArticle.querySelector('.education-order > p') as HTMLParagraphElement;
+        const orderParagraph = educationArticle.querySelector('.order-field > p') as HTMLParagraphElement;
         orderParagraph.innerText = this.order.toString();
 
         // Hide form an show article

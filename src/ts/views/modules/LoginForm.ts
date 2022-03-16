@@ -27,7 +27,7 @@ export default class LoginForm extends Module implements IModule {
         this.module = form;
 
         // Create form heading and add to form
-        const heading = await this.createHeading(1, 'Log in');
+        const heading = await this.createHeading(1, 'Log in', ['heading', 'big-heading']);
         this.module.append(heading);
 
         // Create form message container and add to form
@@ -45,7 +45,7 @@ export default class LoginForm extends Module implements IModule {
 
         // Create button group and add to form
         const pSubmit = await this.createParagraph('', ['form-field', 'form-submit-field']);
-        const button = await this.createButton('Log in', true, ['button']);
+        const button = await this.createButton('Log in', true, ['button', 'button-big']);
         pSubmit.append(button);
 
         this.module.append(pSubmit);
@@ -105,14 +105,14 @@ export default class LoginForm extends Module implements IModule {
             }
 
             // Log in user
-            await this.loginUser(loginDetails);
+            await this.logInUser(loginDetails);
         });
     }
 
     /**
      * Log in user after submitting form.
      */
-    async loginUser(loginDetails: ILoginDetails): Promise<void>  {
+    async logInUser(loginDetails: ILoginDetails): Promise<void>  {
         // Write error message if one or both input fields are empty
         if (loginDetails.username === '' || loginDetails.password === '') {
             await this.writeFormError('You have to enter both a username and a password.');
@@ -121,7 +121,7 @@ export default class LoginForm extends Module implements IModule {
 
         // Log in user
         const auth = new Auth();
-        let loginUser = await auth.loginUser(loginDetails, this.apiUrl);
+        let loginUser = await auth.logInUser(loginDetails, this.apiUrl);
 
         // Write error message if there is one
         if (loginUser !== undefined) {

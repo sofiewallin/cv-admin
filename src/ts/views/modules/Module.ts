@@ -30,11 +30,13 @@ export default class Module extends View {
      * 
      * Creates and returns an article element.
      */
-    async createArticle(htmlClasses: string[]): Promise<HTMLElement> {
+    async createArticle(htmlClasses?: string[]): Promise<HTMLElement> {
         const article = document.createElement('article') as HTMLElement;
-        htmlClasses.forEach(htmlClass => {
-            article.classList.add(htmlClass);
-        });
+        if (htmlClasses) {
+            htmlClasses.forEach(htmlClass => {
+                article.classList.add(htmlClass);
+            });
+        }
 
         return article;
     }
@@ -47,7 +49,7 @@ export default class Module extends View {
     async createDiv(htmlClasses?: string[], id?: string): Promise<HTMLDivElement> {
         const div = document.createElement('div') as HTMLDivElement;
         if (id) div.id = id;
-        if (htmlClasses.length > 0) {
+        if (htmlClasses) {
             htmlClasses.forEach(htmlClass => {
                 div.classList.add(htmlClass);
             });
@@ -95,9 +97,14 @@ export default class Module extends View {
      * 
      * Creates and returns a ul element.
      */
-    async createUlList(id: string, listItems: HTMLLIElement[]): Promise<HTMLUListElement> {
+    async createUlList(id: string, listItems: HTMLLIElement[], htmlClasses?: string[]): Promise<HTMLUListElement> {
         const ul = document.createElement('ul') as HTMLUListElement;
         ul.id = id;
+        if (htmlClasses) {
+            htmlClasses.forEach(htmlClass => {
+                ul.classList.add(htmlClass);
+            });
+        }
         listItems.forEach(listItem => {
             ul.append(listItem);
         });

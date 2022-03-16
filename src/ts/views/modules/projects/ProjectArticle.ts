@@ -39,12 +39,15 @@ export default class ProjectArticle extends Article implements IModule {
      */
     async create(): Promise<HTMLElement> {
         // Create article and set as module
-        const article = await this.createArticle(['project']);
+        const article = await this.createArticle();
         this.module = article;
 
         // Create group for logo and add to article
         const logoGroup = await this.createDiv(['logo-container']);
         this.module.append(logoGroup);
+
+        const logoLabel = await this.createHeading(4, 'Logo', ['label']);
+        logoGroup.append(logoLabel);
 
         const logoFigure = document.createElement('figure') as HTMLElement;
         logoFigure.classList.add('logo');
@@ -57,8 +60,12 @@ export default class ProjectArticle extends Article implements IModule {
         logoFigure.append(logo);
 
         // Create group for title and add to article
-        const titleGroup = await this.createPropertyInfo('Title', this.title, ['project-title']);
+        const titleGroup = await this.createPropertyInfo('Title', this.title, ['field', 'title-field']);
         this.module.append(titleGroup);
+
+        // Create group for type and add to article
+        const typeGroup = await this.createPropertyInfo('Type', this.type, ['field', 'type-field']);
+        this.module.append(typeGroup);
 
         // Create group for website and add to article
         let website: string;
@@ -67,7 +74,7 @@ export default class ProjectArticle extends Article implements IModule {
         } else {
             website = '<em>Add a website</em>';
         }
-        const websiteGroup = await this.createPropertyInfo('Website', website, ['project-website']);
+        const websiteGroup = await this.createPropertyInfo('Website', website, ['field', 'url-field', 'website-field']);
         this.module.append(websiteGroup);
 
         // Create group for description and add to article
@@ -77,20 +84,20 @@ export default class ProjectArticle extends Article implements IModule {
         } else {
             description = '<em>Add a description</em>'
         }
-        const descriptionGroup = await this.createPropertyInfo('Description', description, ['project-description']);
+        const descriptionGroup = await this.createPropertyInfo('Description', description, ['field', 'description-field']);
         this.module.append(descriptionGroup);
 
-        // Create group for type and add to article
-        const typeGroup = await this.createPropertyInfo('Type', this.type, ['project-type']);
-        this.module.append(typeGroup);
-
         // Create group for order and add to article
-        const orderGroup = await this.createPropertyInfo('Order', this.order.toString(), ['project-order']);
+        const orderGroup = await this.createPropertyInfo('Order', this.order.toString(), ['field', 'order-field']);
         this.module.append(orderGroup);
 
-        // Create edit button and add to article
+        // Create buttons container and add to article
+        const buttonsContainer = await this.createDiv(['buttons-container']);
+        this.module.append(buttonsContainer);
+
+        // Create edit button and add to buttons container
         const editButton = await this.createEditButton();
-        this.module.append(editButton);
+        buttonsContainer.append(editButton);
 
         // Add event listener to edit button
         await this.handleEditClick(editButton);

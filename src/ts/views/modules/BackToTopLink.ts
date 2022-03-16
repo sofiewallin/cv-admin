@@ -15,7 +15,7 @@ export default  class BackToTopLink extends Module implements IModule {
     async create(): Promise<HTMLElement> {
         // Create anchor link
         const link = document.createElement('a') as HTMLAnchorElement;
-        link.id = 'back-to-top';
+        link.classList.add('back-to-top');
         link.href = '#';
         link.innerHTML = '<span class="hidden-visually">Back to top</span>';
 

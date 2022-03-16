@@ -17,13 +17,13 @@ import EducationForm from "./EducationForm";
  * @author: Sofie Wallin
  */
 export default class ExperienceSection extends Module implements IModule {
-    private workExperiences: IWorkExperience[];
-    private education: IEducation[];
+    private workExperiences: IWorkExperience[] = [];
+    private education: IEducation[] = [];
 
     /**
      * Get all work experiences from API.
      */
-     async getWorkExperiences(): Promise<IWorkExperience[]> {
+    async getWorkExperiences(): Promise<IWorkExperience[]> {
         // Get all work experiences in model
         const workExperienceModel = new WorkExperience(this.apiUrl, this.user);
         let workExperiences = await workExperienceModel.readAll();
@@ -41,7 +41,7 @@ export default class ExperienceSection extends Module implements IModule {
     /**
      * Get all education from API.
      */
-     async getEducation(): Promise<IEducation[]> {
+    async getEducation(): Promise<IEducation[]> {
         // Get all education in model
         const educationModel = new Education(this.apiUrl, this.user);
         let education = await educationModel.readAll();
@@ -65,7 +65,7 @@ export default class ExperienceSection extends Module implements IModule {
         this.module = section;
 
         // Create section heading and add to section
-        const heading = await this.createHeading(2, 'Skills');
+        const heading = await this.createHeading(2, 'Experience', ['heading', 'big-heading']);
         this.module.append(heading);
 
         // Create show experience button and add to heading
@@ -96,8 +96,6 @@ export default class ExperienceSection extends Module implements IModule {
         const courses = await this.createList('Courses', experiencesDiv);
         experiencesDiv.append(courses);
 
-        // Here goes listing of education...
-
         // Set show experience button to toggle experiences list
         await this.setVisibilityToggle(showExperienceButton, experiencesDiv, 'experiences');
 
@@ -111,13 +109,13 @@ export default class ExperienceSection extends Module implements IModule {
      */
      async createList(objectType: string, container: HTMLDivElement): Promise<HTMLUListElement> {
         // Create heading
-        const heading = await this.createHeading(3, objectType);
+        const heading = await this.createHeading(3, objectType, ['heading', 'medium-heading']);
         container.append(heading);
 
         // Create ul list based on type
         let listId: string;
         let listItems: HTMLLIElement[];
-        let filteredEducation: IEducation[];
+        let filteredEducation: IEducation[] = [];
 
         if (objectType === 'Work') {
             listId = 'work-experiences';
@@ -132,7 +130,7 @@ export default class ExperienceSection extends Module implements IModule {
             listItems = await this.createListItems(filteredEducation, 'Course');
         }
 
-        const list = await this.createUlList(listId, listItems);
+        const list = await this.createUlList(listId, listItems, ['object-list']);
         
         return list;
     }
@@ -148,36 +146,19 @@ export default class ExperienceSection extends Module implements IModule {
         let listItems: HTMLLIElement[] = [];
 
         if (!objects) {
-            if (this.workExperiences.length > 0) {
-                const result = this.workExperiences.map(async workExperience => {
-                    // Create list item
-                    const listItem = document.createElement('li') as HTMLLIElement;
-                    listItem.id = `work-experience-${workExperience.id}`;
+            const result = this.workExperiences.map(async workExperience => {
+                // Create list item
+                const listItem = document.createElement('li') as HTMLLIElement;
+                listItem.classList.add('work-experience', 'object', 'white');
+                listItem.id = `work-experience-${workExperience.id}`;
 
-                    // Add work experience article module
-                    await this.appendModule(
-                        new WorkExperienceArticle(
-                            this.apiUrl,
-                            this.user,
-                            workExperience.id, 
-                            workExperience.role, 
-                            workExperience.workplace,
-                            workExperience.workplace_website,
-                            workExperience.start_date,
-                            workExperience.end_date,
-                            workExperience.order
-                        ), listItem
-                    );
-                
-                // Add work experience form module
+                // Add work experience article module
                 await this.appendModule(
-                    new WorkExperienceForm(
-                        this.apiUrl, 
-                        this.user, 
-                        true,
-                        'Work experience',
+                    new WorkExperienceArticle(
+                        this.apiUrl,
+                        this.user,
                         workExperience.id, 
-                        workExperience.role,
+                        workExperience.role, 
                         workExperience.workplace,
                         workExperience.workplace_website,
                         workExperience.start_date,
@@ -185,16 +166,32 @@ export default class ExperienceSection extends Module implements IModule {
                         workExperience.order
                     ), listItem
                 );
-                
-                // Add list item to list
-                listItems.push(listItem);
-                });
-                await Promise.all(result);
-            }
+            
+            // Add work experience form module
+            await this.appendModule(
+                new WorkExperienceForm(
+                    this.apiUrl, 
+                    this.user, 
+                    true,
+                    'Work experience',
+                    workExperience.id, 
+                    workExperience.role,
+                    workExperience.workplace,
+                    workExperience.workplace_website,
+                    workExperience.start_date,
+                    workExperience.end_date,
+                    workExperience.order
+                ), listItem
+            );
+            
+            // Add list item to list
+            listItems.push(listItem);
+            });
+            await Promise.all(result);
 
             // Create a list item with a form for adding new work experiences
             const newWorkExperienceFormListItem = document.createElement('li') as HTMLLIElement;
-            newWorkExperienceFormListItem.classList.add('new-work-experience');
+            newWorkExperienceFormListItem.classList.add('new-work-experience', 'object', 'white');
             await this.appendModule(
                 new WorkExperienceForm(this.apiUrl, this.user, false, 'Work experience'), 
                 newWorkExperienceFormListItem
@@ -208,6 +205,7 @@ export default class ExperienceSection extends Module implements IModule {
                     const result = objects.map(async program => {
                         // Create list item
                         const listItem = document.createElement('li') as HTMLLIElement;
+                        listItem.classList.add('education', 'object', 'white');
                         listItem.id = `education-${program.id}`;
     
                         // Add work experience article module
@@ -254,7 +252,7 @@ export default class ExperienceSection extends Module implements IModule {
     
                 // Create a list item with a form for adding new education
                 const newEducationFormListItem = document.createElement('li') as HTMLLIElement;
-                newEducationFormListItem.classList.add('new-education');
+                newEducationFormListItem.classList.add('new-education', 'object', 'white');
                 await this.appendModule(
                     new EducationForm(this.apiUrl, this.user, false, 'Education', 'Program'), 
                     newEducationFormListItem
@@ -263,57 +261,56 @@ export default class ExperienceSection extends Module implements IModule {
                 // Add list item to list
                 listItems.push(newEducationFormListItem);
             } else {
-                if (objects.length > 0) {
-                    const result = objects.map(async course => {
-                        // Create list item
-                        const listItem = document.createElement('li') as HTMLLIElement;
-                        listItem.id = `education-${course.id}`;
-    
-                        // Add work experience article module
-                        await this.appendModule(
-                            new EducationArticle(
-                                this.apiUrl,
-                                this.user,
-                                course.id, 
-                                course.name, 
-                                course.degree,
-                                course.institution,
-                                course.institution_website,
-                                course.start_date,
-                                course.end_date,
-                                course.type,
-                                course.order
-                            ), listItem
-                        );
-                    
-                        // Add work experience form module
-                        await this.appendModule(
-                            new EducationForm(
-                                this.apiUrl, 
-                                this.user, 
-                                true,
-                                'Education',
-                                course.type,
-                                course.id, 
-                                course.name,
-                                course.degree,
-                                course.institution,
-                                course.institution_website,
-                                course.start_date,
-                                course.end_date,
-                                course.order
-                            ), listItem
-                        );
+                const result = objects.map(async course => {
+                    // Create list item
+                    const listItem = document.createElement('li') as HTMLLIElement;
+                    listItem.classList.add('education', 'object', 'white');
+                    listItem.id = `education-${course.id}`;
 
-                        // Add list item to list
-                        listItems.push(listItem);
-                    });
-                    await Promise.all(result);
-                }
+                    // Add work experience article module
+                    await this.appendModule(
+                        new EducationArticle(
+                            this.apiUrl,
+                            this.user,
+                            course.id, 
+                            course.name, 
+                            course.degree,
+                            course.institution,
+                            course.institution_website,
+                            course.start_date,
+                            course.end_date,
+                            course.type,
+                            course.order
+                        ), listItem
+                    );
+                
+                    // Add work experience form module
+                    await this.appendModule(
+                        new EducationForm(
+                            this.apiUrl, 
+                            this.user, 
+                            true,
+                            'Education',
+                            course.type,
+                            course.id, 
+                            course.name,
+                            course.degree,
+                            course.institution,
+                            course.institution_website,
+                            course.start_date,
+                            course.end_date,
+                            course.order
+                        ), listItem
+                    );
+
+                    // Add list item to list
+                    listItems.push(listItem);
+                });
+                await Promise.all(result);
     
                 // Create a list item with a form for adding new education
                 const newEducationFormListItem = document.createElement('li') as HTMLLIElement;
-                newEducationFormListItem.classList.add('new-education');
+                newEducationFormListItem.classList.add('new-education', 'object', 'white');
                 await this.appendModule(
                     new EducationForm(this.apiUrl, this.user, false, 'Education', 'Course'), 
                     newEducationFormListItem

@@ -67,8 +67,9 @@ export default class Form extends Module  {
         fieldValue?: string,
         fieldPlaceholder?: string
     ): Promise<HTMLParagraphElement> {
+        const fieldTypeFromLabel = fieldLabel.toLocaleLowerCase().replace(' ', '-');
         // Create paragraph container
-        const pContainer = await this.createParagraph('', ['form-field', `form-${fieldType}-field`]);
+        const pContainer = await this.createParagraph('', ['field', `${fieldType}-field`, `${fieldTypeFromLabel}-field`]);
 
         // Create label and add to paragraph
         const label = document.createElement('label') as HTMLLabelElement;
@@ -145,7 +146,7 @@ export default class Form extends Module  {
      */
     async createButtonsGroup(isEditMode: boolean): Promise<HTMLParagraphElement> {
         // Create paragraph container
-        const pContainer = await this.createParagraph('', ['form-field', `form-buttons-field`]);
+        const pContainer = await this.createParagraph('', ['buttons-container']);
 
         if (isEditMode) {
             // Create cancel button
@@ -170,7 +171,7 @@ export default class Form extends Module  {
             const saveButton = await this.createButton(
                 'Save',
                 true,
-                ['save-button']
+                ['button', 'save-button']
             );
             pContainer.append(saveButton);
         } else {
@@ -178,7 +179,7 @@ export default class Form extends Module  {
             const addButton = await this.createButton(
                 'Add', 
                 true, 
-                ['add-button']
+                ['button', 'add-button']
             );
             pContainer.append(addButton);
         }

@@ -45,11 +45,11 @@ export default class EducationArticle extends Article implements IModule {
      */
     async create(): Promise<HTMLElement> {
         // Create article and set as module
-        const article = await this.createArticle(['education', `education-${this.type.toLowerCase()}`]);
+        const article = await this.createArticle([`education-${this.type.toLowerCase()}`]);
         this.module = article;
 
         // Create group for name and add to article
-        const nameGroup = await this.createPropertyInfo('Name', this.name, ['education-name']);
+        const nameGroup = await this.createPropertyInfo('Name', this.name, ['field', 'name-field']);
         this.module.append(nameGroup);
 
         // Create group for degree if program and add to article
@@ -60,12 +60,12 @@ export default class EducationArticle extends Article implements IModule {
             } else {
                 degree = '<em>Add a degree</em>'
             }
-            const degreeGroup = await this.createPropertyInfo('Degree', degree, ['education-degree']);
+            const degreeGroup = await this.createPropertyInfo('Degree', degree, ['field', 'degree-field']);
             this.module.append(degreeGroup);
         }
         
         // Create group for institution and add to article
-        const institutionGroup = await this.createPropertyInfo('Institution', this.institution, ['education-institution']);
+        const institutionGroup = await this.createPropertyInfo('Institution', this.institution, ['field', 'institution-field']);
         this.module.append(institutionGroup);
 
         // Create group for institution website and add to article
@@ -75,11 +75,11 @@ export default class EducationArticle extends Article implements IModule {
         } else {
             institutionWebsite = '<em>Add a website</em>'
         }
-        const institutionWebsiteGroup = await this.createPropertyInfo('Institution website', institutionWebsite, ['education-institution-website']);
+        const institutionWebsiteGroup = await this.createPropertyInfo('Institution website', institutionWebsite, ['field', 'url-field', 'institution-website-field']);
         this.module.append(institutionWebsiteGroup);
 
         // Create group for start date and add to article
-        const startDateGroup = await this.createPropertyInfo('Start date', this.startDate, ['education-start-date']);
+        const startDateGroup = await this.createPropertyInfo('Start date', this.startDate, ['field', 'date-field', 'start-date-field']);
         this.module.append(startDateGroup);
 
         // Create group for end date and add to article
@@ -87,18 +87,22 @@ export default class EducationArticle extends Article implements IModule {
         if (this.endDate) {
             endDate = this.endDate;
         } else {
-            endDate = '<em>Present</em>'
+            endDate = 'Present'
         }
-        const endDateGroup = await this.createPropertyInfo('End date', endDate, ['education-end-date']);
+        const endDateGroup = await this.createPropertyInfo('End date', endDate, ['field', 'date-field', 'end-date-field']);
         this.module.append(endDateGroup);
 
         // Create group for order and add to article
-        const orderGroup = await this.createPropertyInfo('Order', this.order.toString(), ['education-order']);
+        const orderGroup = await this.createPropertyInfo('Order', this.order.toString(), ['field', 'order-field']);
         this.module.append(orderGroup);
 
-        // Create edit button and add to article
+        // Create buttons container and add to article
+        const buttonsContainer = await this.createDiv(['buttons-container']);
+        this.module.append(buttonsContainer);
+
+        // Create edit button and add to buttons container
         const editButton = await this.createEditButton();
-        this.module.append(editButton);
+        buttonsContainer.append(editButton);
 
         // Add event listener to edit button
         await this.handleEditClick(editButton);

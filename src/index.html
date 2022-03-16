@@ -10,19 +10,24 @@
     <title>Administration — Sofie Wallins portfolio</title>
 </head>
 <body>
-    <header id="main-header">
-        <h2 class="logo">
-            <img src="./images/logo.svg" alt="Sofie Wallin" width="72" height="72">
-        </h2>
-    </header>
-    <main id="main-content">
-        <div id="message" aria-live="polite"></div>
-        <div id="app-root">
+    <div class="flex-container">
+        <header id="main-header">
+            <div class="top-bar clear">
+                <h2 class="logo">
+                    <img src="./images/logo.svg" alt="Sofie Wallin" width="72" height="72">
+                </h2>
+            </div>
+            <h1><span class="hidden-visually">Administration</span></h1>
+        </header>
+        <main id="main-content">
+            <div id="message" aria-live="polite"></div>
+            <div id="app-root">
 
-        </div>
-    </main>
-    <footer id="main-footer">
-        <p class="copyright">&copy; 2022 — Made by Sofie Wallin with TypeScript, HTML, Sass and webpack.</p>
-    </footer>
+            </div>
+        </main>
+        <footer id="main-footer" class="dark dark-gray-green clear">
+            <p class="copyright">&copy; 2022 — Made by Sofie Wallin with TypeScript, HTML, Sass and webpack.</p>
+        </footer>
+    </div>
 </body>
 </html>

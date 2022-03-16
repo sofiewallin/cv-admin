@@ -28,7 +28,7 @@ export default class Article extends Module {
         const div = await this.createDiv(htmlClasses);
 
         // Create heading
-        const heading = await this.createHeading(4, title, ['label-title']);
+        const heading = await this.createHeading(4, title, ['label']);
         div.append(heading);
 
         // Create paragraph
@@ -47,7 +47,7 @@ export default class Article extends Module {
         const editButton = await this.createButton(
             'Edit',
             false,
-            ['edit-button']
+            ['button', 'edit-button']
         );
         editButton.setAttribute('aria-controls', `skill-edit-form-${this.id}`);
         editButton.setAttribute('aria-expanded', 'false');

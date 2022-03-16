@@ -39,11 +39,11 @@ export default class WorkExperienceArticle extends Article implements IModule {
      */
     async create(): Promise<HTMLElement> {
         // Create article and set as module
-        const article = await this.createArticle(['work-experience']);
+        const article = await this.createArticle();
         this.module = article;
 
         // Create group for role and add to article
-        const roleGroup = await this.createPropertyInfo('Role', this.role, ['work-experience-role']);
+        const roleGroup = await this.createPropertyInfo('Role', this.role, ['field', 'role-field']);
         this.module.append(roleGroup);
 
         // Create group for workplace and add to article
@@ -53,7 +53,7 @@ export default class WorkExperienceArticle extends Article implements IModule {
         } else {
             workplace = '<em>Add a workplace</em>'
         }
-        const workplaceGroup = await this.createPropertyInfo('Workplace', workplace, ['work-experience-workplace']);
+        const workplaceGroup = await this.createPropertyInfo('Workplace', workplace, ['field', 'workplace-field']);
         this.module.append(workplaceGroup);
         
         // Create group for workplace website and add to article
@@ -63,11 +63,11 @@ export default class WorkExperienceArticle extends Article implements IModule {
         } else {
             workplaceWebsite = '<em>Add a website</em>';
         }
-        const workplaceWebsiteGroup = await this.createPropertyInfo('Workplace website', workplaceWebsite, ['work-experience-workplace-website']);
+        const workplaceWebsiteGroup = await this.createPropertyInfo('Workplace website', workplaceWebsite, ['field', 'url-field', 'workplace-website-field']);
         this.module.append(workplaceWebsiteGroup);
 
         // Create group for start date and add to article
-        const startDateGroup = await this.createPropertyInfo('Start date', this.startDate, ['work-experience-start-date']);
+        const startDateGroup = await this.createPropertyInfo('Start date', this.startDate, ['field', 'date-field', 'start-date-field']);
         this.module.append(startDateGroup);
 
         // Create group for end date and add to article
@@ -77,16 +77,20 @@ export default class WorkExperienceArticle extends Article implements IModule {
         } else {
             endDate = 'Present';
         }
-        const endDateGroup = await this.createPropertyInfo('End date', endDate, ['work-experience-end-date']);
+        const endDateGroup = await this.createPropertyInfo('End date', endDate, ['field', 'date-field', 'end-date-field']);
         this.module.append(endDateGroup);
 
         // Create group for order and add to article
-        const orderGroup = await this.createPropertyInfo('Order', this.order.toString(), ['work-experience-order']);
+        const orderGroup = await this.createPropertyInfo('Order', this.order.toString(), ['field', 'order-field']);
         this.module.append(orderGroup);
 
-        // Create edit button and add to article
+        // Create buttons container and add to article
+        const buttonsContainer = await this.createDiv(['buttons-container']);
+        this.module.append(buttonsContainer);
+
+        // Create edit button and add to buttons container
         const editButton = await this.createEditButton();
-        this.module.append(editButton);
+        buttonsContainer.append(editButton);
 
         // Add event listener to edit button
         await this.handleEditClick(editButton);

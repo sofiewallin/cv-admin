@@ -303,6 +303,7 @@ export default class WorkExperienceForm extends Form implements IModule  {
         // Add a new work experience to list right before add form
         const list = this.module.parentElement.parentElement;
         const listItem = document.createElement('li') as HTMLLIElement;
+        listItem.classList.add('work-experience', 'object', 'white');
         listItem.id = `work-experience-${this.id}`;
         await this.appendModule(
             new WorkExperienceArticle(
@@ -371,34 +372,34 @@ export default class WorkExperienceForm extends Form implements IModule  {
         // Set new values to paragraphs in article
         const workExperienceArticle = this.module.previousElementSibling;
 
-        const roleParagraph = workExperienceArticle.querySelector('.work-experience-role > p') as HTMLParagraphElement;
+        const roleParagraph = workExperienceArticle.querySelector('.role-field > p') as HTMLParagraphElement;
         roleParagraph.innerText = this.role;
 
-        const workplaceParagraph = workExperienceArticle.querySelector('.work-experience-workplace > p') as HTMLParagraphElement;
+        const workplaceParagraph = workExperienceArticle.querySelector('.workplace-field > p') as HTMLParagraphElement;
         if (this.workplace) {
             workplaceParagraph.innerHTML = this.workplace;
         } else {
             workplaceParagraph.innerHTML = '<em>Add a workplace</em>';
         }
 
-        const workplaceWebsiteParagraph = workExperienceArticle.querySelector('.work-experience-workplace-website > p') as HTMLParagraphElement;
+        const workplaceWebsiteParagraph = workExperienceArticle.querySelector('.workplace-website-field > p') as HTMLParagraphElement;
         if (this.workplaceWebsite) {
             workplaceWebsiteParagraph.innerHTML = this.workplaceWebsite;
         } else {
             workplaceWebsiteParagraph.innerHTML = '<em>Add a website</em>';
         }
 
-        const startDateParagraph = workExperienceArticle.querySelector('.work-experience-start-date > p') as HTMLParagraphElement;
+        const startDateParagraph = workExperienceArticle.querySelector('.start-date-field > p') as HTMLParagraphElement;
         startDateParagraph.innerText = this.startDate;
 
-        const endDateParagraph = workExperienceArticle.querySelector('.work-experience-end-date > p') as HTMLParagraphElement;
+        const endDateParagraph = workExperienceArticle.querySelector('.end-date-field > p') as HTMLParagraphElement;
         if (this.endDate) {
             endDateParagraph.innerHTML = this.endDate;
         } else {
             endDateParagraph.innerHTML = 'Present';
         }
 
-        const orderParagraph = workExperienceArticle.querySelector('.work-experience-order > p') as HTMLParagraphElement;
+        const orderParagraph = workExperienceArticle.querySelector('.order-field > p') as HTMLParagraphElement;
         orderParagraph.innerText = this.order.toString();
 
         // Hide form an show article

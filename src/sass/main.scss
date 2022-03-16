@@ -1,33 +1,13 @@
 @charset 'utf-8';
 
-/*
-* CSS by Sofie Wallin (sowa2002), student at MIUN, 2021
-*/
+/**
+ * Main Sass-file.
+ * 
+ * Imports all stylesheets.
+ * 
+ * Author: Sofie Wallin
+ */
 
-@import './utilities/variables';
-@import './utilities/mixins';
-@import './utilities/helper-classes';
-
-@import './base/reset';
-@import './base/typography';
-
-.hidden {
-    display: none;
-}
-
-body {
-    background-color: lightyellow;
-}
-
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-li {
-    margin-bottom: 20px;
-    background-color: white;
-    padding: 10px;
-}
+@import './utilities';
+@import './base';
+@import './modules';

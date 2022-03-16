@@ -1,0 +1,369 @@
+/**
+ * Base.
+ * 
+ * 1. Base style & resets
+ * 2. Colors
+ * 3. Typography
+ * 4. Layout
+ * 
+ * Author: Sofie Wallin
+ */
+
+/*------------------------------------*\
+    1. BASE STYLE & RESETS
+\*------------------------------------*/
+
+html, 
+*, 
+*::after, 
+*::before {   
+    background-color: transparent;
+    border: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+html, 
+body {
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    font-size: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: $light-yellow;
+}
+
+/*------ Images ------*/
+
+figure,
+img {
+    @include block;
+    height: auto;
+    max-width: 100%;
+}
+
+/*------ Focus style ------*/
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    border: none;
+    outline: 2px solid $gray-green;
+    outline-offset: 1px;
+}
+
+/*------------------------------------*\
+    2. COLORS
+\*------------------------------------*/
+
+/*------ Background colors ------*/
+
+.dark-gray-green {
+    background-color: $dark-gray-green;
+}
+
+.white {
+    background-color: $white;
+}
+
+/*------ Text color ------*/
+
+body,
+button,
+input,
+textarea,
+select,
+.logo {
+    color: $dark-gray;
+}
+
+.menu a,
+.logout-button button,
+.heading,
+label,
+.label {
+    color: $dark-gray-green;
+}
+
+/*------ Dark boxes ------*/
+
+.dark {
+    color: $light-yellow;
+
+    :focus-visible {
+        outline-color: $highlight-color;
+    }
+}
+
+/*------ Objects ------*/
+
+.required,
+.cancel-button,
+.delete-button {
+    color: $dark-orange;
+}
+
+input::placeholder {
+    color: $placeholder-color;
+}
+
+input + .error,
+.form-message.error {
+    color: $error-color;
+}
+
+.button,
+#message {
+    color: $white;
+}
+
+/*------------------------------------*\
+    3. TYPOGRAPHY
+\*------------------------------------*/
+
+body,
+button,
+input,
+textarea,
+select,
+.logo {
+    font: $font-regular 1rem/1.5 $main-font;
+
+    @include breakpoint(tablet) {
+        font-size: 1.125rem;
+        line-height: 1.556;
+    }
+}
+
+.menu a,
+.logout-button button,
+.heading,
+label,
+.label {
+    font-weight: $font-medium;
+}
+
+.menu a,
+.logout-button button,
+.medium-heading {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+
+    @include breakpoint(tablet) {
+        margin-bottom: 24px;
+    }
+}
+
+a,
+button,
+.required {
+    text-decoration: none;
+}
+
+input + .error,
+.copyright,
+#message {
+    font-size: 0.875rem;
+}
+
+input + .error,
+.copyright {
+    line-height: 1.429;
+}
+
+/*------ Headings ------*/
+
+.big-heading {
+    font-size: 2rem;
+    line-height: 1.25;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    position: relative;
+
+    @include breakpoint(tablet) {
+        font-size: 3rem;
+        line-height: 1.167;
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+}
+
+.medium-heading {
+    @include breakpoint(tablet) {
+        font-size: 1.5rem;
+        line-height: 1.334;
+    }
+}
+
+/*------ Buttons & links ------*/
+
+a,
+button {
+    cursor: pointer;
+    transition: all 0.4s ease-in;
+}
+
+a:hover,
+.logout-button button:hover {
+    text-decoration: underline;
+}
+
+.button.button-big {
+    font-size: 0.875rem;
+
+    @include breakpoint(tablet) {
+        font-size: 1rem;
+    }
+}
+
+/*------ Objects ------*/
+
+label,
+.label,
+.button {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    line-height: 2;
+    text-transform: uppercase;
+
+    @include breakpoint(tablet) {
+        font-size: 0.875rem;
+        line-height: 1.429;
+    }
+}
+
+// Labels
+label,
+.label {
+    @include block;
+    margin-bottom: 4px;
+
+    @include breakpoint(tablet) {
+        margin-bottom: 8px;
+    }
+}
+
+/*------ Messages ------*/
+
+input + .error {
+    @include block;
+    
+    &.is-active {
+        margin-top: 8px;
+    }
+}
+
+#message {
+    @include breakpoint(tablet) {
+        font-size: 1rem;
+    }
+}
+
+/*------ Main footer ------*/
+
+// Copyright text
+.copyright {
+    text-align: center;
+
+    @include breakpoint(tablet) {
+        font-size: 1rem;
+        line-height: 64px;
+        text-align: left;
+    }
+}
+
+/*------------------------------------*\
+    4. LAYOUT
+\*------------------------------------*/
+
+.flex-container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#main-header,
+#app-root,
+#main-footer {
+    margin: 0 auto;
+    max-width: 1280px;
+    padding-right: 20px;
+    padding-left: 20px;
+    width: 100%;
+
+    @include breakpoint(tablet) {
+        padding-right: 32px;
+        padding-left: 32px;
+    }
+
+    @include breakpoint(desktop) {
+        padding-right: 64px;
+        padding-left: 64px;
+    }
+}
+
+/*------ Main header ------*/
+
+#main-header {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    position: relative;
+    z-index: 2;
+
+    @include breakpoint(tablet) {
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+}
+
+/*------ Main content ------*/
+
+#app-root {
+    padding-bottom: 16px;
+
+    @include breakpoint(tablet) {
+        padding-bottom: 24px;
+    }
+}
+
+// Object list
+.object-list {
+    padding-bottom: 16px;
+
+    &:last-child {
+        padding-bottom: 24px;
+    }
+
+    @include breakpoint(tablet) {
+        padding-bottom: 40px;
+
+        &:last-child {
+            padding-bottom: 48px;
+        }
+    }
+}
+
+// Object
+.object {
+    margin-bottom: 16px;
+}
+
+/*------ Main footer ------*/
+
+#main-footer {
+    margin-top: auto;
+    padding-top: 32px;
+    padding-bottom: 32px;
+}

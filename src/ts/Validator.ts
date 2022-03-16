@@ -34,7 +34,7 @@ export default class Validator implements IValidator {
 
             // Set label with asterisk
             const label = field.previousElementSibling;
-            label.innerHTML = `${fieldLabel} <abbr title="required" class="required">*</abbr>`;
+            label.innerHTML = `${fieldLabel}<abbr title="required" class="required">*</abbr>`;
         } else {
             // Set attribute
             field.setAttribute(attribute, (value as string));

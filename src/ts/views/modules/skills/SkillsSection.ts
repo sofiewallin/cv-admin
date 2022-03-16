@@ -13,7 +13,7 @@ import SkillForm from "./SkillForm";
  * @author: Sofie Wallin
  */
 export default class SkillsSection extends Module implements IModule {
-    private skills: ISkill[];
+    private skills: ISkill[] = [];
 
     /**
      * Get all skills from API.
@@ -42,7 +42,7 @@ export default class SkillsSection extends Module implements IModule {
         this.module = section;
 
         // Create section heading and add to section
-        const heading = await this.createHeading(2, 'Skills');
+        const heading = await this.createHeading(2, 'Skills', ['heading', 'big-heading']);
         this.module.append(heading);
 
         // Create show skills button and add to heading
@@ -89,13 +89,13 @@ export default class SkillsSection extends Module implements IModule {
      */
     async createSkillList(skillType: string, container: HTMLDivElement): Promise<HTMLUListElement> {
         // Create heading
-        const heading = await this.createHeading(3, skillType);
+        const heading = await this.createHeading(3, skillType, ['heading', 'medium-heading']);
         container.append(heading);
 
         // Filter skills and create ul list
         const filteredSkills = this.skills.filter(skill => skill.type === skillType);
         const skillListItems = await this.createSkillListItems(filteredSkills, skillType);
-        const skillList = await this.createUlList(`${skillType.toLowerCase()}-skills`, skillListItems);
+        const skillList = await this.createUlList(`${skillType.toLowerCase()}-skills`, skillListItems, ['object-list']);
         
         return skillList;
     }
@@ -112,46 +112,45 @@ export default class SkillsSection extends Module implements IModule {
 
         /* Maps list of skills and adds a skill 
         article module and a skill form module */
-        if (skills.length > 0) {
-            const result = skills.map(async skill => {
-                // Create list item
-                const listItem = document.createElement('li') as HTMLLIElement;
-                listItem.id = `skill-${skill.id}`;
+        const result = skills.map(async skill => {
+            // Create list item
+            const listItem = document.createElement('li') as HTMLLIElement;
+            listItem.classList.add('skill', 'object', 'white');
+            listItem.id = `skill-${skill.id}`;
 
-                // Add skill article module
-                await this.appendModule(
-                    new SkillArticle(
-                        this.apiUrl,
-                        this.user,
-                        skill.id, 
-                        skill.title, 
-                        skill.order
-                    ), listItem
-                );
-                
-                // Add skill form module
-                await this.appendModule(
-                    new SkillForm(
-                        this.apiUrl, 
-                        this.user, 
-                        true,
-                        'Skill',
-                        skillType,
-                        skill.id, 
-                        skill.title, 
-                        skill.order
-                    ), listItem
-                );
-                
-                // Add list item to list
-                listItems.push(listItem);
-            });
-            await Promise.all(result);
-        }
+            // Add skill article module
+            await this.appendModule(
+                new SkillArticle(
+                    this.apiUrl,
+                    this.user,
+                    skill.id, 
+                    skill.title, 
+                    skill.order
+                ), listItem
+            );
+            
+            // Add skill form module
+            await this.appendModule(
+                new SkillForm(
+                    this.apiUrl, 
+                    this.user, 
+                    true,
+                    'Skill',
+                    skillType,
+                    skill.id, 
+                    skill.title, 
+                    skill.order
+                ), listItem
+            );
+            
+            // Add list item to list
+            listItems.push(listItem);
+        });
+        await Promise.all(result);
 
         // Create a list item with a form for adding new skills
         const newSkillFormListItem = document.createElement('li') as HTMLLIElement;
-        newSkillFormListItem.classList.add('new-skill');
+        newSkillFormListItem.classList.add('new-skill', 'object', 'white');
         await this.appendModule(
             new SkillForm(this.apiUrl, this.user, false, 'Skill', skillType), 
             newSkillFormListItem
