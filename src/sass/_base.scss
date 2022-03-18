@@ -294,9 +294,9 @@ input + .error {
     justify-content: flex-start;
 }
 
-#main-header,
+.top-bar,
 #app-root,
-#main-footer {
+.bottom-bar {
     margin: 0 auto;
     max-width: 1280px;
     padding-right: 20px;
@@ -316,7 +316,7 @@ input + .error {
 
 /*------ Main header ------*/
 
-#main-header {
+.top-bar {
     padding-top: 24px;
     padding-bottom: 24px;
     position: relative;
@@ -364,6 +364,9 @@ input + .error {
 
 #main-footer {
     margin-top: auto;
+}
+
+.bottom-bar {
     padding-top: 32px;
     padding-bottom: 32px;
 }

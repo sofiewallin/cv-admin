@@ -16,13 +16,13 @@ import BackToTopLink from "./modules/BackToTopLink";
  */
 export default class HomeView extends View implements IView {
     readonly topBar: HTMLElement;
-    readonly mainFooter: HTMLElement;
+    readonly bottomBar: HTMLElement;
 
     constructor(apiUrl: string, user: IUser, appContent: HTMLElement) {
         super(apiUrl, user, appContent);
 
         this.topBar = document.querySelector('.top-bar') as HTMLElement;
-        this.mainFooter = document.querySelector('#main-footer') as HTMLElement;
+        this.bottomBar = document.querySelector('.bottom-bar') as HTMLElement;
     }
 
     /**
@@ -44,6 +44,6 @@ export default class HomeView extends View implements IView {
         await this.appendModule(new ExperienceSection(this.apiUrl, this.user), this.appContent);
 
         // Add back to top link module in footer
-        await this.appendModule(new BackToTopLink(), this.mainFooter);
+        await this.appendModule(new BackToTopLink(), this.bottomBar);
     }
 }
