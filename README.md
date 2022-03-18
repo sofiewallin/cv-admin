@@ -24,10 +24,14 @@ Configurations for webpack are made in separate files for development and produc
 
 The entry point for webpack and the bundle is in `src/index.ts`. It renders the application and imports style.
 
+#### HTML-file
+
+In `src/index.html` the base structure of the application is set. The application is then rendered in the element `#app-root`.
+
 #### TypeScript
 
 Configurations for TypeScript are made in `tsconfig.json`. The TypeScript-application exists in `src/ts/`. The structure of the TypeScript code is:
-- The application entry point is `App.ts`, which authenticated the user and renders either a login view or a home view. 
+- The application entry point is `App.ts`, which authenticates the user and renders either a login view or a home view. 
 - `Auth.ts` handles logging in to and logging out from the API.
 - In `views/` there are two views that add modules from `views/modules/`. 
 - The modules uses models in `models/` to consume the API, the api url is set in `App.ts`.
