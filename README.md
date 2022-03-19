@@ -50,5 +50,5 @@ This website is part of a school assignment that has been developed in three sep
 
 These repositories holds the rest of the project:
 
-- REST API: https://github.com/sofiewallin/cv-rest-api
+- REST API: https://github.com/sofiewallin/cv-api
 - Public website: https://github.com/sofiewallin/cv-application
