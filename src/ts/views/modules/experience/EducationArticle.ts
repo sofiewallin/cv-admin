@@ -101,7 +101,7 @@ export default class EducationArticle extends Article implements IModule {
         this.module.append(buttonsContainer);
 
         // Create edit button and add to buttons container
-        const editButton = await this.createEditButton();
+        const editButton = await this.createEditButton('education');
         buttonsContainer.append(editButton);
 
         // Add event listener to edit button

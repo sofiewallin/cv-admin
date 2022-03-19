@@ -43,13 +43,13 @@ export default class Article extends Module {
      * 
      * Creates and returns an edit button.
      */
-    async createEditButton(): Promise<HTMLButtonElement> {
+    async createEditButton(objectType: string): Promise<HTMLButtonElement> {
         const editButton = await this.createButton(
             'Edit',
             false,
             ['button', 'edit-button']
         );
-        editButton.setAttribute('aria-controls', `skill-edit-form-${this.id}`);
+        editButton.setAttribute('aria-controls', `${objectType}-edit-form-${this.id}`);
         editButton.setAttribute('aria-expanded', 'false');
 
         return editButton;

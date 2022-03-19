@@ -244,4 +244,16 @@ export default class Form extends Module  {
         // Write success message
         await app.writeMessage('success', `The ${this.objectType.toLowerCase()} was successfully deleted.`);
     }
+
+    /**
+     * Escape html in string inputs.
+     */
+    async escapeHtml(stringInput: string): Promise<string> {
+        return stringInput
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 }

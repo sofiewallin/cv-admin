@@ -257,10 +257,14 @@ export default class WorkExperienceForm extends Form implements IModule  {
             if (!await this.validator.validateField(startDateInput)) return;
             if (!await this.validator.validateField(orderInput)) return;
 
+            // Set work experience role and workplace with escaped html
+            const workExperienceRole = await this.escapeHtml(roleInput.value);
+            const workExperienceWorkplace = await this.escapeHtml(workplaceInput.value);
+
             // Construct work experience object
             const workExperience = {
-                role: roleInput.value,
-                workplace: workplaceInput.value,
+                role: workExperienceRole,
+                workplace: workExperienceWorkplace,
                 workplace_website: workplaceWebsiteInput.value,
                 start_date: startDateInput.value,
                 end_date: endDateInput.value,

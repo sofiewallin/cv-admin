@@ -298,10 +298,14 @@ export default class ProjectForm extends Form implements IModule  {
             if (!await this.validator.validateField(logoInput)) return;
             if (!await this.validator.validateField(orderInput)) return;
 
+            // Set prject title and description with escaped html
+            const projectTitle = await this.escapeHtml(titleInput.value);
+            const projectDescription = await this.escapeHtml(descriptionTextarea.value);
+
             const project = new FormData();
-            project.append('title', titleInput.value);
+            project.append('title', projectTitle);
             project.append('website', websiteInput.value);
-            project.append('description', descriptionTextarea.value);
+            project.append('description', projectDescription);
             if (logoInput.files.length > 0) {
                 project.append('logo', logoInput.files[0]);
             }

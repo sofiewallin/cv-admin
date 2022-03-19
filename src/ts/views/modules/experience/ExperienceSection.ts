@@ -118,14 +118,14 @@ export default class ExperienceSection extends Module implements IModule {
         let filteredEducation: IEducation[] = [];
 
         if (objectType === 'Work') {
-            listId = 'work-experiences';
+            listId = 'work-experience-list';
             listItems = await this.createListItems();
         } else if (objectType === 'Education programs') {
-            listId = 'education-programs';
+            listId = 'education-program-list';
             filteredEducation = this.education.filter(education => education.type === 'Program');
             listItems = await this.createListItems(filteredEducation, 'Program');
         } else {
-            listId = 'courses';
+            listId = 'course-list';
             filteredEducation = this.education.filter(education => education.type === 'Course');
             listItems = await this.createListItems(filteredEducation, 'Course');
         }

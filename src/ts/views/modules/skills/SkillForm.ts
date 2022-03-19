@@ -118,10 +118,13 @@ export default class SkillForm extends Form implements IModule  {
             // Validate fields
             if (!await this.validator.validateField(skillInput)) return;
             if (!await this.validator.validateField(orderInput)) return;
+            
+            // Set skill title with escaped html
+            const skillTitle = await this.escapeHtml(skillInput.value);
 
             // Construct skill object
             const skill = {
-                title: skillInput.value,
+                title: skillTitle,
                 type: this.type,
                 order: parseInt(orderInput.value)
             }

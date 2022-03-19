@@ -135,7 +135,7 @@ export default class ProjectsSection extends Module implements IModule {
         listItems.push(newProjectFormListItem);
 
         // Create ul list
-        const projectList = await this.createUlList('projects', listItems, ['object-list']);
+        const projectList = await this.createUlList('project-list', listItems, ['object-list']);
         
         return projectList;
     }

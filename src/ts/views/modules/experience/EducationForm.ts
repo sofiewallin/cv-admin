@@ -314,13 +314,22 @@ export default class EducationForm extends Form implements IModule  {
             if (!await this.validator.validateField(startDateInput)) return;
             if (!await this.validator.validateField(orderInput)) return;
 
-            // Construct education object
-            let degreeValue = (degreeInput) ? degreeInput.value : null;
+            // Set education name, degree and institution with escaped html
+            const educationName = await this.escapeHtml(nameInput.value);
+            
+            let educationDegree: string;
+            if (degreeInput) {
+                educationDegree = await this.escapeHtml(degreeInput.value);
+            } else {
+                educationDegree = null;
+            }
+            
+            const educationInstitution = await this.escapeHtml(institutionInput.value);
 
             const education = {
-                name: nameInput.value,
-                degree: degreeValue,
-                institution: institutionInput.value,
+                name: educationName,
+                degree: educationDegree,
+                institution: educationInstitution,
                 institution_website: institutionWebsiteInput.value,
                 start_date: startDateInput.value,
                 end_date: endDateInput.value,

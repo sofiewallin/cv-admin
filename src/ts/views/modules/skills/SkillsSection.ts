@@ -95,7 +95,7 @@ export default class SkillsSection extends Module implements IModule {
         // Filter skills and create ul list
         const filteredSkills = this.skills.filter(skill => skill.type === skillType);
         const skillListItems = await this.createSkillListItems(filteredSkills, skillType);
-        const skillList = await this.createUlList(`${skillType.toLowerCase()}-skills`, skillListItems, ['object-list']);
+        const skillList = await this.createUlList(`${skillType.toLowerCase()}-skill-list`, skillListItems, ['object-list']);
         
         return skillList;
     }

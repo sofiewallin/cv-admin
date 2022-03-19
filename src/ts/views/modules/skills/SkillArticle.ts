@@ -37,7 +37,7 @@ export default class SkillArticle extends Article implements IModule {
         this.module.append(buttonsContainer);
 
         // Create edit button and add to buttons container
-        const editButton = await this.createEditButton();
+        const editButton = await this.createEditButton('skill');
         buttonsContainer.append(editButton);
         
         // Add event listener to edit button
