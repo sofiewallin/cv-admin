@@ -77,7 +77,7 @@ export default class ProjectForm extends Form implements IModule  {
         // Create input group for logo and add to logo container
         let logoInputId: string;
         let logoInputValue: string;
-        
+
         if (this.isEditMode) {
             logoInputId = `project-logo-${this.id}`;
             logoInputValue = this.logo;
@@ -417,12 +417,22 @@ export default class ProjectForm extends Form implements IModule  {
         this.type = (updatedProject as IProject).type;
         this.order = (updatedProject as IProject).order;
 
+        // Set base url for images
+        const baseUrl = this.apiUrl.replace('/api', '');
+
+        // Add updated logo to form and empty file field
+        const formLogo = this.module.querySelector('img') as HTMLImageElement;
+        formLogo.alt = `${this.title} logo`;
+        formLogo.src = `${baseUrl}/storage/uploads/${this.logo}`;
+        const fileField = this.module.querySelector('.logo-container input') as HTMLInputElement;
+        fileField.value = '';
+
         // Set new src to images and new values to paragraphs in article
         const projectArticle = this.module.previousElementSibling;
 
-        const baseUrl = this.apiUrl.replace('/api', '');
-        const logo = projectArticle.querySelector('img') as HTMLImageElement;
-        logo.src = `${baseUrl}/storage/uploads/${this.logo}`;
+        const articleLogo = projectArticle.querySelector('img') as HTMLImageElement;
+        articleLogo.alt = `${this.title} logo`;
+        articleLogo.src = `${baseUrl}/storage/uploads/${this.logo}`;
 
         const titleParagraph = projectArticle.querySelector('.title-field > p') as HTMLParagraphElement;
         titleParagraph.innerText = this.title;
